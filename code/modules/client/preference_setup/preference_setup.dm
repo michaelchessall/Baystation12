@@ -1,7 +1,13 @@
+<<<<<<< Updated upstream
 // These are not flags, binary operations not intended
 #define TOPIC_NOACTION 0
 #define TOPIC_HANDLED 1
 #define TOPIC_REFRESH 2
+=======
+#define TOPIC_UPDATE_PREVIEW 4
+
+
+>>>>>>> Stashed changes
 
 /datum/category_group/player_setup_category/general_preferences
 	name = "General"

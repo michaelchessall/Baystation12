@@ -31,7 +31,27 @@
 			return
 
 		modify_variables(D, href_list["varnameedit"], 1)
+	else if(href_list["saved_vars"])
+		if(!check_rights(0))	return
 
+		var/datum/D = locate(href_list["saved_vars"])
+		if(!istype(D))
+			to_chat(usr, "This can only be done to instances of type /datum")
+			return
+		D.add_saved_var(usr)
+	else if(href_list["Add_Var"])
+		if(!check_rights(0))	return
+		var/datum/D = locate(href_list["Varsx"])
+		D.add_saved(usr)
+		D.add_saved_var(usr)
+		return 0
+	else if(href_list["Remove_Var"])
+		if(!check_rights(0))	return
+		var/ind = text2num(href_list["Remove_Var"])
+		var/datum/D = locate(href_list["Varsx"])
+		D.remove_saved(ind)
+		D.add_saved_var(usr)
+		return 0
 	else if(href_list["varnamechange"] && href_list["datumchange"])
 		if(!check_rights(R_VAREDIT))	return
 
