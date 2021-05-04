@@ -23,7 +23,7 @@
 /datum/nano_module/program/invoicing/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/datum/world_faction/connected_faction
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
 	if(!connected_faction)
@@ -46,7 +46,7 @@
 	if(..())
 		return 1
 	var/datum/world_faction/connected_faction
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
 	if(!connected_faction)
@@ -85,7 +85,7 @@
 /datum/nano_module/program/invoicing/proc/print_invoice(var/mob/user)
 	if(amount < 0) return
 	var/datum/world_faction/connected_faction
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
 	if(!connected_faction)
@@ -105,7 +105,7 @@
 	t += "<td>Authorized by:<br>[idname] [idrank]<br><td>Paid by:<br>*None*</td></tr></table><br></td>"
 	t += "<tr><td><h3>Reason</H3><font size = '1'>[reason]<br></td></tr></table><br><table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>"
 	t += "<td></font><font size='4'><b>Swipe ID to confirm transaction.</b></font></center></font>"
-	var/obj/item/weapon/paper/invoice/invoice = new()
+	var/obj/item/paper/invoice/invoice = new()
 	invoice.info = t
 	invoice.purpose = reason
 	invoice.transaction_amount = amount
@@ -116,19 +116,19 @@
 
 
 
-/obj/item/weapon/paper/invoice
+/obj/item/paper/invoice
 	name = "Invoice"
 	var/transaction_amount
 	var/linked_faction
 	var/paid = 0
 	var/purpose = ""
 	icon_state = "invoice"
-/obj/item/weapon/paper/invoice/update_icon()
+/obj/item/paper/invoice/update_icon()
 	if(paid)
 		icon_state = "invoice-paid"
 	else
 		icon_state = "invoice"
-/obj/item/weapon/paper/invoice/show_content(mob/user, forceshow)
+/obj/item/paper/invoice/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
@@ -141,15 +141,15 @@
 	user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[can_read ? info2 : stars(info)][stamps]</BODY></HTML>", "window=[name]")
 	onclose(user, "[name]")
 
-/obj/item/weapon/paper/invoice/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+/obj/item/paper/invoice/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/pen))
 		return
-	else if(istype(P, /obj/item/weapon/card/id))
+	else if(istype(P, /obj/item/card/id))
 		if(paid) return 1
 		var/datum/world_faction/connected_faction = get_faction(linked_faction)
 		if(!connected_faction) return
 		var/datum/money_account/target_account = connected_faction.central_account
-		var/obj/item/weapon/card/id/id = P
+		var/obj/item/card/id/id = P
 		if(!id.valid) return 0
 		var/datum/money_account/account = get_account(id.associated_account_number)
 		if(!account) return
@@ -174,11 +174,11 @@
 			to_chat(user, "Payment succesful")
 			update_icon()
 		return
-	else if(istype(P, /obj/item/weapon/card/expense))
+	else if(istype(P, /obj/item/card/expense))
 		var/datum/world_faction/connected_faction = get_faction(linked_faction)
 		if(!connected_faction) return
 		var/datum/money_account/target_account = connected_faction.central_account
-		var/obj/item/weapon/card/expense/expense_card = P
+		var/obj/item/card/expense/expense_card = P
 		if(expense_card.pay(transaction_amount, user, src))
 			var/account_name
 			if(expense_card.ctype == 1)
@@ -196,7 +196,7 @@
 			update_icon()
 		return
 	..()
-/obj/item/weapon/paper/invoice/Topic(href, href_list)
+/obj/item/paper/invoice/Topic(href, href_list)
 	..()
 	if(!usr || (usr.stat || usr.restrained()))
 		return
@@ -229,21 +229,21 @@
 		to_chat(usr, "Payment succesful")
 		update_icon()
 
-/obj/item/weapon/paper/invoice/import
+/obj/item/paper/invoice/import
 	name = "Import invoice"
 	var/datum/supply_order/linked_order
 	var/true_amount = 0
 
-/obj/item/weapon/paper/invoice/import/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+/obj/item/paper/invoice/import/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/pen))
 		return
-	else if(istype(P, /obj/item/weapon/card/id))
+	else if(istype(P, /obj/item/card/id))
 		if(!linked_order) return
 		if(paid) return 1
 		var/datum/world_faction/connected_faction = get_faction(linked_faction)
 		if(!connected_faction) return
 		var/datum/money_account/target_account = connected_faction.central_account
-		var/obj/item/weapon/card/id/id = P
+		var/obj/item/card/id/id = P
 		if(!id.valid) return 0
 		var/datum/money_account/account = get_account(id.associated_account_number)
 		if(!account) return
@@ -272,13 +272,13 @@
 			to_chat(user, "Payment succesful")
 			update_icon()
 		return
-	else if(istype(P, /obj/item/weapon/card/expense))
+	else if(istype(P, /obj/item/card/expense))
 		if(paid) return
 		if(!linked_order) return
 		var/datum/world_faction/connected_faction = get_faction(linked_faction)
 		if(!connected_faction) return
 		var/datum/money_account/target_account = connected_faction.central_account
-		var/obj/item/weapon/card/expense/expense_card = P
+		var/obj/item/card/expense/expense_card = P
 		if(expense_card.pay(transaction_amount, user, src))
 			var/account_name
 			if(expense_card.ctype == 1)
@@ -300,7 +300,7 @@
 			update_icon()
 		return
 	..()
-/obj/item/weapon/paper/invoice/import/Topic(href, href_list)
+/obj/item/paper/invoice/import/Topic(href, href_list)
 	if(!linked_order)
 		return
 	if(!usr || (usr.stat || usr.restrained()))
@@ -343,19 +343,19 @@
 	..()
 
 
-/obj/item/weapon/paper/invoice/business
+/obj/item/paper/invoice/business
 	var/linked_business
 
 
-/obj/item/weapon/paper/invoice/business/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+/obj/item/paper/invoice/business/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/pen))
 		return
-	else if(istype(P, /obj/item/weapon/card/id))
+	else if(istype(P, /obj/item/card/id))
 		if(paid) return 1
 		var/datum/small_business/connected_business = get_business(linked_business)
 		if(!connected_business) return
 		var/datum/money_account/target_account = connected_business.central_account
-		var/obj/item/weapon/card/id/id = P
+		var/obj/item/card/id/id = P
 		if(!id.valid) return 0
 		var/datum/money_account/account = get_account(id.associated_account_number)
 		if(!account) return
@@ -382,12 +382,12 @@
 			to_chat(user, "Payment succesful")
 			update_icon()
 		return
-	else if(istype(P, /obj/item/weapon/card/expense))
+	else if(istype(P, /obj/item/card/expense))
 		if(paid) return
 		var/datum/small_business/connected_business = get_business(linked_business)
 		if(!connected_business) return
 		var/datum/money_account/target_account = connected_business.central_account
-		var/obj/item/weapon/card/expense/expense_card = P
+		var/obj/item/card/expense/expense_card = P
 		if(expense_card.pay(transaction_amount, user, src))
 			var/account_name
 			if(expense_card.ctype == 1)
@@ -407,7 +407,7 @@
 			update_icon()
 		return
 	..()
-/obj/item/weapon/paper/invoice/business/Topic(href, href_list)
+/obj/item/paper/invoice/business/Topic(href, href_list)
 	if(!usr || (usr.stat || usr.restrained()))
 		return
 	if(href_list["pay"])

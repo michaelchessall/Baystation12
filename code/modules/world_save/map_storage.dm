@@ -304,7 +304,7 @@ var/global/list/debug_data = list()
 	contents = list()
 	StandardRead(f)
 
-/obj/item/weapon/storage/Read(savefile/f)
+/obj/item/storage/Read(savefile/f)
 	for(var/atom/movable/am in contents)
 		am.loc = null
 	startswith = list()

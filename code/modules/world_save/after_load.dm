@@ -46,7 +46,7 @@
 		if(connected_faction)
 			connected_faction.cargo_telepads |= src
 
-
+/**
 /obj/machinery/computer/bridge_computer/after_load()
 	..()
 	if(shuttle && loc && loc.loc)
@@ -55,7 +55,7 @@
 
 	icon_state = "pipe-s"
 
-
+**/
 
 /obj/structure/disposalpipe/segment/after_load()
 	..()
@@ -75,7 +75,7 @@
 	update()
 	return
 
-/obj/item/weapon/reagent_containers/after_load()
+/obj/item/reagent_containers/after_load()
 	update_icon()
 	..()
 
@@ -112,17 +112,16 @@
 	mergeConnectedNetworks(d1)
 	mergeConnectedNetworks(d2)
 
-/obj/item/weapon/stock_parts/power/terminal/map_storage_saved_vars = "density;icon_state;name;pixel_x;pixel_y;contents;dir;terminal"
+/obj/item/stock_parts/power/terminal/map_storage_saved_vars = "density;icon_state;name;pixel_x;pixel_y;contents;dir;terminal"
 
 
 /obj/machinery/power/apc/after_load()
 	connect_to_network()
-	var/obj/item/weapon/stock_parts/power/terminal/terminal = get_component_of_type(/obj/item/weapon/stock_parts/power/terminal)
+	var/obj/item/stock_parts/power/terminal/terminal = get_component_of_type(/obj/item/stock_parts/power/terminal)
 	if(terminal && terminal.terminal)
 		terminal.set_terminal(src, terminal.terminal)
 	..()
-	Initialize(populate_parts = FALSE)
-	for(var/obj/item/weapon/stock_parts/power/power in power_components)
+	for(var/obj/item/stock_parts/power/power in power_components)
 		power.set_status(src, PART_STAT_CONNECTED)
 		power.set_status(src, PART_STAT_INSTALLED)
 		power.set_status(src, PART_STAT_PROCESSING)
@@ -130,7 +129,7 @@
 
 	update_icon()
 
-/obj/item/weapon/paper/after_load()
+/obj/item/paper/after_load()
 	info_links = replacetext(info_links,"***MY_REF***","\ref[src]")
 	update_icon()
 	..()
@@ -180,14 +179,14 @@
 		if(SOUTHWEST)
 			initialize_directions = SOUTH
 
-/obj/item/weapon/computer_hardware/network_card/after_load()
+/obj/item/computer_hardware/network_card/after_load()
 	..()
 	get_network()
-/obj/item/weapon/computer_hardware/network_card/var/datum/ntnet/connected_network
-/obj/item/weapon/computer_hardware/network_card/var/connected_to = ""
-/obj/item/weapon/computer_hardware/network_card/var/password = ""
-/obj/item/weapon/computer_hardware/network_card/var/connected = 0
-/obj/item/weapon/computer_hardware/network_card/proc/get_network()
+/obj/item/computer_hardware/network_card/var/datum/ntnet/connected_network
+/obj/item/computer_hardware/network_card/var/connected_to = ""
+/obj/item/computer_hardware/network_card/var/password = ""
+/obj/item/computer_hardware/network_card/var/connected = 0
+/obj/item/computer_hardware/network_card/proc/get_network()
 	if(connected_network && connected_network.net_uid == connected_to)
 		connected = 1
 		return connected_network
@@ -287,7 +286,7 @@
 **/
 /**
 
-/obj/item/weapon/ore/after_load() //Remove me after first save reload!
+/obj/item/ore/after_load() //Remove me after first save reload!
 	var/obj/item/stack/ore/newore = new()
 	//Pass our details to the new ore
 	newore.material = src.material
@@ -313,7 +312,7 @@
 	update_seed()
 
 
-/obj/item/weapon/paper/contract/after_load()
+/obj/item/paper/contract/after_load()
 	cancel()
 	update_icon()
 
@@ -325,15 +324,15 @@
 
 /datum/assignment/after_load()
 	..()
-
+/**
 /obj/machinery/docking_beacon/after_load()
 	if(req_access_faction && req_access_faction != "" || (faction && faction.uid != req_access_faction))
 		faction = get_faction(req_access_faction)
 	check_shuttle()
 	stat = 0
 	update_icon()
-
-/obj/item/weapon/spacecash/after_load()
+**/
+/obj/item/spacecash/after_load()
 	..()
 	update_icon()
 
@@ -582,12 +581,12 @@
 	..()
 
 
-/obj/item/weapon/storage/after_load()
+/obj/item/storage/after_load()
 	. = ..()
 	prepare_ui()
 
 
-/obj/item/weapon/storage/internal/after_load()
+/obj/item/storage/internal/after_load()
 	storage_ui = new storage_ui(src)
 	prepare_ui()
 	if(master_item)
@@ -600,7 +599,7 @@
 	update_connections()
 	update_icon()
 
-/obj/item/weapon/storage/internal/pockets/after_load()
+/obj/item/storage/internal/pockets/after_load()
 	if(master_item)
 		loc = master_item
 		name = master_item.name
@@ -615,7 +614,7 @@
 	..()
 
 
-/obj/item/weapon/flamethrower/after_load()
+/obj/item/flamethrower/after_load()
 	..()
 	update_icon()
 
@@ -692,7 +691,7 @@
 
 
 /**
-/obj/item/weapon/newspaper/after_load()
+/obj/item/newspaper/after_load()
 	var/datum/small_business/business = get_business(feed_id)
 	if(business)
 		for(var/datum/NewsIssue/issue in business.feed.all_issues)
@@ -752,7 +751,7 @@
 	**/
 	update_icon()
 
-/obj/item/weapon/stock_parts/computer/network_card/after_load()
+/obj/item/stock_parts/computer/network_card/after_load()
 	..()
 	get_network()
 
@@ -780,16 +779,16 @@
 /obj/vehicle/train/cargo/engine/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		cell = new /obj/item/weapon/cell/high(src)
+		cell = new /obj/item/cell/high(src)
 		key = new(src)
 
 
 
-/obj/item/weapon/reagent_containers/food/snacks/slice/Initialize()
+/obj/item/reagent_containers/food/snacks/slice/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		if(filled)
-			var/obj/item/weapon/reagent_containers/food/snacks/whole = new whole_path()
+			var/obj/item/reagent_containers/food/snacks/whole = new whole_path()
 			if(whole && whole.slices_num)
 				var/reagent_amount = whole.reagents.total_volume/whole.slices_num
 				whole.reagents.trans_to_obj(src, reagent_amount)
@@ -800,46 +799,46 @@
 /obj/item/pizzabox/margherita/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		pizza = new /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/margherita(src)
+		pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita(src)
 		boxtag = "Margherita Deluxe"
 
 /obj/item/pizzabox/vegetable/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		pizza = new /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza(src)
+		pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza(src)
 		boxtag = "Gourmet Vegatable"
 
 /obj/item/pizzabox/mushroom/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		pizza = new /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/mushroompizza(src)
+		pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza(src)
 		boxtag = "Mushroom Special"
 
 /obj/item/pizzabox/meat/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		pizza = new /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/meatpizza(src)
+		pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza(src)
 		boxtag = "Meatlover's Supreme"
 
-/obj/item/weapon/storage/box/mixedglasses/Initialize()
+/obj/item/storage/box/mixedglasses/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		make_exact_fit()
 
-/obj/item/weapon/storage/box/glasses/Initialize()
+/obj/item/storage/box/glasses/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		for(var/i = 1 to 7)
 			new glass_type(src)
 		make_exact_fit()
 
-/obj/item/weapon/storage/box/glass_extras/Initialize()
+/obj/item/storage/box/glass_extras/Initialize()
 	if(!map_storage_loaded)
 		for(var/i = 1 to 14)
 			new extra_type(src)
 	. = ..()
 
-/obj/item/weapon/gun/projectile/dartgun/Initialize()
+/obj/item/gun/projectile/dartgun/Initialize()
 	if(!map_storage_loaded)
 		if(starting_chems)
 			for(var/chem in starting_chems)
@@ -849,7 +848,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/projectile/Initialize()
+/obj/item/gun/projectile/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		if(starts_loaded)
@@ -859,8 +858,8 @@
 			if(ispath(magazine_type) && (load_method & MAGAZINE))
 				ammo_magazine = new magazine_type(src)
 	update_icon()
-
-/obj/item/weapon/gun/magnetic/railgun/Initialize()
+/**
+/obj/item/gun/magnetic/railgun/Initialize()
 	if(!map_storage_loaded)
 		capacitor = new initial_capacitor_type(src)
 		capacitor.charge = capacitor.max_charge
@@ -875,14 +874,14 @@
 	slowdown_per_slot[slot_s_store] = slowdown_worn
 
 	. = ..()
-
-/obj/item/weapon/gun/energy/Initialize()
+**/
+/obj/item/gun/energy/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		if(cell_type)
 			power_supply = new cell_type(src)
 		else
-			power_supply = new /obj/item/weapon/cell/device/variable(src, max_shots*charge_cost)
+			power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
 	if(self_recharge)
 		START_PROCESSING(SSobj, src)
 	update_icon()
@@ -906,7 +905,7 @@
 
 		update_icon()
 
-/obj/item/weapon/fuel_assembly/Initialize()
+/obj/item/fuel_assembly/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		var/material/material = SSmaterials.get_material_by_name(fuel_type)
@@ -935,9 +934,9 @@
 	// is starting with a power cell installed, create it and set its charge level
 	if(!map_storage_loaded)
 		has_electronics = 2 //installed and secured
-		var/obj/item/weapon/stock_parts/power/battery/bat = get_component_of_type(/obj/item/weapon/stock_parts/power/battery)
+		var/obj/item/stock_parts/power/battery/bat = get_component_of_type(/obj/item/stock_parts/power/battery)
 		bat.add_cell(src, new cell_type(bat))
-		var/obj/item/weapon/stock_parts/power/terminal/term = get_component_of_type(/obj/item/weapon/stock_parts/power/terminal)
+		var/obj/item/stock_parts/power/terminal/term = get_component_of_type(/obj/item/stock_parts/power/terminal)
 		term.make_terminal(src)
 
 	queue_icon_update()
@@ -974,7 +973,7 @@ else if(##equipment_var) {\
 	if(!map_storage_loaded)
 		VOIDSUIT_INIT_EQUIPMENT(boots,  /obj/item/clothing/shoes/magboots)
 		VOIDSUIT_INIT_EQUIPMENT(helmet, /obj/item/clothing/head/helmet)
-		VOIDSUIT_INIT_EQUIPMENT(tank,   /obj/item/weapon/tank)
+		VOIDSUIT_INIT_EQUIPMENT(tank,   /obj/item/tank)
 
 #undef VOIDSUIT_INIT_EQUIPMENT
 
@@ -994,7 +993,7 @@ else if(##equipment_var) {\
 	if(!map_storage_loaded)
 		for(var/obj/item/I in loc)
 			if(notices > 4) break
-			if(istype(I, /obj/item/weapon/paper))
+			if(istype(I, /obj/item/paper))
 				I.forceMove(src)
 				notices++
 
@@ -1007,7 +1006,7 @@ else if(##equipment_var) {\
 	if(!map_storage_loaded)
 		var/created_size = 0
 		for(var/i = 1 to 200) //sanity loop limit
-			var/obj/item/cash_type = pick(3; /obj/item/weapon/spacecash/bundle/c1000, 4; /obj/item/weapon/spacecash/bundle/c500, 5; /obj/item/weapon/spacecash/bundle/c200)
+			var/obj/item/cash_type = pick(3; /obj/item/spacecash/bundle/c1000, 4; /obj/item/spacecash/bundle/c500, 5; /obj/item/spacecash/bundle/c200)
 			var/bundle_size = initial(cash_type.w_class) / 2
 			if(created_size + bundle_size <= storage_capacity)
 				created_size += bundle_size
@@ -1024,13 +1023,13 @@ else if(##equipment_var) {\
 		if(!opened && mapload) // if closed and it's the map loading phase, relevant items at the crate's loc are put in the contents
 			store_contents()
 
-/obj/item/weapon/weldpack/Initialize()
+/obj/item/weldpack/Initialize()
 	if(!map_storage_loaded)
 		create_reagents(max_fuel)
 		reagents.add_reagent(max_fuel)
 	. = ..()
 
-/obj/item/weapon/weldingtool/Initialize()
+/obj/item/weldingtool/Initialize()
 	if(!map_storage_loaded)
 		if(ispath(tank))
 			tank = new tank
@@ -1040,13 +1039,13 @@ else if(##equipment_var) {\
 
 	. = ..()
 
-/obj/item/weapon/welder_tank/Initialize()
+/obj/item/welder_tank/Initialize()
 	if(!map_storage_loaded)
 		create_reagents(max_fuel)
 		reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 		. = ..()
 
-/obj/item/weapon/tank/Initialize()
+/obj/item/tank/Initialize()
 	. = ..()
 
 	if(!map_storage_loaded)
@@ -1063,17 +1062,17 @@ else if(##equipment_var) {\
 	START_PROCESSING(SSobj, src)
 	update_icon(override = TRUE)
 
-/obj/item/weapon/storage/Initialize()
+/obj/item/storage/Initialize()
 	. = ..()
 	if(allow_quick_empty)
-		verbs += /obj/item/weapon/storage/verb/quick_empty
+		verbs += /obj/item/storage/verb/quick_empty
 	else
-		verbs -= /obj/item/weapon/storage/verb/quick_empty
+		verbs -= /obj/item/storage/verb/quick_empty
 
 	if(allow_quick_gather)
-		verbs += /obj/item/weapon/storage/verb/toggle_gathering_mode
+		verbs += /obj/item/storage/verb/toggle_gathering_mode
 	else
-		verbs -= /obj/item/weapon/storage/verb/toggle_gathering_mode
+		verbs -= /obj/item/storage/verb/toggle_gathering_mode
 
 	if(isnull(max_storage_space) && !isnull(storage_slots))
 		max_storage_space = storage_slots*BASE_STORAGE_COST(max_w_class)
@@ -1094,7 +1093,7 @@ else if(##equipment_var) {\
 						new item_path(src)
 			update_icon()
 
-/obj/item/weapon/storage/box/lights/Initialize()
+/obj/item/storage/box/lights/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
 		make_exact_fit()
@@ -1103,7 +1102,7 @@ else if(##equipment_var) {\
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	if(!map_storage_loaded)
-		cell = new/obj/item/weapon/cell/high()		// 10K rated cell.
+		cell = new/obj/item/cell/high()		// 10K rated cell.
 		cell.forceMove(src)
 
 /obj/item/device/radio/headset/Initialize()
@@ -1136,7 +1135,7 @@ else if(##equipment_var) {\
 	// circuit board for it and make the new machine
 	if(!map_storage_loaded)
 		if(random)
-			var/obj/item/weapon/stock_parts/circuitboard/arcade/A = pick(subtypesof(/obj/item/weapon/stock_parts/circuitboard/arcade))
+			var/obj/item/stock_parts/circuitboard/arcade/A = pick(subtypesof(/obj/item/stock_parts/circuitboard/arcade))
 			var/path = initial(A.build_path)
 			new path(loc)
 			return INITIALIZE_HINT_QDEL
@@ -1174,11 +1173,11 @@ else if(##equipment_var) {\
 
 	set_frequency(frequency)
 	update_icon()
-	
+
 /obj/machinery/sleeper/Initialize()
 	. = ..()
 	if(!map_storage_loaded)
-		beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
+		beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 
 	update_icon()
 

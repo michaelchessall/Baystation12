@@ -32,12 +32,12 @@ GLOBAL_LIST_EMPTY(cryopods)
 	allow_items = 0
 
 
-/obj/item/weapon/stock_parts/circuitboard/cryopodcontrol
+/obj/item/stock_parts/circuitboard/cryopodcontrol
 	name = "Circuit board (Cryogenic Oversight Console)"
 	build_path = /obj/machinery/computer/cryopod
 	origin_tech = list(TECH_DATA = 3)
 
-/obj/item/weapon/stock_parts/circuitboard/robotstoragecontrol
+/obj/item/stock_parts/circuitboard/robotstoragecontrol
 	name = "Circuit board (Robotic Storage Console)"
 	build_path = /obj/machinery/computer/cryopod/robot
 	origin_tech = list(TECH_DATA = 3)
@@ -74,17 +74,17 @@ GLOBAL_LIST_EMPTY(cryopods)
 	var/list/preserve_items = list(
 		/obj/item/integrated_circuit/manipulation/bluespace_rift,
 		/obj/item/integrated_circuit/input/teleporter_locator,
-		/obj/item/weapon/card/id/captains_spare,
-		/obj/item/weapon/aicard,
+		/obj/item/card/id/captains_spare,
+		/obj/item/aicard,
 		/obj/item/device/mmi,
 		/obj/item/device/paicard,
-		/obj/item/weapon/gun,
-		/obj/item/weapon/pinpointer,
+		/obj/item/gun,
+		/obj/item/pinpointer,
 		/obj/item/clothing/suit,
 		/obj/item/clothing/shoes/magboots,
 		/obj/item/blueprints,
 		/obj/item/clothing/head/helmet/space,
-		/obj/item/weapon/storage/internal
+		/obj/item/storage/internal
 	)
 
 /obj/machinery/cryopod/robot
@@ -159,10 +159,10 @@ GLOBAL_LIST_EMPTY(cryopods)
 	..()
 	GLOB.cryopods |= src
 	component_parts = list()
-	component_parts += new /obj/item/weapon/stock_parts/circuitboard/cryopod(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/stock_parts/circuitboard/cryopod(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 	announce = new /obj/item/device/radio/intercom(src)
 	..()
@@ -333,7 +333,7 @@ GLOBAL_LIST_EMPTY(cryopods)
 
 		if(W.contents.len) //Make sure we catch anything not handled by qdel() on the items.
 			for(var/obj/item/O in W.contents)
-				if(istype(O,/obj/item/weapon/storage/internal)) //Stop eating pockets, you fuck!
+				if(istype(O,/obj/item/storage/internal)) //Stop eating pockets, you fuck!
 					continue
 				O.forceMove(src)
 

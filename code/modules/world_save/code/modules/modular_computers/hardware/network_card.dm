@@ -1,16 +1,16 @@
-/obj/item/weapon/stock_parts/computer/network_card
+/obj/item/stock_parts/computer/network_card
 	var/connected = 0
 	var/connected_to = ""
 	var/password = ""
 	var/datum/ntnet/connected_network
 	var/locked = 0
 
-/obj/item/weapon/stock_parts/computer/network_card/proc/get_faction()
+/obj/item/stock_parts/computer/network_card/proc/get_faction()
 	get_network()
 	if(connected && connected_network)
 		return connected_network.holder
 
-/obj/item/weapon/stock_parts/computer/network_card/proc/get_network()
+/obj/item/stock_parts/computer/network_card/proc/get_network()
 	if(connected_network && connected_network.net_uid == connected_to)
 		connected = 1
 		return connected_network
@@ -25,12 +25,12 @@
 						return connected_network
 	connected = 0
 
-/obj/item/weapon/stock_parts/computer/network_card/after_load()
+/obj/item/stock_parts/computer/network_card/after_load()
 	..()
 	get_network()
 
 
-/obj/item/weapon/stock_parts/computer/network_card/proc/disconnect()
+/obj/item/stock_parts/computer/network_card/proc/disconnect()
 	connected = 0
 	connected_to = ""
 	password = ""

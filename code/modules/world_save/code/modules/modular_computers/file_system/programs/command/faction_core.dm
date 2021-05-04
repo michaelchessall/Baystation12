@@ -33,7 +33,7 @@
 	var/selected_rank = 1
 
 /datum/nano_module/program/faction_core/proc/try_connect()
-	var/obj/item/weapon/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/weapon/stock_parts/computer/logistic_processor)
+	var/obj/item/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/stock_parts/computer/logistic_processor)
 	if(!logistic_processor || !logistic_processor.check_functionality())
 		connected = 0
 		connected_faction = null
@@ -68,7 +68,7 @@
 	try_connect()
 	var/list/data = host.initial_data()
 	var/log_status = 1
-	var/obj/item/weapon/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/weapon/stock_parts/computer/logistic_processor)
+	var/obj/item/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/stock_parts/computer/logistic_processor)
 	if(!logistic_processor || !logistic_processor.check_functionality()) log_status = 0
 	data["has_log"] = log_status
 	if(connected_faction)
@@ -250,7 +250,7 @@
 /datum/nano_module/program/faction_core/Topic(href, href_list)
 	if(..())
 		return 1
-	var/obj/item/weapon/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/weapon/stock_parts/computer/logistic_processor)
+	var/obj/item/stock_parts/computer/logistic_processor/logistic_processor = program.computer.get_component(/obj/item/stock_parts/computer/logistic_processor)
 	if(!logistic_processor || !logistic_processor.check_functionality()) return 1
 	if(!program.can_run(usr)) return 1
 	switch (href_list["action"])
@@ -802,7 +802,7 @@
 			if(connected_faction.last_expense_print > world.realtime)
 				to_chat(usr, "Your  print was rejected. You have printed an expense card in the last 3 minutes.")
 				return
-			var/obj/item/weapon/card/expense/expense = new()
+			var/obj/item/card/expense/expense = new()
 			expense.ctype = 1
 			expense.linked = connected_faction.uid
 			connected_faction.last_expense_print = world.realtime + 3 MINUTES

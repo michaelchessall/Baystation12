@@ -10,7 +10,7 @@
 	size = 8
 	category = PROG_COMMAND
 	usage_flags = PROGRAM_ALL
-/datum/computer_file/program/card_mod/can_run(var/mob/living/user, var/loud = 0, var/access_to_check, var/obj/item/weapon/stock_parts/computer/network_card/network_card)
+/datum/computer_file/program/card_mod/can_run(var/mob/living/user, var/loud = 0, var/access_to_check, var/obj/item/stock_parts/computer/network_card/network_card)
 	// Defaults to required_access
 	if(!access_to_check)
 		access_to_check = required_access
@@ -30,7 +30,7 @@
 		return 0
 	if(computer && !network_card)
 		network_card = computer.get_component(PART_NETWORK)
-	var/obj/item/weapon/card/id/I = user.GetIdCard()
+	var/obj/item/card/id/I = user.GetIdCard()
 	if(!I)
 		if(loud)
 			to_chat(user, "<span class='notice'>\The [computer] flashes an \"RFID Error - Unable to scan ID\" warning.</span>")
@@ -61,13 +61,13 @@
 /datum/nano_module/program/card_mod/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
 
 	var/list/data = host.initial_data()
-	var/obj/item/weapon/card/id/user_id_card = user.GetIdCard()
-	var/obj/item/weapon/stock_parts/computer/card_slot/card_slot = program.computer.get_component(PART_CARD)
+	var/obj/item/card/id/user_id_card = user.GetIdCard()
+	var/obj/item/stock_parts/computer/card_slot/card_slot = program.computer.get_component(PART_CARD)
 	data["src"] = "\ref[src]"
 	data["station_name"] = station_name()
 	data["assignments"] = show_assignments
 	var/datum/world_faction/connected_faction
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
 	if(connected_faction)
@@ -90,7 +90,7 @@
 	data["centcom_access"] = is_centcom
 
 	if(card_slot)
-		var/obj/item/weapon/card/id/id_card = card_slot.stored_card
+		var/obj/item/card/id/id_card = card_slot.stored_card
 		data["has_id"] = !!id_card
 		data["id_account_number"] = id_card ? id_card.associated_account_number : null
 		data["id_rank"] = id_card && id_card.assignment ? id_card.assignment : "Unassigned"
@@ -191,7 +191,7 @@
 		data["record_val"] = pencode2html(record.get_emplRecord())
 		data["record"] = show_record
 	if(card_slot.stored_card)
-		var/obj/item/weapon/card/id/id_card = card_slot.stored_card
+		var/obj/item/card/id/id_card = card_slot.stored_card
 		if(is_centcom)
 			var/list/all_centcom_access = list()
 			for(var/access in get_all_centcom_access())
@@ -228,8 +228,8 @@
 
 
 /datum/nano_module/program/card_mod/proc/format_jobs(list/jobs)
-	var/obj/item/weapon/stock_parts/computer/card_slot/card_slot
-	var/obj/item/weapon/card/id/id_card = card_slot ? card_slot.stored_card : null
+	var/obj/item/stock_parts/computer/card_slot/card_slot
+	var/obj/item/card/id/id_card = card_slot ? card_slot.stored_card : null
 	var/list/formatted = list()
 	for(var/job in jobs)
 		formatted.Add(list(list(
@@ -248,17 +248,17 @@
 		return 1
 	var/isleader = 0
 	var/mob/user = usr
-	var/obj/item/weapon/card/id/user_id_card = user.GetIdCard()
+	var/obj/item/card/id/user_id_card = user.GetIdCard()
 	if(!user_id_card || !user_id_card.valid)
 		return 0
-	var/obj/item/weapon/card/id/id_card
+	var/obj/item/card/id/id_card
 	var/datum/computer_file/report/crew_record/user_record
 	var/list/user_accesses = list()
-	var/obj/item/weapon/stock_parts/computer/card_slot/card_slot = computer.get_component(PART_CARD)
+	var/obj/item/stock_parts/computer/card_slot/card_slot = computer.get_component(PART_CARD)
 	if (card_slot)
 		id_card = card_slot.stored_card
 	var/datum/world_faction/connected_faction
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = computer.get_component(PART_NETWORK)
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
 
@@ -504,10 +504,10 @@
 	SSnano.update_uis(NM)
 	return 1
 
-/datum/computer_file/program/card_mod/proc/remove_nt_access(var/obj/item/weapon/card/id/id_card)
+/datum/computer_file/program/card_mod/proc/remove_nt_access(var/obj/item/card/id/id_card)
 	id_card.access -= get_access_ids(ACCESS_TYPE_STATION|ACCESS_TYPE_CENTCOM)
 
-/datum/computer_file/program/card_mod/proc/apply_access(var/obj/item/weapon/card/id/id_card, var/list/accesses)
+/datum/computer_file/program/card_mod/proc/apply_access(var/obj/item/card/id/id_card, var/list/accesses)
 	id_card.access |= accesses
 
 

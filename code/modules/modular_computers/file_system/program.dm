@@ -96,7 +96,7 @@
 // Check if the user can run program. Only humans can operate computer. Automatically called in run_program()
 // User has to wear their ID or have it inhand for ID Scan to work.
 // Can also be called manually, with optional parameter being access_to_check to scan the user's ID
-/datum/computer_file/program/proc/can_run(var/mob/living/user, var/loud = 0, var/access_to_check, var/obj/item/weapon/stock_parts/computer/network_card/network_card)
+/datum/computer_file/program/proc/can_run(var/mob/living/user, var/loud = 0, var/access_to_check, var/obj/item/stock_parts/computer/network_card/network_card)
 	if(!requires_access_to_run)
 		return 1
 	// Defaults to required_access

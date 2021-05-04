@@ -17,7 +17,7 @@
 
 /datum/nano_module/program/computer_ntrouter/proc/format_networks()
 	var/list/found_networks = list()
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	for(var/datum/world_faction/fact in GLOB.all_world_factions)
 		if(fact.network)
 			if(!fact.network.invisible)
@@ -39,7 +39,7 @@
 
 /datum/nano_module/program/computer_ntrouter/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(network_card)
 		var/has_password = 0
 		if(network_card.connected_to != "")
@@ -77,7 +77,7 @@
 
 /datum/nano_module/program/computer_ntrouter/Topic(href, href_list, state)
 //	var/mob/user = usr
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	if(..())
 		return 1
 	if(!network_card)

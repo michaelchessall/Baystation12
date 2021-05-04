@@ -15,7 +15,7 @@
 	name = "Id Printing & Management"
 
 /datum/nano_module/program/id_management/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	var/list/data = host.initial_data()
 	var/datum/world_faction/connected_faction
 	if(network_card && network_card.connected_network)
@@ -42,7 +42,7 @@
 /datum/computer_file/program/id_management/Topic(href, href_list)
 	if(..())
 		return 1
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = computer.get_component(PART_NETWORK)
 	var/datum/world_faction/connected_faction
 	if(network_card && network_card.connected_network)
 		connected_faction = network_card.connected_network.holder
@@ -52,7 +52,7 @@
 				to_chat(usr, "Your card print was rejected. You have printed an ID card in the last 5 mintues.")
 				return
 			var/datum/computer_file/report/crew_record/record
-			var/obj/item/weapon/card/id/id = new()
+			var/obj/item/card/id/id = new()
 			for(var/datum/computer_file/report/crew_record/R in GLOB.all_crew_records)
 				if(R.get_name() == usr.real_name)
 					record = R

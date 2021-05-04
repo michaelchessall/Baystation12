@@ -134,7 +134,7 @@
 			message_admins("record for [real_name] failed to load in character creation..")
 		else
 			factions.records.faction_records |= record
-		var/obj/item/weapon/card/id/id = new(mannequin)
+		var/obj/item/card/id/id = new(mannequin)
 		id.registered_name = real_name
 		id.selected_faction = factions.uid
 		id.approved_factions |= factions.uid

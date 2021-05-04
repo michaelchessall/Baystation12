@@ -49,14 +49,14 @@
 
 
 /datum/nano_module/program/business/proc/cancel_contracts()
-	for(var/obj/item/weapon/paper/contract/contract in pending_contracts)
+	for(var/obj/item/paper/contract/contract in pending_contracts)
 		contract.cancel()
-	for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+	for(var/obj/item/paper/contract/contract in signed_contracts)
 		contract.cancel()
 
 /datum/nano_module/program/business/proc/get_distributed()
 	var/distributed = 0
-	for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+	for(var/obj/item/paper/contract/contract in signed_contracts)
 		distributed += contract.ownership
 	if(distributed > 100)
 		cancel_contracts()
@@ -65,13 +65,13 @@
 
 /datum/nano_module/program/business/proc/get_contributed()
 	var/contributed = 0
-	for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+	for(var/obj/item/paper/contract/contract in signed_contracts)
 		contributed += contract.required_cash
 	return contributed
 
 
 /datum/nano_module/program/business/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
-	var/obj/item/weapon/card/id/user_id_card = user.GetIdCard()
+	var/obj/item/card/id/user_id_card = user.GetIdCard()
 	if(user_id_card && !user_id_card.valid) user_id_card = null
 	var/list/data = host.initial_data()
 	data["src"] = "\ref[src]"
@@ -229,7 +229,7 @@
 		else if(submenu == 2)
 			data["chosen_name"] = potential_name
 			var/list/formatted_names[0]
-			for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+			for(var/obj/item/paper/contract/contract in signed_contracts)
 				formatted_names[++formatted_names.len] = list("signed_contract" = "[contract.ownership] stocks for [contract.required_cash]$$ to [contract.signed_by]")
 			data["signed_contracts"] = formatted_names
 			var/commitment = get_contributed()
@@ -251,13 +251,13 @@
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/program/business/contract_signed(var/obj/item/weapon/paper/contract/contract)
+/datum/nano_module/program/business/contract_signed(var/obj/item/paper/contract/contract)
 	pending_contracts -= contract
 	signed_contracts |= contract
 	SSnano.update_uis(src)
 	return 1
 
-/datum/nano_module/program/business/contract_cancelled(var/obj/item/weapon/paper/contract/contract)
+/datum/nano_module/program/business/contract_cancelled(var/obj/item/paper/contract/contract)
 	pending_contracts -= contract
 	signed_contracts -= contract
 	SSnano.update_uis(src)
@@ -285,7 +285,7 @@
 		return 1
 
 	var/mob/user = usr
-	var/obj/item/weapon/card/id/user_id_card = user.GetIdCard()
+	var/obj/item/card/id/user_id_card = user.GetIdCard()
 	var/datum/small_business/connected_business
 	if(business_name && business_name != "") connected_business = get_business(business_name)
 	if(!user_id_card) return
@@ -484,8 +484,8 @@
 
 		if("copy_image1")
 			var/obj/item/I = usr.get_active_hand()
-			if(istype(I, /obj/item/weapon/photo))
-				var/obj/item/weapon/photo/photo = I
+			if(istype(I, /obj/item/photo))
+				var/obj/item/photo/photo = I
 				insert1 = image(photo.tiny.icon)
 				insert1_name = photo.name
 
@@ -495,8 +495,8 @@
 
 		if("copy_image2")
 			var/obj/item/I = usr.get_active_hand()
-			if(istype(I, /obj/item/weapon/photo))
-				var/obj/item/weapon/photo/photo = I
+			if(istype(I, /obj/item/photo))
+				var/obj/item/photo/photo = I
 				insert2 = image(photo.tiny.icon)
 				insert2_name = photo.name
 
@@ -583,7 +583,7 @@
 			t += "<td>Authorized by:<br>[idname] [idrank]<br><td>Paid by:<br>*None*</td></tr></table><br></td>"
 			t += "<tr><td><h3>Reason</H3><font size = '1'>[reason]<br></td></tr></table><br><table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>"
 			t += "<td></font><font size='4'><b>Swipe ID to confirm transaction.</b></font></center></font>"
-			var/obj/item/weapon/paper/invoice/business/invoice = new()
+			var/obj/item/paper/invoice/business/invoice = new()
 			invoice.info = t
 			invoice.purpose = reason
 			invoice.transaction_amount = amount
@@ -671,9 +671,9 @@
 					message_admins("NO global record found for [usr.real_name]")
 					to_chat(usr, "No record found for [usr.real_name].. contact software developer.")
 					return
-				var/obj/item/weapon/card/id/id = new()
+				var/obj/item/card/id/id = new()
 				var/datum/world_faction/connected_faction
-				var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+				var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 				if(network_card && network_card.connected_network)
 					connected_faction = network_card.connected_network.holder
 				id.selected_business = connected_business.name
@@ -706,9 +706,9 @@
 					message_admins("NO global record found for [usr.real_name]")
 					to_chat(usr, "No record found for [usr.real_name].. contact software developer.")
 					return
-				var/obj/item/weapon/card/id/id = new()
+				var/obj/item/card/id/id = new()
 				var/datum/world_faction/connected_faction
-				var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+				var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 				if(network_card && network_card.connected_network)
 					connected_faction = network_card.connected_network.holder
 				id.selected_business = connected_business.name
@@ -867,7 +867,7 @@
 			if(!connected_business.has_access(user_id_card.registered_name, "Upper Management"))
 				to_chat(usr, "Access denied.")
 				return
-			var/obj/item/weapon/card/expense/expense = new()
+			var/obj/item/card/expense/expense = new()
 			expense.ctype = 2
 			expense.linked = connected_business.name
 			connected_business.last_expense_print = world.realtime + 10 MINUTES
@@ -1131,7 +1131,7 @@
 				cost = 0
 			var/choice = input(usr,"This will create a stock contract for [amount] stocks at [cost] ethericoin.") in list("Confirm", "Cancel")
 			if(choice == "Confirm")
-				var/obj/item/weapon/paper/contract/contract = new()
+				var/obj/item/paper/contract/contract = new()
 				contract.required_cash = cost
 				contract.linked = connected_business
 				contract.created_by = user_id_card.registered_name
@@ -1207,7 +1207,7 @@
 				cost = 0
 			var/choice = input(usr,"This will create an investment contract for [amount] stocks at [cost] ethericoin.") in list("Confirm", "Cancel")
 			if(choice == "Confirm")
-				var/obj/item/weapon/paper/contract/contract = new()
+				var/obj/item/paper/contract/contract = new()
 				contract.required_cash = cost
 				contract.linked = src
 				contract.purpose = "Investment contract for [amount] stocks at [cost]$$"
@@ -1235,7 +1235,7 @@
 			if(!potential_name || potential_name == "")
 				to_chat(usr, "A name for the business must be chosen first.")
 				return
-			for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+			for(var/obj/item/paper/contract/contract in signed_contracts)
 				if(!contract.is_solvent())
 					contract.cancel()
 					SSnano.update_uis(src)
@@ -1244,7 +1244,7 @@
 			new_business.name = potential_name
 			if(commitment)
 				new_business.central_account.money += commitment
-			for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+			for(var/obj/item/paper/contract/contract in signed_contracts)
 				contract.finalize()
 				if(new_business.stock_holders[contract.signed_by])
 					new_business.stock_holders[contract.signed_by] = new_business.stock_holders[contract.signed_by]+contract.ownership

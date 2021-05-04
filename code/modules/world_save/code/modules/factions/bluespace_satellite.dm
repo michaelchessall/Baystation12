@@ -34,7 +34,7 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 	var/datum/shuttle/shuttle
 	var/obj/machinery/computer/bridge_computer/bridge
 	var/dock_interior = 0 // 0 = exterior, 1 = interior
-
+/**
 /obj/machinery/docking_beacon/New()
 	..()
 	GLOB.all_docking_beacons |= src
@@ -418,7 +418,7 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 					return_turfs = block(locate(x-1,y+3,z), locate(x-5,y-4,z))
 	return return_turfs
 
-
+**/
 /obj/machinery/bluespace_satellite
 	name = "bluespace satellite"
 	desc = "Can be configured and launched to create a new logistics network."
@@ -442,24 +442,24 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 	..()
 
 /obj/machinery/bluespace_satellite/proc/cancel_contracts()
-	for(var/obj/item/weapon/paper/contract/contract in pending_contracts)
+	for(var/obj/item/paper/contract/contract in pending_contracts)
 		contract.cancel()
-	for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+	for(var/obj/item/paper/contract/contract in signed_contracts)
 		contract.cancel()
 
 /obj/machinery/bluespace_satellite/proc/get_contributed()
 	var/contributed = 0
-	for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+	for(var/obj/item/paper/contract/contract in signed_contracts)
 		contributed += contract.required_cash
 	return contributed
 
-/obj/machinery/bluespace_satellite/contract_signed(var/obj/item/weapon/paper/contract/contract)
+/obj/machinery/bluespace_satellite/contract_signed(var/obj/item/paper/contract/contract)
 	pending_contracts -= contract
 	signed_contracts |= contract
 	SSnano.update_uis(src)
 	return 1
 
-/obj/machinery/bluespace_satellite/contract_cancelled(var/obj/item/weapon/paper/contract/contract)
+/obj/machinery/bluespace_satellite/contract_cancelled(var/obj/item/paper/contract/contract)
 	pending_contracts -= contract
 	signed_contracts -= contract
 	SSnano.update_uis(src)
@@ -472,8 +472,8 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 
 
 /obj/machinery/bluespace_satellite/attackby(var/obj/I as obj, var/mob/user as mob)
-	if(istype(I, /obj/item/weapon/card/id))
-		var/obj/item/weapon/card/id/id = I
+	if(istype(I, /obj/item/card/id))
+		var/obj/item/card/id/id = I
 		starting_leader = id.registered_name
 		cancel_contracts()
 		loc.visible_message("The \icon[src] [src] reports that the card was successfully scanned and the leadership has been set to '[starting_leader]'.")
@@ -567,7 +567,7 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 			return 0
 		var/choice = input(usr,"This will create a funding contract for [cost] ethericoin.") in list("Confirm", "Cancel")
 		if(choice == "Confirm")
-			var/obj/item/weapon/paper/contract/contract = new()
+			var/obj/item/paper/contract/contract = new()
 			contract.required_cash = cost
 			contract.linked = src
 			contract.purpose = "Funding contract for [cost]$$ to [chosen_name] ([chosen_uid]) led by [starting_leader]."
@@ -600,12 +600,12 @@ GLOBAL_LIST_EMPTY(all_docking_beacons)
 		if(!T || !istype(T))
 			to_chat(usr, "The satellite can only be launched from space.")
 			return 1
-		for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+		for(var/obj/item/paper/contract/contract in signed_contracts)
 			if(!contract.is_solvent())
 				contract.cancel()
 				SSnano.update_uis(src)
 				return 0
-		for(var/obj/item/weapon/paper/contract/contract in signed_contracts)
+		for(var/obj/item/paper/contract/contract in signed_contracts)
 			contract.finalize()
 			signed_contracts -= contract
 		var/datum/world_faction/new_faction = new()

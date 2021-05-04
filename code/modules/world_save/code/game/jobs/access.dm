@@ -91,10 +91,10 @@
 	return check_access_list(M.GetAccess())
 
 /atom/movable/proc/GetAccess(var/faction_uid)
-	var/obj/item/weapon/card/id/id = GetIdCard()
+	var/obj/item/card/id/id = GetIdCard()
 	return id ? id.GetAccess(faction_uid) : list()
 /atom/movable/proc/GetFaction()
-	var/obj/item/weapon/card/id/id = GetIdCard()
+	var/obj/item/card/id/id = GetIdCard()
 	return id ? id.GetFaction() : ""
 /atom/movable/proc/GetIdCard()
 	return null
@@ -279,7 +279,7 @@
 		"Emergency Response Team Leader")
 
 /mob/observer/ghost
-	var/static/obj/item/weapon/card/id/all_access/ghost_all_access
+	var/static/obj/item/card/id/all_access/ghost_all_access
 
 /mob/observer/ghost/GetIdCard()
 	if(!is_admin(src))
@@ -296,7 +296,7 @@
 /mob/living/carbon/human/GetIdCard()
 	for(var/item_slot in HUMAN_ID_CARDS)
 		var/obj/item/I = item_slot
-		var/obj/item/weapon/card/id = I ? I.GetIdCard() : null
+		var/obj/item/card/id = I ? I.GetIdCard() : null
 		if(id)
 			return id
 
@@ -316,7 +316,7 @@
 	return idcard
 
 /proc/FindNameFromID(var/mob/M, var/missing_id_name = "Unknown")
-	var/obj/item/weapon/card/id/C = M.GetIdCard()
+	var/obj/item/card/id/C = M.GetIdCard()
 	if(C)
 		return C.registered_name
 	return missing_id_name
@@ -327,7 +327,7 @@
 
 
 /obj/proc/GetJobName() //Used in secHUD icon generation
-	var/obj/item/weapon/card/id/I = GetIdCard()
+	var/obj/item/card/id/I = GetIdCard()
 
 	if(I)
 		var/job_icons = get_all_job_icons()

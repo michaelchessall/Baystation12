@@ -142,7 +142,7 @@
 /datum/nano_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()
 	var/datum/computer_file/program/ntnetdownload/prog = program
-	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
+	var/obj/item/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	// For now limited to execution by the downloader program
 	if(!prog || !istype(prog))
 		return

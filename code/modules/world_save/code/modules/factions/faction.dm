@@ -6,11 +6,11 @@ GLOBAL_LIST_EMPTY(recent_articles)
 
 var/PriorityQueue/all_feeds
 
-/datum/proc/contract_signed(var/obj/item/weapon/paper/contract/contract)
+/datum/proc/contract_signed(var/obj/item/paper/contract/contract)
 	return 0
-/datum/proc/contract_cancelled(var/obj/item/weapon/paper/contract/contract)
+/datum/proc/contract_cancelled(var/obj/item/paper/contract/contract)
 	return 0
-/obj/item/weapon/paper/contract
+/obj/item/paper/contract
 	name = "contract"
 	var/required_cash = 0
 	var/datum/linked
@@ -26,7 +26,7 @@ var/PriorityQueue/all_feeds
 	var/func = 1
 	icon_state = "contract"
 
-/obj/item/weapon/paper/contract/proc/is_solvent()
+/obj/item/paper/contract/proc/is_solvent()
 	if(signed_account)
 		if(signed_account.money < required_cash)
 			return 0
@@ -36,10 +36,10 @@ var/PriorityQueue/all_feeds
 			return 0
 		return 1
 	return 0
-/obj/item/weapon/paper/contract/after_load()
+/obj/item/paper/contract/after_load()
 	cancel()
 	update_icon()
-/obj/item/weapon/paper/contract/update_icon()
+/obj/item/paper/contract/update_icon()
 	if(approved)
 		icon_state = "contract-approved"
 	else if(cancelled || !linked)
@@ -48,7 +48,7 @@ var/PriorityQueue/all_feeds
 		icon_state = "contract-pending"
 	else
 		icon_state = "contract"
-/obj/item/weapon/paper/contract/show_content(mob/user, forceshow)
+/obj/item/paper/contract/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
@@ -67,12 +67,12 @@ var/PriorityQueue/all_feeds
 	user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[can_read ? info2 : stars(info)][stamps]</BODY></HTML>", "window=[name]")
 	onclose(user, "[name]")
 
-/obj/item/weapon/paper/contract/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+/obj/item/paper/contract/attackby(var/obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/pen))
 		return
-	else if(istype(P, /obj/item/weapon/card/id))
+	else if(istype(P, /obj/item/card/id))
 		if(signed || !linked || approved || cancelled) return 1
-		var/obj/item/weapon/card/id/id = P
+		var/obj/item/card/id/id = P
 		if(!id.valid) return 0
 
 		if(required_cash)
@@ -99,7 +99,7 @@ var/PriorityQueue/all_feeds
 		update_icon()
 		return 1
 	..()
-/obj/item/weapon/paper/contract/Topic(href, href_list)
+/obj/item/paper/contract/Topic(href, href_list)
 	if(!usr || (usr.stat || usr.restrained()))
 		return
 	if(href_list["pay"])
@@ -129,7 +129,7 @@ var/PriorityQueue/all_feeds
 			signed_account = null
 		update_icon()
 	..()
-/obj/item/weapon/paper/contract/proc/cancel()
+/obj/item/paper/contract/proc/cancel()
 	if(linked)
 		linked.contract_cancelled(src)
 	if(signed_account)
@@ -139,7 +139,7 @@ var/PriorityQueue/all_feeds
 	cancelled = 1
 	info = replacetext(info, "*Unsigned*", "*Cancelled*")
 	update_icon()
-/obj/item/weapon/paper/contract/proc/finalize()
+/obj/item/paper/contract/proc/finalize()
 	if(!signed_by || signed_by == "")
 		return 0
 	if(required_cash && (!signed_account || signed_account.money < required_cash))
@@ -359,7 +359,7 @@ var/PriorityQueue/all_feeds
 			return 0
 		debts -= x
 
-/datum/small_business/contract_signed(var/obj/item/weapon/paper/contract/contract)
+/datum/small_business/contract_signed(var/obj/item/paper/contract/contract)
 	if(get_stocks(contract.created_by) < contract.ownership)
 		contract.cancel()
 		return 0
