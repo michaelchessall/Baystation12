@@ -23,12 +23,14 @@
 	var/hide_from_reports = FALSE
 
 	var/has_distress_beacon
-
+	map_storage_saved_vars = "map_z;docking_codes;density;icon_state;name;pixel_x;pixel_y;contents;dir"
+	
+	
 /obj/effect/overmap/visitable/Initialize()
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
-
+	if(skip_overmap) return
 	find_z_levels()     // This populates map_z and assigns z levels to the ship.
 	register_z_levels() // This makes external calls to update global z level information.
 
@@ -57,7 +59,8 @@
 	return get_filtered_areas(list(/proc/area_belongs_to_zlevels = map_z))
 
 /obj/effect/overmap/visitable/proc/find_z_levels()
-	map_z = GetConnectedZlevels(z)
+	if(!map_z || !map_z.len)
+		map_z = GetConnectedZlevels(z)
 
 /obj/effect/overmap/visitable/proc/register_z_levels()
 	for(var/zlevel in map_z)
@@ -130,7 +133,7 @@
 /obj/effect/overmap/visitable/sector/hide()
 
 /proc/build_overmap()
-	if(!GLOB.using_map.use_overmap)
+	if(!GLOB.using_map.use_overmap || skip_overmap)
 		return 1
 
 	testing("Building overmap...")

@@ -36,6 +36,7 @@
 
 /obj/effect/overmap/visitable/ship/Initialize()
 	. = ..()
+	set_light(0.8,1,5)
 	min_speed = round(min_speed, SHIP_MOVE_RESOLUTION)
 	max_speed = round(max_speed, SHIP_MOVE_RESOLUTION)
 	SSshuttle.ships += src

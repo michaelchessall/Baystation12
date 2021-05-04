@@ -4,7 +4,7 @@
 #define MAP_MINZ 3
 #define MAP_MAXX 4
 #define MAP_MAXY 5
-#define MAP_MAXZ 6
+#define MAP_MAXZ 20
 
 // This utilizes an explicitly given type X instead of using src's type
 //  in order for subtypes of src's type to detect each other

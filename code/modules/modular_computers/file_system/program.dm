@@ -96,7 +96,7 @@
 // Check if the user can run program. Only humans can operate computer. Automatically called in run_program()
 // User has to wear their ID or have it inhand for ID Scan to work.
 // Can also be called manually, with optional parameter being access_to_check to scan the user's ID
-/datum/computer_file/program/proc/can_run(var/mob/living/user, var/loud = 0, var/access_to_check)
+/datum/computer_file/program/proc/can_run(var/mob/living/user, var/loud = 0, var/access_to_check, var/obj/item/weapon/stock_parts/computer/network_card/network_card)
 	if(!requires_access_to_run)
 		return 1
 	// Defaults to required_access
@@ -117,11 +117,20 @@
 		if(loud)
 			to_chat(user, "<span class='notice'>\The [computer] flashes an \"RFID Error - Unable to scan ID\" warning.</span>")
 		return 0
-
-	if(access_to_check in I.access)
-		return 1
-	else if(loud)
-		to_chat(user, "<span class='notice'>\The [computer] flashes an \"Access Denied\" warning.</span>")
+	if(computer)
+		var/network_card2 = computer.get_component(PART_NETWORK)
+		if(!network_card && network_card2)
+			network_card = network_card2
+	if(network_card)
+		if(access_to_check in I.GetAccess(network_card.connected_network.holder.uid))
+			return 1
+		else if(loud)
+			to_chat(user, "<span class='notice'>\The [computer] flashes an \"Access Denied\" warning.</span>")
+	else
+		if(access_to_check in I.access)
+			return 1
+		else if(loud)
+			to_chat(user, "<span class='notice'>\The [computer] flashes an \"Access Denied\" warning.</span>")
 
 // This attempts to retrieve header data for NanoUIs. If implementing completely new device of different type than existing ones
 // always include the device here in this proc. This proc basically relays the request to whatever is running the program.

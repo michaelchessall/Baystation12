@@ -22,7 +22,6 @@ SUBSYSTEM_DEF(shuttle)
 	var/block_queue = TRUE
 
 	var/tmp/list/working_shuttles
-
 /datum/controller/subsystem/shuttle/Initialize()
 	last_landmark_registration_time = world.time
 	for(var/shuttle_type in subtypesof(/datum/shuttle)) // This accounts for most shuttles, though away maps can queue up more.

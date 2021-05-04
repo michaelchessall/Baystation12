@@ -29,6 +29,7 @@
 	var/mothershuttle //tag of mothershuttle
 	var/motherdock    //tag of mothershuttle landmark, defaults to starting location
 
+	map_storage_saved_vars = "name;moving_status;current_location;flags;process_state;category;multiz;ceiling_type;sound_takeoff;sound_landing;formatted_areas;curr_x;curr_y;curr_z;trans_x;trans_y;trans_z;landmark_transition"
 /datum/shuttle/New(_name, var/obj/effect/shuttle_landmark/initial_location)
 	..()
 	if(_name)
@@ -224,7 +225,8 @@
 			powernets |= C.powernet
 	if(logging_home_tag)
 		var/datum/shuttle_log/s_log = SSshuttle.shuttle_logs[src]
-		s_log.handle_move(current_location, destination)
+		if(s_log)
+			s_log.handle_move(current_location, destination)
 
 	translate_turfs(turf_translation, current_location.base_area, current_location.base_turf)
 	current_location = destination

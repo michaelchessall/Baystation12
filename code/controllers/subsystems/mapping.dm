@@ -12,10 +12,11 @@ SUBSYSTEM_DEF(mapping)
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	// Load templates and build away sites.
-	preloadTemplates()
-	for(var/atype in subtypesof(/decl/submap_archetype))
-		submap_archetypes[atype] = new atype
-	GLOB.using_map.build_away_sites()
+	if(!skip_overmap)
+		preloadTemplates()
+		for(var/atype in subtypesof(/decl/submap_archetype))
+			submap_archetypes[atype] = new atype
+		GLOB.using_map.build_away_sites()
 	. = ..()
 
 /datum/controller/subsystem/mapping/Recover()

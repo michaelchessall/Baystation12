@@ -62,6 +62,10 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/static/current_ticklimit = TICK_LIMIT_RUNNING
 
 /datum/controller/master/New()
+	if(Master && Master != src && istype(Master))
+		log_world("MASTER ATTEMPTING REPLACEMENT?")
+		Recover()
+		return ":V"
 	total_run_times = list()
 	// Highlander-style: there can only be one! Kill off the old and replace it with the new.
 	var/list/_subsystems = list()
@@ -69,7 +73,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	if (Master != src)
 		if (istype(Master))
 			Recover()
-			qdel(Master)
+	//		qdel(Master)
 		else
 			var/list/subsytem_types = subtypesof(/datum/controller/subsystem)
 			sortTim(subsytem_types, /proc/cmp_subsystem_init)
@@ -79,7 +83,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 	if(!GLOB)
 		new /datum/controller/global_vars
-
+		
 /datum/controller/master/Destroy()
 	..()
 	// Tell qdel() to Del() this object.
@@ -180,6 +184,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 	var/start_timeofday = REALTIMEOFDAY
 	// Initialize subsystems.
+	Load_Overmap()
 	current_ticklimit = config.tick_limit_mc_init
 	for (var/datum/controller/subsystem/SS in subsystems)
 		if (SS.flags & SS_NO_INIT)
@@ -349,7 +354,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		else
 			subsystems_to_check = tickersubsystems
 
-		if (CheckQueue(subsystems_to_check) <= 0)
+		if (CheckQueue(subsystems_to_check) <= 0 && !world_currently_loading)
 			if (!SoftReset(tickersubsystems, runlevel_sorted_subsystems))
 				log_world("MC: SoftReset() failed, crashing")
 				return

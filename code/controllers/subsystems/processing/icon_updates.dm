@@ -6,7 +6,7 @@ PROCESSING_SUBSYSTEM_DEF(icon_update)
 	init_order = SS_INIT_ICON_UPDATE
 
 	var/list/queue = list()
-
+	var/queue_load
 /datum/controller/subsystem/processing/icon_update/stat_entry()
 	..("QU:[queue.len]")
 
@@ -35,7 +35,9 @@ PROCESSING_SUBSYSTEM_DEF(icon_update)
 			CHECK_TICK
 		else if (MC_TICK_CHECK)
 			return
-
+	if(queue_load)
+		queue_load = 0
+		
 /atom/proc/queue_icon_update(...)
 	SSicon_update.queue[src] = args.len ? args : TRUE
 	SSicon_update.wake()

@@ -142,12 +142,13 @@
 /datum/nano_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()
 	var/datum/computer_file/program/ntnetdownload/prog = program
+	var/obj/item/weapon/stock_parts/computer/network_card/network_card = program.computer.get_component(PART_NETWORK)
 	// For now limited to execution by the downloader program
 	if(!prog || !istype(prog))
 		return
 	if(program)
 		data = program.get_header_data()
-
+	
 	// This IF cuts on data transferred to client, so i guess it's worth it.
 	if(prog.downloaderror) // Download errored. Wait until user resets the program.
 		data["error"] = prog.downloaderror
@@ -157,7 +158,7 @@
 		data["downloadsize"] = prog.downloaded_file.size
 		data["downloadspeed"] = prog.download_netspeed
 		data["downloadcompletion"] = round(prog.download_completion, 0.1)
-
+	
 	data["disk_size"] = program.computer.max_disk_capacity()
 	data["disk_used"] = program.computer.used_disk_capacity()
 	var/list/all_entries[0]
@@ -165,7 +166,7 @@
 		var/list/category_list[0]
 		for(var/datum/computer_file/program/P in ntnet_global.available_software_by_category[category])
 			// Only those programs our user can run will show in the list
-			if(!P.can_run(user) && P.requires_access_to_download)
+			if(!P.can_run(user, 0, null, network_card) && P.requires_access_to_download)
 				continue
 			if(!P.is_supported_by_hardware(program.computer.get_hardware_flag(), user, TRUE))
 				continue

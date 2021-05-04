@@ -21,7 +21,16 @@
 		message_admins("Admin [key_name_admin(usr)] renamed [key_name_admin(M)] to [new_name].")
 		M.fully_replace_character_name(new_name)
 		href_list["datumrefresh"] = href_list["rename"]
+		
+	else if(href_list["saved_vars"])
+		if(!check_rights(R_VAREDIT))	return
 
+		var/datum/D = locate(href_list["saved_vars"])
+		if(!istype(D))
+			to_chat(usr, "This can only be done to instances of type /datum")
+			return
+		D.add_saved_var(usr)
+		
 	else if(href_list["dressup"])
 		if(!check_rights(R_VAREDIT))	return
 
