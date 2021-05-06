@@ -1,10 +1,13 @@
-#define CALIBER_PISTOL 			"10mm"
+#define CALIBER_PISTOL 			"9mm"
+#define CALIBER_REVOLVER 		".38"
+#define CALIBER_PISTOL_BIG 		"45 acp"
 #define CALIBER_PISTOL_SMALL 	"7mm"
 #define CALIBER_PISTOL_MAGNUM 	"15mm"
 #define CALIBER_PISTOL_FLECHETTE "4mm"
 #define CALIBER_PISTOL_ANTIQUE	"~10mm"
 
 #define CALIBER_RIFLE			"5mmR"
+#define CALIBER_BIGRIFLE		"6mmR"
 #define CALIBER_RIFLE_MILITARY  "7mmR"
 #define CALIBER_ANTIMATERIAL    "15mmR"
 

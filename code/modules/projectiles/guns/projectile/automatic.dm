@@ -133,6 +133,43 @@
 		icon_state = "arifle-empty"
 		wielded_item_state = "arifle-wielded-empty"
 
+/obj/item/weapon/gun/projectile/automatic/wtk35
+	name = "WTK-35 assault rifle"
+	desc = "The WTK-35 is a military grade marksman rifle. Produced by Shellguard."
+	icon = 'icons/obj/guns/wtk35.dmi'
+	icon_state = "wtk35"
+	item_state = "wtk35"
+	w_class = ITEM_SIZE_HUGE
+	force = 10
+	caliber = CALIBER_RIFLE
+	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ESOTERIC = 5)
+	slot_flags = SLOT_BACK
+	load_method = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/rifle/military
+	magazine_type = /obj/item/ammo_magazine/rifle
+	allowed_magazines = /obj/item/ammo_magazine/rifle
+	one_hand_penalty = 8
+	accuracy_power = 7
+	accuracy = 1
+	bulk = GUN_BULK_RIFLE + 1
+	wielded_item_state = "arifle-wielded"
+	mag_insert_sound = 'sound/weapons/guns/interaction/ltrifle_magin.ogg'
+	mag_remove_sound = 'sound/weapons/guns/interaction/ltrifle_magout.ogg'
+
+	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
+	firemodes = list(
+		list(mode_name="semi auto",       burst=1, fire_delay=2,    move_delay=null, one_hand_penalty=8, burst_accuracy=null, dispersion=null),
+		)
+
+/obj/item/weapon/gun/projectile/automatic/wtk35/on_update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "wtk35"
+		wielded_item_state = "arifle-wielded"
+	else
+		icon_state = "wtk35-empty"
+		wielded_item_state = "wtk35-empty"
+
 /obj/item/weapon/gun/projectile/automatic/sec_smg
 	name = "submachine gun"
 	desc = "The WT-550 Saber is a cheap self-defense weapon, mass-produced by Ward-Takahashi for paramilitary and private use."
@@ -265,7 +302,7 @@
 	mag_insert_sound = 'sound/weapons/guns/interaction/lmg_magin.ogg'
 	mag_remove_sound = 'sound/weapons/guns/interaction/lmg_magout.ogg'
 	can_special_reload = FALSE
-	
+
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.
 	firemodes = list(

@@ -11,6 +11,13 @@
 	projectile_type = /obj/item/projectile/bullet/pistol/rubber
 	icon_state = "pistolcasing_r"
 
+/obj/item/ammo_casing/revolver
+	desc = "A revolver bullet casing."
+	caliber = CALIBER_REVOLVER
+	projectile_type = /obj/item/projectile/bullet/revolver
+	icon_state = "pistolcasing"
+	spent_icon = "pistolcasing-spent"
+
 /obj/item/ammo_casing/pistol/practice
 	desc = "A practice pistol bullet casing."
 	projectile_type = /obj/item/projectile/bullet/pistol/practice
@@ -146,9 +153,16 @@
 	projectile_type = /obj/item/projectile/bullet/rifle/shell/apds
 
 /obj/item/ammo_casing/rifle/military
-	desc = "A military rifle bullet casing."
+	desc = "A 5.56 bullet casing."
 	caliber = CALIBER_RIFLE_MILITARY
 	projectile_type = /obj/item/projectile/bullet/rifle/military
+	icon_state = "rifle_mil"
+	spent_icon = "rifle_mil-spent"
+
+/obj/item/ammo_casing/rifle/wtk35
+	desc = "A 7.62x51 bullet casing."
+	caliber = CALIBER_RIFLE_MILITARY
+	projectile_type = /obj/item/projectile/bullet/rifle/wtk35
 	icon_state = "rifle_mil"
 	spent_icon = "rifle_mil-spent"
 

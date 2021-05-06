@@ -56,6 +56,18 @@
 	bulk = 0
 	fire_delay = 9
 
+/obj/item/weapon/gun/projectile/revolver/snakister
+	name = "snakister revolver"
+	icon = 'icons/obj/guns/revolvers.dmi'
+	icon_state = "snakeister"
+	item_state = "revolver"
+	caliber = CALIBER_REVOLVER
+	ammo_type = /obj/item/ammo_casing/revolver
+	desc = "The shellguard B-62 (snakister) revolver is a very fine revolver for people who wants style."
+	accuracy = 1
+	bulk = 0
+	fire_delay = 9
+
 /obj/item/weapon/gun/projectile/revolver/holdout
 	name = "holdout revolver"
 	desc = "The al-Maliki & Mosley Partner is a concealed-carry revolver made for people who do not trust automatic pistols any more than the people they're dealing with."

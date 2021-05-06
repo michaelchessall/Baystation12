@@ -307,6 +307,20 @@
 	labels = list("practice")
 	ammo_type = /obj/item/ammo_casing/rifle/military/practice
 
+/obj/item/ammo_magazine/wtk35
+	name = "WTK-35 magazine"
+	icon_state = "wtk35"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	caliber = CALIBER_RIFLE_MILITARY
+	matter = list(MATERIAL_STEEL = 1800)
+	ammo_type = /obj/item/ammo_casing/rifle/wtk35
+	max_ammo = 15 //if we lived in a world where normal mags had 30 rounds, this would be a 20 round mag
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/wtk35/empty
+	initial_ammo = 0
+
 /obj/item/ammo_magazine/caps
 	name = "speed loader"
 	desc = "A cheap plastic speed loader for some kind of revolver."
