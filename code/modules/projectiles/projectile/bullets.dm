@@ -119,18 +119,33 @@
 
 /* short-casing projectiles, like the kind used in pistols or SMGs */
 
-/obj/item/projectile/bullet/pistol
+/obj/item/projectile/bullet/smallrevolver
 	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
-	damage = 45
-	distance_falloff = 3
+	damage = 30
+	distance_falloff = 2
 
 /obj/item/projectile/bullet/revolver
+	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	damage = 45
+	distance_falloff = 4
+
+/obj/item/projectile/bullet/mediumrevolver
 	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
 	damage = 48
 	distance_falloff = 4
 
-/obj/item/projectile/bullet/pistol/holdout
+/obj/item/projectile/bullet/pistol
+	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
 	damage = 40
+	distance_falloff = 3
+
+/obj/item/projectile/bullet/pistolbig
+	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	damage = 45
+	distance_falloff = 3
+
+/obj/item/projectile/bullet/pistol/holdout
+	damage = 32
 	penetration_modifier = 1.2
 	distance_falloff = 4
 
@@ -188,6 +203,13 @@
 	spread_step = 10
 
 /* "Rifle" rounds */
+/obj/item/projectile/bullet/smallrifle
+	fire_sound = 'sound/weapons/gunshot/gunshot3.ogg'
+	damage = 43
+	armor_penetration = 15
+	penetration_modifier = 1.2
+	penetrating = 1
+	distance_falloff = 1.4
 
 /obj/item/projectile/bullet/rifle
 	fire_sound = 'sound/weapons/gunshot/gunshot3.ogg'

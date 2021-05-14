@@ -148,3 +148,25 @@
 
 /obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn/empty
 	starts_loaded = FALSE
+
+/obj/item/weapon/gun/projectile/shotgun/hunter
+	name = "shotgun"
+	desc = "The mass-produced (Hunter) KCS-27 is a favourite of colonists on many worlds. Useful for hunting pray."
+	icon = 'icons/obj/guns/shotguns.dmi'
+	icon_state = "hunter"
+	item_state = "shotgun"
+	max_shells = 2
+	w_class = ITEM_SIZE_HUGE
+	force = 10
+	obj_flags =  OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BACK
+	caliber = CALIBER_SHOTGUN
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
+	load_method = SINGLE_CASING
+	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
+	handle_casings = CYCLE_CASINGS
+	one_hand_penalty = 8
+	bulk = 6
+	var/recentpump = 0 // to prevent spammage
+	wielded_item_state = "shotgun-wielded"
+	load_sound = 'sound/weapons/guns/interaction/shotgun_instert.ogg'

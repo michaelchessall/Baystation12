@@ -6,6 +6,13 @@
 	icon_state = "pistolcasing"
 	spent_icon = "pistolcasing-spent"
 
+/obj/item/ammo_casing/pistolbig
+	desc = "A pistol bullet casing."
+	caliber = CALIBER_PISTOL_BIG
+	projectile_type = /obj/item/projectile/bullet/pistolbig
+	icon_state = "pistolcasing"
+	spent_icon = "pistolcasing-spent"
+
 /obj/item/ammo_casing/pistol/rubber
 	desc = "A rubber pistol bullet casing."
 	projectile_type = /obj/item/projectile/bullet/pistol/rubber
@@ -15,6 +22,20 @@
 	desc = "A revolver bullet casing."
 	caliber = CALIBER_REVOLVER
 	projectile_type = /obj/item/projectile/bullet/revolver
+	icon_state = "pistolcasing"
+	spent_icon = "pistolcasing-spent"
+
+/obj/item/ammo_casing/smallrevolver
+	desc = "A small revolver bullet casing."
+	caliber = CALIBER_REVOLVER_SMALL
+	projectile_type = /obj/item/projectile/bullet/smallrevolver
+	icon_state = "pistolcasing"
+	spent_icon = "pistolcasing-spent"
+
+/obj/item/ammo_casing/mediumrevolver
+	desc = "A revolver bullet casing."
+	caliber = CALIBER_REVOLVER_MEDIUM
+	projectile_type = /obj/item/projectile/bullet/mediumrevolver
 	icon_state = "pistolcasing"
 	spent_icon = "pistolcasing-spent"
 
@@ -48,8 +69,8 @@
 	spent_icon = "magnumcasing-spent"
 
 /obj/item/ammo_casing/pistol/throwback
-	desc = "An antique pistol bullet casing. Somewhere between 9 and 11 mm in caliber."
-	caliber = CALIBER_PISTOL_ANTIQUE
+	desc = "A pistol bullet round."
+	caliber = CALIBER_PISTOL_BIG
 
 /obj/item/ammo_casing/gyrojet
 	desc = "A minirocket casing."
@@ -131,6 +152,13 @@
 	projectile_type = /obj/item/projectile/energy/flash/flare
 	matter = list(MATERIAL_STEEL = 90, MATERIAL_GLASS = 90)
 
+/obj/item/ammo_casing/smallrifle
+	desc = "A small rifle bullet casing."
+	caliber = CALIBER_RIFLE_SMALL
+	projectile_type = /obj/item/projectile/bullet/smallrifle
+	icon_state = "riflecasing"
+	spent_icon = "riflecasing-spent"
+
 /obj/item/ammo_casing/rifle
 	desc = "A rifle bullet casing."
 	caliber = CALIBER_RIFLE
@@ -153,16 +181,9 @@
 	projectile_type = /obj/item/projectile/bullet/rifle/shell/apds
 
 /obj/item/ammo_casing/rifle/military
-	desc = "A 5.56 bullet casing."
+	desc = "A big rifle bullet casing."
 	caliber = CALIBER_RIFLE_MILITARY
 	projectile_type = /obj/item/projectile/bullet/rifle/military
-	icon_state = "rifle_mil"
-	spent_icon = "rifle_mil-spent"
-
-/obj/item/ammo_casing/rifle/wtk35
-	desc = "A 7.62x51 bullet casing."
-	caliber = CALIBER_RIFLE_MILITARY
-	projectile_type = /obj/item/projectile/bullet/rifle/wtk35
 	icon_state = "rifle_mil"
 	spent_icon = "rifle_mil-spent"
 

@@ -23,7 +23,7 @@
 			return
 		else
 			overlays += image(icon, "ammo_ok")
-	
+
 /obj/item/weapon/gun/projectile/pistol/military
 	name = "military pistol"
 	desc = "The Hephaestus Industries P20 - a mass produced kinetic sidearm in widespread service with the SCGDF."
@@ -88,13 +88,13 @@
 	accuracy_power = 5
 	one_hand_penalty = 2
 	fire_delay = 7
-	caliber = CALIBER_PISTOL_ANTIQUE
+	caliber = CALIBER_PISTOL_BIG
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	var/base_icon = "pistol1"
 
 /obj/item/weapon/gun/projectile/pistol/throwback/Initialize()
 	. = ..()
-	base_icon = "pistol[rand(1,4)]"
+	base_icon = "pistol[rand(1,3)]"
 	update_icon()
 
 /obj/item/weapon/gun/projectile/pistol/throwback/on_update_icon()
@@ -103,6 +103,73 @@
 		icon_state = base_icon
 	else
 		icon_state = "[base_icon]-e"
+
+/obj/item/weapon/gun/projectile/pistol/is12
+	name = "IS-12 pistol"
+	desc = "The shellguard IS-12, is a popular pistol among military forces. (Chambered in .45 ACP)"
+	icon = 'icons/obj/guns/pistol_throwback.dmi'
+	icon_state = "is12"
+	item_state = "revolver"
+	force = 9
+	caliber = CALIBER_PISTOL_BIG
+	fire_delay = 7
+	screen_shake = 1
+	magazine_type = /obj/item/ammo_magazine/is12
+	allowed_magazines = /obj/item/ammo_magazine/is12
+	mag_insert_sound = 'sound/weapons/guns/interaction/hpistol_magin.ogg'
+	mag_remove_sound = 'sound/weapons/guns/interaction/hpistol_magout.ogg'
+	accuracy = 2
+	one_hand_penalty = 2
+	bulk = 3
+
+/obj/item/weapon/gun/projectile/pistol/colt
+	name = "Colt 1911"
+	desc = "The colt 1911 is a vintage pistol from a forgotten time, it has a charm to it. (Chambered in .45 ACP)"
+	icon = 'icons/obj/guns/pistol_throwback.dmi'
+	icon_state = "colt"
+	item_state = "pistol1"
+	force = 9
+	caliber = CALIBER_PISTOL_BIG
+	fire_delay = 7
+	screen_shake = 1
+	magazine_type = /obj/item/ammo_magazine/colt
+	allowed_magazines = /obj/item/ammo_magazine/colt
+	mag_insert_sound = 'sound/weapons/guns/interaction/hpistol_magin.ogg'
+	mag_remove_sound = 'sound/weapons/guns/interaction/hpistol_magout.ogg'
+	accuracy = 2
+	one_hand_penalty = 1
+	bulk = 2
+
+/obj/item/weapon/gun/projectile/pistol/coltspecial
+	name = "faceless Colt 1911"
+	desc = "The colt 1911 is a vintage pistol from a forgotten time. This one seems to be heavily modified, it has a Titanum slide and Carboxium grip. (Chambered in .45 ACP)"
+	icon = 'icons/obj/guns/pistol_throwback.dmi'
+	icon_state = "special"
+	item_state = "pistol1"
+	force = 9
+	caliber = CALIBER_PISTOL_BIG
+	fire_delay = 4
+	screen_shake = 1
+	magazine_type = /obj/item/ammo_magazine/colt
+	allowed_magazines = /obj/item/ammo_magazine/colt
+	mag_insert_sound = 'sound/weapons/guns/interaction/hpistol_magin.ogg'
+	mag_remove_sound = 'sound/weapons/guns/interaction/hpistol_magout.ogg'
+	accuracy = 2
+	one_hand_penalty = 1
+	bulk = 2
+
+/obj/item/weapon/gun/projectile/pistol/wt24
+	name = "WT-24 pistol"
+	desc = "The shellguard WT-24 pistol is a small, cheap and easily concealable gun."
+	icon = 'icons/obj/guns/pistol_throwback.dmi'
+	icon_state = "wt24"
+	item_state = null
+	w_class = ITEM_SIZE_SMALL
+	caliber = CALIBER_PISTOL_SMALL
+	fire_delay = 12
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ESOTERIC = 2)
+	magazine_type = /obj/item/ammo_magazine/pistol/small
+	allowed_magazines = /obj/item/ammo_magazine/pistol/small
 
 /obj/item/weapon/gun/projectile/pistol/gyropistol
 	name = "gyrojet pistol"

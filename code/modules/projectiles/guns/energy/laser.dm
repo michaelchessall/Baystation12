@@ -75,6 +75,66 @@ obj/item/weapon/gun/energy/retro
 	one_hand_penalty = 1 //a little bulky
 	self_recharge = 1
 
+/obj/item/weapon/gun/energy/advenergy
+	name = "advanced energy gun"
+	icon = 'icons/obj/guns/basic_energy.dmi'
+	icon_state = "advenergy"
+	item_state = "caplaser"
+	desc = "A high tech energy pistol with a wooden grip and silver barrel."
+	force = 5
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	w_class = ITEM_SIZE_NORMAL
+	projectile_type = /obj/item/projectile/beam/midlaser
+	origin_tech = null
+	max_shots = 3
+	one_hand_penalty = 0
+	self_recharge = 1
+
+/obj/item/weapon/gun/energy/laserenergy
+	name = "domion laser pistol"
+	icon = 'icons/obj/guns/basic_energy.dmi'
+	icon_state = "tacenergy"
+	item_state = "caplaser"
+	desc = "The Domion laser pistol is a heavily modified pistol from earth originally from a country called soviet something"
+	force = 5
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	w_class = ITEM_SIZE_NORMAL
+	projectile_type = /obj/item/projectile/beam
+	origin_tech = null
+	max_shots = 15
+	one_hand_penalty = 0
+	self_recharge = 0
+
+/obj/item/weapon/gun/energy/blaster
+	name = "blaster 2000"
+	icon = 'icons/obj/guns/basic_energy.dmi'
+	icon_state = "blaster"
+	item_state = "caplaser"
+	desc = "The blaster 2000 is a rugged beam pistol used by pirates and mercenaries around the galaxy."
+	force = 5
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	w_class = ITEM_SIZE_NORMAL
+	projectile_type = /obj/item/projectile/beam
+	origin_tech = null
+	max_shots = 22
+	one_hand_penalty = 0
+	self_recharge = 0
+
+/obj/item/weapon/gun/energy/advblaster
+	name = "blaster 3000"
+	icon = 'icons/obj/guns/basic_energy.dmi'
+	icon_state = "advblaster"
+	item_state = "caplaser"
+	desc = "The blaster 300 is a more modern beam pistol used by security and law enforcement."
+	force = 5
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	w_class = ITEM_SIZE_NORMAL
+	projectile_type = /obj/item/projectile/beam
+	origin_tech = null
+	max_shots = 26
+	one_hand_penalty = 0
+	self_recharge = 0
+
 /obj/item/weapon/gun/energy/lasercannon
 	name = "laser cannon"
 	desc = "With the laser cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
@@ -134,7 +194,7 @@ obj/item/weapon/gun/energy/retro
 	desc = "The HI DMR 9E is an older design of Hephaestus Industries. A designated marksman rifle capable of shooting powerful ionized beams, this is a weapon to kill from a distance."
 	icon = 'icons/obj/guns/laser_sniper.dmi'
 	icon_state = "sniper"
-	item_state = "laser"
+	item_state = "sniper"
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 5, TECH_POWER = 4)
 	projectile_type = /obj/item/projectile/beam/sniper
 	one_hand_penalty = 5 // The weapon itself is heavy, and the long barrel makes it hard to hold steady with just one hand.
