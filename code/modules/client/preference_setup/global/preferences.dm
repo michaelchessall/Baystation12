@@ -238,6 +238,16 @@ var/list/_client_preferences_by_type
 	key = "EXAMINE_MESSAGES"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
+/datum/client_preference/fullscreen_mode
+	description = "Fullscreen Mode"
+	key = "SCREEN"
+	default_value = GLOB.PREF_YES
+
+/datum/client_preference/automousemove
+	description = "Auto Mouse Move"
+	key = "AMM"
+	default_value = GLOB.PREF_NO
+
 /datum/client_preference/goonchat
 	description = "Use Goon Chat"
 	key = "USE_GOONCHAT"

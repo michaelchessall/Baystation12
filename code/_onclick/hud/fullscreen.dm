@@ -1,3 +1,5 @@
+#define FULLSCREEN_OVERLAY_RESOLUTION_X 15
+#define FULLSCREEN_OVERLAY_RESOLUTION_Y 15
 
 /mob
 	var/list/screens = list()
@@ -22,8 +24,10 @@
 	screen.severity = severity
 
 	screens[category] = screen
-	if(client && (stat != DEAD || screen.allstate))
-		client.screen += screen
+	screen.transform = null
+	if(screen && client)
+		if(stat != DEAD || screen.allstate)
+			client.screen += screen
 	return screen
 
 /mob/proc/clear_fullscreen(category, animated = 10)
