@@ -54,7 +54,7 @@
 	total_damage = brute_damage + burn_damage
 	if(total_damage > max_damage) total_damage = max_damage
 	var/prev_state = damage_state
-	damage_state = Clamp(round((total_damage/max_damage) * 4), MECH_COMPONENT_DAMAGE_UNDAMAGED, MECH_COMPONENT_DAMAGE_DAMAGED_TOTAL)
+	damage_state = clamp(round((total_damage/max_damage) * 4), MECH_COMPONENT_DAMAGE_UNDAMAGED, MECH_COMPONENT_DAMAGE_DAMAGED_TOTAL)
 	if(damage_state > prev_state)
 		if(damage_state == MECH_COMPONENT_DAMAGE_DAMAGED_BAD)
 			playsound(src.loc, 'sound/mecha/internaldmgalarm.ogg', 40, 1)
@@ -128,7 +128,7 @@
 /obj/item/mech_component/proc/update_components()
 	return
 
-/obj/item/mech_component/proc/repair_brute_generic(var/obj/item/weapon/weldingtool/WT, var/mob/user)
+/obj/item/mech_component/proc/repair_brute_generic(var/obj/item/weldingtool/WT, var/mob/user)
 	if(!istype(WT))
 		return
 	if(!brute_damage)
@@ -138,8 +138,12 @@
 		to_chat(user, SPAN_WARNING("Turn \the [WT] on, first."))
 		return
 	if(WT.remove_fuel((SKILL_MAX + 1) - user.get_skill_value(SKILL_CONSTRUCTION), user))
+		user.visible_message(
+			SPAN_NOTICE("\The [user] begins welding the damage on \the [src]..."),
+			SPAN_NOTICE("You begin welding the damage on \the [src]...")
+		)
 		var/repair_value = 10 * max(user.get_skill_value(SKILL_CONSTRUCTION), user.get_skill_value(SKILL_DEVICES))
-		if(user.do_skilled(10, SKILL_DEVICES , src, 0.6) && brute_damage)
+		if(user.do_skilled(10, SKILL_DEVICES , src, 0.6, DO_PUBLIC_PROGRESS | DO_DEFAULT) && brute_damage)
 			repair_brute_damage(repair_value)
 			to_chat(user, SPAN_NOTICE("You mend the damage to \the [src]."))
 			playsound(user.loc, 'sound/items/Welder.ogg', 25, 1)
@@ -158,7 +162,7 @@
 
 	user.visible_message("\The [user] begins replacing the wiring of \the [src]...")
 
-	if(user.do_skilled(10, SKILL_DEVICES , src, 0.6) && burn_damage)
+	if(user.do_skilled(10, SKILL_DEVICES , src, 0.6, DO_PUBLIC_PROGRESS | DO_DEFAULT) && burn_damage)
 		if(QDELETED(CC) || QDELETED(src) || !CC.use(needed_amount))
 			return
 

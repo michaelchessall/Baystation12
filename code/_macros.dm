@@ -1,43 +1,21 @@
 #define any2ref(x) "\ref[x]"
 
-#if DM_VERSION < 513
-
-	#define islist(A) istype(A, /list)
-	#define ismovable(A) istype(A, /atom/movable)
-
-	#define copytext_char(ARGS...) copytext(ARGS)
-	#define findlasttext_char(ARGS...) findlasttext(ARGS)
-	#define findlasttextEx_char(ARGS...) findlasttextEx(ARGS)
-	#define findtext_char(ARGS...) findtext(ARGS)
-	#define findtextEx_char(ARGS...) findtextEx(ARGS)
-	#define length_char(X) length(X)
-	#define nonspantext_char(ARGS...) nonspantext(ARGS)
-	#define replacetext_char(ARGS...) replacetext(ARGS)
-	#define replacetextEx_char(ARGS...) replacetextEx(ARGS)
-	#define spantext_char(ARGS...) spantext(ARGS)
-	#define splittext_char(ARGS...) splittext(ARGS)
-	#define text2ascii_char(ARGS...) text2ascii(ARGS)
-
-	#define regex_replace_char(RE, ARGS...) RE.Replace(ARGS)
-	#define regex_replace(RE, ARGS...) RE.Replace(ARGS)
-	#define regex_find_char(RE, ARGS...) RE.Find(ARGS)
-	#define regex_find(RE, ARGS...) RE.Find(ARGS)
-
-#else //513+
-
-	#define regex_replace_char(RE, ARGS...) RE.Replace_char(ARGS)
-	#define regex_replace(RE, ARGS...) RE.Replace(ARGS)
-	#define regex_find_char(RE, ARGS...) RE.Find_char(ARGS)
-	#define regex_find(RE, ARGS...) RE.Find(ARGS)
-
-#endif
+//Do (almost) nothing - indev placeholder for switch case implementations etc
+#define NOOP (.=.);
 
 #define list_find(L, needle, LIMITS...) L.Find(needle, LIMITS)
 
 #define PUBLIC_GAME_MODE SSticker.master_mode
 
-#define Clamp(value, low, high) (value <= low ? low : (value >= high ? high : value))
-#define CLAMP01(x) 		(Clamp(x, 0, 1))
+#define CLAMP01(x) clamp(x, 0, 1)
+
+var/global/const/POSITIVE_INFINITY = 1#INF // win: 1.#INF, lin: inf
+var/global/const/NEGATIVE_INFINITY = -1#INF // win: -1.#INF, lin: -inf
+//var/const/POSITIVE_NAN = -(1#INF/1#INF) // win: 1.#QNAN, lin: nan -- demonstration of creation, but not useful
+//var/const/NEGATIVE_NAN = (1#INF/1#INF) //win: -1.#IND, lin: -nan -- demonstration of creation, but not useful
+#define isfinite(N) (isnum(N) && ((N) == (N)) && ((N) != POSITIVE_INFINITY) && ((N) != NEGATIVE_INFINITY))
+
+#define isnan(N) (isnum(N) && (N) != (N))
 
 #define get_turf(A) get_step(A,0)
 
@@ -55,7 +33,7 @@
 
 #define isairlock(A) istype(A, /obj/machinery/door/airlock)
 
-#define isatom(A) isloc(A)
+#define isatom(A) (isloc(A) && !isarea(A))
 
 #define isbrain(A) istype(A, /mob/living/carbon/brain)
 
@@ -65,7 +43,7 @@
 
 #define isclient(A) istype(A, /client)
 
-#define iscorgi(A) istype(A, /mob/living/simple_animal/corgi)
+#define iscorgi(A) istype(A, /mob/living/simple_animal/passive/corgi)
 
 #define is_drone(A) istype(A, /mob/living/silicon/robot/drone)
 
@@ -73,13 +51,13 @@
 
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
-#define isid(A) istype(A, /obj/item/weapon/card/id)
+#define isid(A) istype(A, /obj/item/card/id)
 
 #define isitem(A) istype(A, /obj/item)
 
 #define isliving(A) istype(A, /mob/living)
 
-#define ismouse(A) istype(A, /mob/living/simple_animal/mouse)
+#define ismouse(A) istype(A, /mob/living/simple_animal/passive/mouse)
 
 #define isnewplayer(A) istype(A, /mob/new_player)
 
@@ -97,6 +75,8 @@
 
 #define isspaceturf(A) istype(A, /turf/space)
 
+#define isopenturf(A) istype(A, /turf/simulated/open)
+
 #define ispAI(A) istype(A, /mob/living/silicon/pai)
 
 #define isrobot(A) istype(A, /mob/living/silicon/robot)
@@ -106,8 +86,6 @@
 #define ismachinerestricted(A) (issilicon(A) && A.machine_restriction)
 
 #define isslime(A) istype(A, /mob/living/carbon/slime)
-
-#define ischorus(A) istype(A, /mob/living/carbon/alien/chorus)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
@@ -121,11 +99,7 @@
 
 #define isPlunger(A) istype(A, /obj/item/clothing/mask/plunger) || istype(A, /obj/item/device/plunger/robot)
 
-/proc/isspecies(A, B)
-	if(!iscarbon(A))
-		return FALSE
-	var/mob/living/carbon/C = A
-	return C.species?.name == B
+#define isadmin(X) (check_rights(R_ADMIN, 0, (X)) != 0)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
@@ -194,7 +168,9 @@
 
 #define SPAN_WARNING(X) "<span class='warning'>[X]</span>"
 
-#define SPAN_STYLE(style, X) "<span style=\"[style]\">[X]</span>"
+#define SPAN_GOOD(X) "<span class='good'>[X]</span>"
+
+#define SPAN_BAD(X) "<span class='bad'>[X]</span>"
 
 #define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
 
@@ -207,6 +183,8 @@
 #define SPAN_INFO(X) "<span class='info'>[X]</span>"
 
 #define SPAN_DEBUG(X) "<span class='debug'>[X]</span>"
+
+#define SPAN_STYLE(style, X) "<span style=\"[style]\">[X]</span>"
 
 #define FONT_COLORED(color, text) "<font color='[color]'>[text]</font>"
 
@@ -221,3 +199,77 @@
 #define FONT_GIANT(X) "<font size='5'>[X]</font>"
 
 #define crash_with(X) crash_at(X, __FILE__, __LINE__)
+
+
+/// Semantic define for a 0 int intended for use as a bitfield
+#define EMPTY_BITFIELD 0
+
+
+/// Right-shift of INT by BITS
+#define SHIFTR(INT, BITS) ((INT) >> (BITS))
+
+
+/// Left-shift of INT by BITS
+#define SHIFTL(INT, BITS) ((INT) << (BITS))
+
+
+/// Convenience define for nth-bit flags, 0-indexed
+#define FLAG(BIT) SHIFTL(1, BIT)
+
+
+/// Test bit at index BIT is set in FIELD
+#define GET_BIT(FIELD, BIT) ((FIELD) & FLAG(BIT))
+
+
+/// Test bit at index BIT is set in FIELD; semantic alias of GET_BIT
+#define HAS_BIT(FIELD, BIT) GET_BIT(FIELD, BIT)
+
+
+/// Set bit at index BIT in FIELD
+#define SET_BIT(FIELD, BIT) ((FIELD) |= FLAG(BIT))
+
+
+/// Unset bit at index BIT in FIELD
+#define CLEAR_BIT(FIELD, BIT) ((FIELD) &= ~FLAG(BIT))
+
+
+/// Flip bit at index BIT in FIELD
+#define FLIP_BIT(FIELD, BIT) ((FIELD) ^= FLAG(BIT))
+
+
+/// Test any bits of MASK are set in FIELD
+#define GET_FLAGS(FIELD, MASK) ((FIELD) & (MASK))
+
+
+/// Test all bits of MASK are set in FIELD
+#define HAS_FLAGS(FIELD, MASK) (((FIELD) & (MASK)) == (MASK))
+
+
+/// Set bits of MASK in FIELD
+#define SET_FLAGS(FIELD, MASK) ((FIELD) |= (MASK))
+
+
+/// Unset bits of MASK in FIELD
+#define CLEAR_FLAGS(FIELD, MASK) ((FIELD) &= ~(MASK))
+
+
+/// Flip bits of MASK in FIELD
+#define FLIP_FLAGS(FIELD, MASK) ((FIELD) ^= (MASK))
+
+
+#define regex_replace_char(RE, ARGS...) RE.Replace_char(ARGS)
+
+
+#define regex_replace(RE, ARGS...) RE.Replace(ARGS)
+
+
+#define regex_find_char(RE, ARGS...) RE.Find_char(ARGS)
+
+
+#define regex_find(RE, ARGS...) RE.Find(ARGS)
+
+
+#define hex2num(hex) (text2num(hex, 16) || 0)
+
+
+#define num2hex(num) num2text(num, 1, 16)

@@ -7,10 +7,9 @@
 	base = TRUE
 
 	initial_restricted_waypoints = list(
-		"Charon" = list("nav_hangar_calypso"), 	//can't have random shuttles popping inside the ship
+		"Charon" = list("nav_hangar_charon"), 	//can't have random shuttles popping inside the ship
 		"Guppy" = list("nav_hangar_guppy"),
 		"Aquila" = list("nav_hangar_aquila"),
-		"Ascent Caulship" = list("nav_ascent_caulship_torch"), //restricts caulship specific docking waypoint on deck 4 starboard side
 		"Skrellian Scout" = list("nav_skrellscout_dock"), //restricts Skrell Scoutship specific docking waypoint on deck 4 portside
 		"Skrellian Shuttle" = list("nav_skrellscoutsh_altdock"),
 		"Rescue" = list("nav_ert_dock"), //restricts ERT Shuttle specific docking waypoint on deck 4 portside
@@ -27,7 +26,7 @@
 		"nav_ninja_deck5",
 		"nav_skipjack_deck5",
 		"nav_ert_deck5",
-		"nav_bridge_calypso",
+		"nav_bridge_charon",
 		"nav_bridge_guppy",
 		"nav_bridge_aquila",
 
@@ -36,7 +35,7 @@
 		"nav_ninja_deck1",
 		"nav_skipjack_deck1",
 		"nav_ert_deck4",
-		"nav_deck4_calypso",
+		"nav_deck4_charon",
 		"nav_deck4_guppy",
 		"nav_deck4_aquila",
 
@@ -45,7 +44,7 @@
 		"nav_ninja_deck2",
 		"nav_skipjack_deck2",
 		"nav_ert_deck3",
-		"nav_deck3_calypso",
+		"nav_deck3_charon",
 		"nav_deck3_guppy",
 		"nav_deck3_aquila",
 
@@ -54,7 +53,7 @@
 		"nav_ninja_deck3",
 		"nav_skipjack_deck3",
 		"nav_ert_deck2",
-		"nav_deck2_calypso",
+		"nav_deck2_charon",
 		"nav_deck2_guppy",
 		"nav_deck2_aquila",
 
@@ -63,9 +62,10 @@
 		"nav_ninja_deck4",
 		"nav_skipjack_deck4",
 		"nav_ert_deck1",
-		"nav_deck1_calypso",
+		"nav_deck1_charon",
 		"nav_deck1_guppy",
 		"nav_deck1_aquila",
+		"nav_vox_raider_dock",
 
 		//start Hanger Deck
 		"nav_merc_hanger",
@@ -120,18 +120,3 @@
 	name = "guppy control console"
 	shuttle_tag = "Guppy"
 	req_access = list(access_guppy_helm)
-
-/obj/effect/overmap/visitable/ship/torch/Initialize()
-	. = ..()
-
-	var/obj/effect/overmap/visitable/sector/residue/R = new()
-	R.forceMove(locate(src.x, src.y, GLOB.using_map.overmap_z))
-
-	for(var/obj/machinery/computer/ship/helm/H in SSmachines.machinery)
-		H.add_known_sector(R)
-
-/obj/effect/overmap/visitable/sector/residue
-	name = "Bluespace Residue"
-	desc = "Trace radiation emanating from this sector is consistent with the aftermath of a bluespace jump."
-	icon_state = "event"
-	known = TRUE

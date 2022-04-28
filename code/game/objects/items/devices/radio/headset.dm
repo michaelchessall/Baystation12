@@ -103,6 +103,13 @@
 	. = ..()
 	set_frequency(RAID_FREQ)
 
+/obj/item/device/radio/headset/vox_raider
+	ks1type = /obj/item/device/encryptionkey/vox_raider
+
+/obj/item/device/radio/headset/vox_raider/Initialize()
+	. = ..()
+	set_frequency(V_RAID_FREQ)
+
 /obj/item/device/radio/headset/binary
 	origin_tech = list(TECH_ESOTERIC = 3)
 	ks1type = /obj/item/device/encryptionkey/binary
@@ -323,7 +330,7 @@
 	item_state = "headset"
 	ks1type = /obj/item/device/encryptionkey/specops
 
-/obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/headset/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))
@@ -344,7 +351,7 @@
 		else
 			to_chat(user, "This headset doesn't have any encryption keys!  How useless...")
 
-	if(istype(W, /obj/item/device/encryptionkey/))
+	if(istype(W, /obj/item/device/encryptionkey))
 		if(encryption_keys.len >= max_keys)
 			to_chat(user, "The headset can't hold another key!")
 			return

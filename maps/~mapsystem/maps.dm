@@ -3,8 +3,8 @@
 GLOBAL_DATUM_INIT(using_map, /datum/map, new using_map_DATUM)
 GLOBAL_LIST_EMPTY(all_maps)
 
-var/const/MAP_HAS_BRANCH = 1	//Branch system for occupations, togglable
-var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
+var/global/const/MAP_HAS_BRANCH = 1	//Branch system for occupations, togglable
+var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /hook/startup/proc/initialise_map_list()
 	for(var/type in subtypesof(/datum/map))
@@ -91,8 +91,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/list/lobby_screens = list('icons/default_lobby.png')    // The list of lobby screen images to pick() from.
 	var/current_lobby_screen
-	var/music_track/lobby_track                     // The track that will play in the lobby screen.
-	var/list/lobby_tracks = list()                  // The list of lobby tracks to pick() from. If left unset will randomly select among all available /music_track subtypes.
+	var/decl/audio/track/lobby_track                     // The track that will play in the lobby screen.
+	var/list/lobby_tracks = list()                  // The list of lobby tracks to pick() from. If left unset will randomly select among all available decl/audio/track subtypes.
 	var/welcome_sound = 'sound/AI/welcome.ogg'		// Sound played on roundstart
 
 	var/default_law_type = /datum/ai_laws/nanotrasen  // The default lawset use by synth units, if not overriden by their laws var.
@@ -103,6 +103,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/num_exoplanets = 0
 	var/list/planet_size  //dimensions of planet zlevel, defaults to world size. Due to how maps are generated, must be (2^n+1) e.g. 17,33,65,129 etc. Map will just round up to those if set to anything other.
 	var/away_site_budget = 0
+	var/min_offmap_players = 0
 
 	var/list/loadout_blacklist	//list of types of loadout items that will not be pickable
 
@@ -131,12 +132,13 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			HOME_SYSTEM_TAU_CETI,
 			HOME_SYSTEM_HELIOS,
 			HOME_SYSTEM_TERRA,
-			HOME_SYSTEM_TERSTEN,
-			HOME_SYSTEM_LORRIMAN,
-			HOME_SYSTEM_CINU,
-			HOME_SYSTEM_YUKLID,
-			HOME_SYSTEM_LORDANIA,
-			HOME_SYSTEM_KINGSTON,
+			HOME_SYSTEM_SAFFAR,
+			HOME_SYSTEM_PIRX,
+			HOME_SYSTEM_TADMOR,
+			HOME_SYSTEM_BRAHE,
+			HOME_SYSTEM_IOLAUS,
+			HOME_SYSTEM_FOSTER,
+			HOME_SYSTEM_CASTILLA,
 			HOME_SYSTEM_GAIA,
 			HOME_SYSTEM_MAGNITKA,
 			HOME_SYSTEM_OTHER
@@ -170,10 +172,12 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			CULTURE_HUMAN_SPACER,
 			CULTURE_HUMAN_SPAFRO,
 			CULTURE_HUMAN_CONFED,
+			CULTURE_HUMAN_GAIAN,
 			CULTURE_HUMAN_OTHER,
 			CULTURE_OTHER
 		),
 		TAG_RELIGION = list(
+			RELIGION_UNSTATED,
 			RELIGION_OTHER,
 			RELIGION_JUDAISM,
 			RELIGION_HINDUISM,
@@ -216,6 +220,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	// List of events specific to a map
 	var/list/map_event_container = list()
 
+	var/maint_all_access = FALSE
+
 /datum/map/New()
 	if(!map_levels)
 		map_levels = station_levels.Copy()
@@ -230,13 +236,22 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	current_lobby_screen = pick(lobby_screens)
 	game_year = text2num(time2text(world.timeofday, "YYYY")) + DEFAULT_GAME_YEAR_OFFSET
 
-/datum/map/proc/get_lobby_track(var/exclude)
-	var/lobby_track_type
-	if(lobby_tracks.len)
-		lobby_track_type = pickweight(lobby_tracks - exclude)
+
+/datum/map/proc/get_lobby_track(banned)
+	var/path = /decl/audio/track/absconditus
+	var/count = length(lobby_tracks)
+	if (count != 1)
+		var/allowed
+		if (count > 1)
+			allowed = lobby_tracks - banned
+		if (!length(allowed))
+			allowed = subtypesof(/decl/audio/track) - banned
+		if (length(allowed))
+			path = pickweight(allowed)
 	else
-		lobby_track_type = pick(subtypesof(/music_track) - exclude)
-	return decls_repository.get_decl(lobby_track_type)
+		path = lobby_tracks[1]
+	return decls_repository.get_decl(path)
+
 
 /datum/map/proc/setup_config(name, value, filename)
 	switch (name)
@@ -269,6 +284,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		if ("local_currency_name_singular") local_currency_name_singular = value
 		if ("local_currency_name_short") local_currency_name_short = value
 		if ("game_year_offset") game_year = text2num(time2text(world.timeofday, "YYYY")) + text2num_or_default(value, DEFAULT_GAME_YEAR_OFFSET)
+		if ("min_offmap_players") min_offmap_players = text2num_or_default(value, min_offmap_players)
 		else log_misc("Unknown setting [name] in [filename].")
 
 /datum/map/proc/setup_map()
@@ -291,17 +307,21 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /* It is perfectly possible to create loops with TEMPLATE_FLAG_ALLOW_DUPLICATES and force/allow. Don't. */
 /proc/resolve_site_selection(datum/map_template/ruin/away_site/site, list/selected, list/available, list/unavailable, list/by_type)
-	var/cost = 0
+	var/spawn_cost = 0
+	var/player_cost = 0
 	if (site in selected)
 		if (!(site.template_flags & TEMPLATE_FLAG_ALLOW_DUPLICATES))
-			return cost
+			return list(spawn_cost, player_cost)
 	if (!(site.template_flags & TEMPLATE_FLAG_ALLOW_DUPLICATES))
 		available -= site
-	cost += site.cost
+	spawn_cost += site.spawn_cost
+	player_cost += site.player_cost
 	selected += site
 
 	for (var/forced_type in site.force_ruins)
-		cost += resolve_site_selection(by_type[forced_type], selected, available, unavailable, by_type)
+		var/list/costs = resolve_site_selection(by_type[forced_type], selected, available, unavailable, by_type)
+		spawn_cost += costs[1]
+		player_cost += costs[2]
 
 	for (var/banned_type in site.ban_ruins)
 		var/datum/map_template/ruin/away_site/banned = by_type[banned_type]
@@ -321,7 +341,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 				continue
 		available[allowed] = allowed.spawn_weight
 
-	return cost
+	return list(spawn_cost, player_cost)
 
 
 /datum/map/proc/build_away_sites()
@@ -347,19 +367,27 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			available[site] = site.spawn_weight
 		by_type[site.type] = site
 
-	var/budget = away_site_budget
-	for (var/datum/map_template/ruin/away_site/site in guaranteed)
-		budget -= resolve_site_selection(site, selected, available, unavailable, by_type)
+	var/points = away_site_budget
+	var/players = -min_offmap_players
+	for (var/client/C)
+		++players
 
-	while (budget > 0 && length(available))
+	for (var/datum/map_template/ruin/away_site/site in guaranteed)
+		var/list/costs = resolve_site_selection(site, selected, available, unavailable, by_type)
+		points -= costs[1]
+		players -= costs[2]
+
+	while (points > 0 && length(available))
 		var/datum/map_template/ruin/away_site/site = pickweight(available)
-		if (site.cost > budget)
+		if (site.spawn_cost && site.spawn_cost > points || site.player_cost && site.player_cost > players)
 			unavailable += site
 			available -= site
 			continue
-		budget -= resolve_site_selection(site, selected, available, unavailable, by_type)
+		var/list/costs = resolve_site_selection(site, selected, available, unavailable, by_type)
+		points -= costs[1]
+		players -= costs[2]
 
-	report_progress("Finished selecting away sites ([english_list(selected)]) for [away_site_budget - budget] cost of [away_site_budget] budget.")
+	report_progress("Finished selecting away sites ([english_list(selected)]) for [away_site_budget - points] cost of [away_site_budget] budget.")
 
 	for (var/datum/map_template/template in selected)
 		if (template.load_new_z())
@@ -405,7 +433,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/get_empty_zlevel()
 	if(empty_levels == null)
-		world.maxz++
+		INCREMENT_WORLD_Z_SIZE
 		empty_levels = list(world.maxz)
 	return pick(empty_levels)
 
@@ -449,11 +477,11 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	return // overriden by torch
 
 /datum/map/proc/make_maint_all_access(var/radstorm = 0) // parameter used by torch
-	maint_all_access = 1
+	maint_all_access = TRUE
 	priority_announcement.Announce("The maintenance access requirement has been revoked on all maintenance airlocks.", "Attention!")
 
 /datum/map/proc/revoke_maint_all_access(var/radstorm = 0) // parameter used by torch
-	maint_all_access = 0
+	maint_all_access = FALSE
 	priority_announcement.Announce("The maintenance access requirement has been readded on all maintenance airlocks.", "Attention!")
 
 // Access check is of the type requires one. These have been carefully selected to avoid allowing the janitor to see channels he shouldn't
@@ -547,20 +575,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 					data["offship_players"]++
 			else if(isghost(M))
 				data["ghosts"]++
-
-	if(data["clients"] > 0)
-		SSstatistics.set_field("round_end_clients",data["clients"])
-	if(data["ghosts"] > 0)
-		SSstatistics.set_field("round_end_ghosts",data["ghosts"])
-	if(data["surviving_humans"] > 0)
-		SSstatistics.set_field("survived_human",data["surviving_humans"])
-	if(data["surviving_total"] > 0)
-		SSstatistics.set_field("survived_total",data["surviving_total"])
-	if(data["escaped_humans"] > 0)
-		SSstatistics.set_field("escaped_human",data["escaped_humans"])
-	if(data["escaped_total"] > 0)
-		SSstatistics.set_field("escaped_total",data["escaped_total"])
-
 	return data
 
 /datum/map/proc/roundend_summary(list/data)

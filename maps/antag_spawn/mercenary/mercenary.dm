@@ -6,8 +6,9 @@
 /obj/effect/overmap/visitable/sector/merc_base
 	name = "Tiny Asteroid"
 	desc = "Sensor array detects an small, insignificant asteroid. The core appears to be reflecting scans."
-	in_space = 1
-	known = 0
+	in_space = TRUE
+	known = FALSE
+	place_near_main = list(2, 4)
 	icon_state = "meteor4"
 	hide_from_reports = TRUE
 	initial_generic_waypoints = list(
@@ -88,8 +89,10 @@
 
 
 //Flavorful reminders
+/obj/item/paper/merc
+	language = LANGUAGE_SPACER
 
-/obj/item/weapon/paper/merc/tutorial_1
+/obj/item/paper/merc/tutorial_1
 	name = "highlighted note"
 	info = {"
 		<h2>Hey, idiots!</h2>
@@ -104,7 +107,7 @@
 	"}
 
 
-/obj/item/weapon/paper/merc/tutorial_2
+/obj/item/paper/merc/tutorial_2
 	name = "reminder"
 	info = {"
 		<div style="text-align: center;">
@@ -114,7 +117,7 @@
 		<p><i>J.J.</i></p>
 	"}
 
-/obj/item/weapon/paper/merc/tutorial_3
+/obj/item/paper/merc/tutorial_3
 	name = "crumpled pamphlet"
 	info = {"
 		<div style="text-align: center;">

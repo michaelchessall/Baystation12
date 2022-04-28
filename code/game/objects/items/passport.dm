@@ -1,4 +1,4 @@
-/obj/item/weapon/passport
+/obj/item/passport
 	name = "passport"
 	icon = 'icons/obj/passport.dmi'
 	icon_state = "passport"
@@ -10,7 +10,7 @@
 	var/info
 	var/fingerprint
 
-/obj/item/weapon/passport/proc/set_info(mob/living/carbon/human/H)
+/obj/item/passport/proc/set_info(mob/living/carbon/human/H)
 	if(!istype(H))
 		return
 	var/decl/cultural_info/culture = H.get_cultural_value(TAG_HOMEWORLD)
@@ -21,7 +21,7 @@
 		fingerprint = "N/A"
 	info = "\icon[src] [src]:\nName: [H.real_name]\nSpecies: [H.get_species()]\nGender: [gender2text(H.gender)]\nAge: [H.age]\nPlace of Birth: [pob]\nFingerprint: [fingerprint]"
 
-/obj/item/weapon/passport/attack_self(mob/user as mob)
+/obj/item/passport/attack_self(mob/user as mob)
 	user.visible_message(
 		SPAN_ITALIC("[user] opens and checks [src]."),
 		SPAN_ITALIC("You open [src] and check for some main information."),
@@ -30,127 +30,122 @@
 	)
 	to_chat(user, info || SPAN_WARNING("[src] is completely blank!"))
 
-/obj/item/weapon/passport/scg
+/obj/item/passport/scg
 	name = "\improper SCG passport"
 	icon_state = "passport_scg"
 	desc = "A passport from the Sol Central Government."
 
-/obj/item/weapon/passport/earth
+/obj/item/passport/earth
 	name = "\improper Earth passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from the Earth, within Sol Central Government space."
 
-/obj/item/weapon/passport/venus
+/obj/item/passport/venus
 	name = "\improper Venusian passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Venus, within Sol Central Government space."
 
-/obj/item/weapon/passport/luna
+/obj/item/passport/luna
 	name = "\improper Luna passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Luna, within Sol Central Government space."
 
-/obj/item/weapon/passport/mars
-	name = "\improper Martian passport"
+/obj/item/passport/mars
+	name = "\improper Mars passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Mars, within Sol Central Government space."
 
-/obj/item/weapon/passport/phobos
+/obj/item/passport/phobos
 	name = "\improper Phobos passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Phobos, within Sol Central Government space."
 
-/obj/item/weapon/passport/ceres
+/obj/item/passport/ceres
 	name = "\improper Ceres passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Ceres, within Sol Central Government space."
 
-/obj/item/weapon/passport/pluto
-	name = "\improper Plutonian passport"
+/obj/item/passport/pluto
+	name = "\improper Pluto passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Pluto, within Sol Central Government space."
 
-/obj/item/weapon/passport/tiamat
+/obj/item/passport/tiamat
 	name = "\improper Tiamat passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Tiamat, within Sol Central Government space."
 
-/obj/item/weapon/passport/eos
+/obj/item/passport/eos
 	name = "\improper Eos passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Eos, within Sol Central Government space."
 
-/obj/item/weapon/passport/ceti_epsilon
-	name = "\improper Cetite passport"
+/obj/item/passport/ceti_epsilon
+	name = "\improper Ceti Epsilon passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from Ceti Epsilon, within Sol Central Government space."
 
-/obj/item/weapon/passport/lordania
-	name = "\improper Lordanian passport"
+/obj/item/passport/iolaus
+	name = "\improper Iolaus passport"
 	icon_state = "passport_scg2"
-	desc = "A passport from Lordania, within Sol Central Government space."
+	desc = "A passport from Iolaus, within Sol Central Government space."
 
-/obj/item/weapon/passport/kingston
-	name = "\improper Kingstonian passport"
+/obj/item/passport/pirx
+	name = "\improper Pirx passport"
 	icon_state = "passport_scg2"
-	desc = "A passport from Kingston, within Sol Central Government space."
+	desc = "A passport from Pirx, within Sol Central Government space."
 
-/obj/item/weapon/passport/cinu
-	name = "\improper Cinusian passport"
+/obj/item/passport/tadmor
+	name = "\improper Tadmor passport"
 	icon_state = "passport_scg2"
-	desc = "A passport from Cinu, within Sol Central Government space."
+	desc = "A passport from Tadmor, within Sol Central Government space."
 
-/obj/item/weapon/passport/yuklid
-	name = "\improper Yuklid V passport"
+/obj/item/passport/brahe
+	name = "\improper Brahe passport"
 	icon_state = "passport_scg2"
-	desc = "A passport from Yuklid V, within Sol Central Government space."
+	desc = "A passport from Brahe, within Sol Central Government space."
 
-/obj/item/weapon/passport/lorriman
-	name = "\improper Lorriman passport"
+/obj/item/passport/saffar
+	name = "\improper Saffar passport"
 	icon_state = "passport_scg2"
-	desc = "A passport from Yuklid V, within Sol Central Government space."
+	desc = "A passport from Saffar, within Sol Central Government space."
 
-/obj/item/weapon/passport/tersten
-	name = "\improper Tersten passport"
-	icon_state = "passport_scg2"
-	desc = "A passport from Tersten, within Sol Central Government space."
-
-/obj/item/weapon/passport/south_gaia
-	name = "\improper Southern Gaian passport"
+/obj/item/passport/south_gaia
+	name = "\improper Southern Gaia passport"
 	icon_state = "passport_scg2"
 	desc = "A passport from the southern part of Gaia, under control of the Sol Central Government."
 
-/obj/item/weapon/passport/iccg
+/obj/item/passport/iccg
 	name = "\improper ICCG passport"
 	icon_state = "passport_iccg"
 	desc = "A passport from the Independent Colonial Confederation of Gilgamesh."
 
-/obj/item/weapon/passport/north_gaia
-	name = "\improper Northern Gaian passport"
+/obj/item/passport/north_gaia
+	name = "\improper Northern Gaia passport"
 	icon_state = "passport_iccg2"
 	desc = "A passport from the northern part of Gaia, under control of the Independent Colonial Confederation of Gilgamesh."
 
-/obj/item/weapon/passport/terra
-	name = "\improper Terran passport"
+/obj/item/passport/terra
+	name = "\improper Terra passport"
 	icon_state = "passport_iccg2"
 	desc = "A passport from Terra, within ICCG space."
 
-/obj/item/weapon/passport/novayazemlya
+/obj/item/passport/novayazemlya
 	name = "\improper Novaya Zemlya passport"
 	icon_state = "passport_iccg2"
 	desc = "A passport from Novaya Zemlya, within ICCG space."
 
-/obj/item/weapon/passport/saveel
+/obj/item/passport/saveel
 	name = "\improper Saveel passport"
 	icon_state = "passport"
 	desc = "A passport from Saveel, an isolationist frontier colony."
 
-/obj/item/weapon/passport/magnitka
-	name = "\improper Magnitkan passport"
+/obj/item/passport/magnitka
+	name = "\improper Magnitka passport"
 	icon_state = "passport"
 	desc = "A passport from Magnitka, an independant colony."
 
-/obj/item/weapon/passport/empiremohranda
-	name = "\improper Mohrandade passport"
+/obj/item/passport/empiremohranda
+	name = "\improper Mohranda passport"
 	icon_state = "passport"
 	desc = "A passport from the Empire of Mohranda, a frontier empire established on Lohrene and Mohranda, in the Luggust system."

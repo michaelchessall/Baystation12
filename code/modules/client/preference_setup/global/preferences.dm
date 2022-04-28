@@ -26,9 +26,9 @@ GLOBAL_VAR_CONST(PREF_NEVER, "Never")
 GLOBAL_VAR_CONST(PREF_NON_ANTAG, "Non-Antag Only")
 GLOBAL_VAR_CONST(PREF_ALWAYS, "Always")
 
-var/list/_client_preferences
-var/list/_client_preferences_by_key
-var/list/_client_preferences_by_type
+var/global/list/_client_preferences
+var/global/list/_client_preferences_by_key
+var/global/list/_client_preferences_by_type
 
 /proc/get_client_preferences()
 	if(!_client_preferences)
@@ -95,7 +95,8 @@ var/list/_client_preferences_by_type
 /datum/client_preference/play_lobby_music/changed(var/mob/preference_mob, var/new_value)
 	if(new_value == GLOB.PREF_YES)
 		if(isnewplayer(preference_mob))
-			GLOB.using_map.lobby_track.play_to(preference_mob)
+			sound_to(preference_mob, GLOB.using_map.lobby_track.get_sound())
+			to_chat(preference_mob, GLOB.using_map.lobby_track.get_info())
 	else
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 85, channel = GLOB.lobby_sound_channel))
 
@@ -317,3 +318,11 @@ var/list/_client_preferences_by_type
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 	default_value = GLOB.PREF_HIDE
 	flags = R_ADMIN|R_DEBUG
+
+
+/datum/client_preference/staff/show_runtime_logs
+	description = "Runtime Log Messages"
+	key = "CHAT_RUNTIMELOGS"
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+	default_value = GLOB.PREF_HIDE
+	flags = R_ADMIN | R_DEBUG

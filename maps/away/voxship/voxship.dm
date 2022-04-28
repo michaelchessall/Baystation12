@@ -3,13 +3,16 @@
 #include "voxship_areas.dm"
 #include "voxship_jobs.dm"
 #include "voxship_radio.dm"
+#include "voxship_machines.dm"
+#include "voxship_antagonism.dm"
 
 /datum/map_template/ruin/away_site/scavship
 	name = "Vox Scavenger Ship"
 	id = "awaysite_voxship2"
 	description = "Vox Scavenger Ship."
 	suffixes = list("voxship/voxship-2.dmm")
-	cost = 0.5
+	spawn_cost = 0.5
+	player_cost = 4
 	shuttles_to_initialise = list(/datum/shuttle/autodock/overmap/vox_ship, /datum/shuttle/autodock/overmap/vox_lander)
 	area_usage_test_exempted_root_areas = list(/area/voxship)
 	spawn_weight = 0.67
@@ -17,7 +20,7 @@
 /obj/effect/overmap/visitable/sector/vox_scav_ship
 	name = "small asteroid cluster"
 	desc = "Sensor array detects a small asteroid cluster."
-	in_space = 1
+	in_space = TRUE
 	icon_state = "meteor4"
 	hide_from_reports = TRUE
 	initial_generic_waypoints = list(
@@ -102,7 +105,7 @@
 
 //shuttle APC terminal kept being deleted by z level changes
 /obj/machinery/power/apc/debug/vox
-	cell_type = /obj/item/weapon/cell/infinite
+	cell_type = /obj/item/cell/infinite
 	req_access = list(access_voxship)
 
 /obj/effect/submap_landmark/joinable_submap/voxship/scavship/New()
@@ -147,8 +150,8 @@
 
 /obj/machinery/power/smes/buildable/preset/voxship/ship
 	uncreated_component_parts = list(
-		/obj/item/weapon/stock_parts/smes_coil/super_capacity = 1,
-		/obj/item/weapon/stock_parts/smes_coil/super_io = 1
+		/obj/item/stock_parts/smes_coil/super_capacity = 1,
+		/obj/item/stock_parts/smes_coil/super_io = 1
 	)
 	_input_maxed = TRUE
 	_output_maxed = TRUE

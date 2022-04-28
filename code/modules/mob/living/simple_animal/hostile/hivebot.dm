@@ -5,14 +5,9 @@
 	icon_state = "basic"
 	icon_living = "basic"
 	icon_dead = "basic"
-	health = 55
-	maxHealth = 55
-	melee_damage_lower = 2
-	melee_damage_upper = 3
-	melee_damage_flags = DAM_SHARP|DAM_EDGE
-	attacktext = "clawed"
-	projectilesound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
-	projectiletype = /obj/item/projectile/beam/smalllaser
+	health = 65
+	maxHealth = 65
+	natural_weapon = /obj/item/natural_weapon/hivebot
 	faction = "hivebot"
 	min_gas = null
 	max_gas = null
@@ -30,10 +25,17 @@
 	skin_material = null
 	skin_amount =   0
 
+	ai_holder = /datum/ai_holder/simple_animal/hivebot
+	say_list_type = /datum/say_list/hivebot
+
 /mob/living/simple_animal/hostile/hivebot/range
 	desc = "A junky looking robot with four spiky legs. It's equipped with some kind of small-bore gun."
 	ranged = 1
 	speed = 7
+	projectiletype = /obj/item/projectile/beam/smalllaser
+	base_attack_cooldown = 3 SECONDS
+
+	ai_holder = /datum/ai_holder/simple_animal/hivebot/ranged
 
 /mob/living/simple_animal/hostile/hivebot/rapid
 	ranged = 1
@@ -41,13 +43,16 @@
 
 /mob/living/simple_animal/hostile/hivebot/strong
 	desc = "A junky looking robot with four spiky legs - this one has thick armour plating."
-	health = 120
-	maxHealth = 120
+	health = 160
+	maxHealth = 160
+	melee_attack_delay = 6
 	ranged = 1
 	can_escape = 1
 	natural_armor = list(
 		melee = ARMOR_MELEE_RESISTANT
 		)
+
+	natural_weapon = /obj/item/natural_weapon/hivebot/strong
 
 /mob/living/simple_animal/hostile/hivebot/death()
 	..(null, "blows apart!")
@@ -69,13 +74,14 @@ Teleporter beacon, and its subtypes
 	health = 200
 	maxHealth = 200
 	status_flags = 0
-	anchored = 1
-	stop_automated_movement = 1
+	anchored = TRUE
 
 	var/bot_type = /mob/living/simple_animal/hostile/hivebot
-	var/bot_amt = 10
-	var/spawn_delay = 100
+	var/bot_amt = 1
+	var/spawn_delay = 10 SECONDS
 	var/spawn_time = 0
+
+	ai_holder = /datum/ai_holder/simple_animal/hivebot/tele
 
 /mob/living/simple_animal/hostile/hivebot/tele/New()
 	..()
@@ -84,6 +90,8 @@ Teleporter beacon, and its subtypes
 	smoke.start()
 	visible_message("<span class='danger'>\The [src] warps in!</span>")
 	playsound(src.loc, 'sound/effects/EMPulse.ogg', 25, 1)
+	set_AI_busy(TRUE)
+	spawn_time = world.time + spawn_delay
 
 /mob/living/simple_animal/hostile/hivebot/tele/proc/warpbots()
 	while(bot_amt > 0 && bot_type)
@@ -94,12 +102,6 @@ Teleporter beacon, and its subtypes
 	qdel(src)
 	return
 
-/mob/living/simple_animal/hostile/hivebot/tele/FindTarget()
-	if(..() && !spawn_time)
-		spawn_time = world.time + spawn_delay
-		visible_message("<span class='danger'>\The [src] turns on!</span>")
-		icon_state = "def_radar"
-	return null
 
 /mob/living/simple_animal/hostile/hivebot/tele/Life()
 	. = ..()
@@ -118,6 +120,11 @@ Teleporter beacon, and its subtypes
 /*
 Special projectiles
 */
+/obj/item/projectile/bullet/gyro/megabot
+	name = "microrocket"
+	gyro_light_impact = 1
+	distance_falloff = 1.3
+
 /obj/item/projectile/beam/megabot
 	damage = 45
 	distance_falloff = 0.5
@@ -127,6 +134,7 @@ The megabot
 */
 #define ATTACK_MODE_MELEE    "melee"
 #define ATTACK_MODE_LASER    "laser"
+#define ATTACK_MODE_ROCKET   "rocket"
 
 /mob/living/simple_animal/hostile/hivebot/mega
 	name = "hivemind"
@@ -137,11 +145,9 @@ The megabot
 	icon_dead = "megabot_dead"
 	health = 440
 	maxHealth = 440
-	melee_damage_lower = 15
-	melee_damage_upper = 19
-	melee_damage_flags = DAM_SHARP|DAM_EDGE
-	attacktext = "sawed"
+	natural_weapon = /obj/item/natural_weapon/circular_saw
 	speed = 0
+	special_attack_cooldown = 3 MINUTES
 	natural_armor = list(
 		melee = ARMOR_MELEE_RESISTANT,
 		bullet = ARMOR_BALLISTIC_PISTOL
@@ -149,6 +155,7 @@ The megabot
 	can_escape = TRUE
 	armor_type = /datum/extension/armor/toggle
 	ability_cooldown = 3 MINUTES
+	base_attack_cooldown = 2 SECONDS
 
 	pixel_x = -32
 	default_pixel_x = -32
@@ -157,9 +164,16 @@ The megabot
 	var/num_shots
 	var/deactivated
 
+/obj/item/natural_weapon/circular_saw
+	name = "giant circular saw"
+	attack_verb = list("sawed", "ripped")
+	force = 15
+	sharp = TRUE
+	edge = TRUE
+
 /mob/living/simple_animal/hostile/hivebot/mega/Initialize()
 	. = ..()
-	switch_mode(ATTACK_MODE_LASER)
+	switch_mode(ATTACK_MODE_ROCKET)
 
 /mob/living/simple_animal/hostile/hivebot/mega/Life()
 	. = ..()
@@ -167,9 +181,11 @@ The megabot
 		return
 
 	if(time_last_used_ability < world.time)
-		switch_mode(ATTACK_MODE_LASER)
+		switch_mode(ATTACK_MODE_ROCKET)
 
 /mob/living/simple_animal/hostile/hivebot/mega/emp_act(severity)
+	if (status_flags & GODMODE)
+		return
 	. = ..()
 	if(severity >= 1)
 		deactivate()
@@ -188,6 +204,8 @@ The megabot
 				overlays += image(icon, "melee")
 			if(ATTACK_MODE_LASER)
 				overlays += image(icon, "laser")
+			if(ATTACK_MODE_ROCKET)
+				overlays += image(icon, "rocket")
 
 /mob/living/simple_animal/hostile/hivebot/mega/proc/switch_mode(var/new_mode)
 	if(!new_mode || new_mode == attack_mode)
@@ -210,11 +228,20 @@ The megabot
 			num_shots = 12
 			fire_desc = "fires a laser"
 			visible_message(SPAN_MFAUNA("\The [src]'s laser cannon whines!"))
+		if(ATTACK_MODE_ROCKET)
+			attack_mode = ATTACK_MODE_ROCKET
+			ranged = TRUE
+			projectilesound = 'sound/effects/Explosion1.ogg'
+			projectiletype = /obj/item/projectile/bullet/gyro/megabot
+			num_shots = 4
+			fire_desc = "launches a microrocket"
+			time_last_used_ability = special_attack_cooldown + world.time
+			visible_message(SPAN_MFAUNA("\The [src]'s missile pod rumbles!"))
 
 	update_icon()
 
 /mob/living/simple_animal/hostile/hivebot/mega/proc/deactivate()
-	stop_automation = TRUE
+	set_AI_busy(TRUE)
 	deactivated = TRUE
 	visible_message(SPAN_MFAUNA("\The [src] clicks loudly as its lights fade and its motors grind to a halt!"))
 	update_icon()
@@ -224,7 +251,7 @@ The megabot
 	addtimer(CALLBACK(src, .proc/reactivate), 4 SECONDS)
 
 /mob/living/simple_animal/hostile/hivebot/mega/proc/reactivate()
-	stop_automation = FALSE
+	set_AI_busy(FALSE)
 	deactivated = FALSE
 	visible_message(SPAN_MFAUNA("\The [src] whirs back to life!"))
 	var/datum/extension/armor/toggle/armor = get_extension(src, /datum/extension/armor)
@@ -232,16 +259,65 @@ The megabot
 		armor.toggle(TRUE)
 	update_icon()
 
-/mob/living/simple_animal/hostile/hivebot/mega/OpenFire(target_mob)
+/mob/living/simple_animal/hostile/hivebot/mega/shoot_target(target_mob)
 	if(num_shots <= 0)
-		if(attack_mode == ATTACK_MODE_LASER)
+		if(attack_mode == ATTACK_MODE_ROCKET)
+			switch_mode(ATTACK_MODE_LASER)
+		else
 			switch_mode(ATTACK_MODE_MELEE)
-		return
 	..()
 
-/mob/living/simple_animal/hostile/hivebot/mega/Shoot(target, start, user, bullet)
-	..()
-	num_shots--
+/mob/living/simple_animal/hostile/hivebot/mega/shoot(target, start, user, bullet)
+	if (projectiletype)
+		..()
+		num_shots--
+
+/* AI */
+/datum/ai_holder/simple_animal/hivebot
+	threaten = TRUE
+	threaten_delay = 2 SECOND
+	threaten_timeout = 30 SECONDS
+
+/datum/ai_holder/simple_animal/hivebot/ranged
+	pointblank = TRUE
+
+/datum/ai_holder/simple_animal/hivebot/tele/find_target(list/possible_targets, has_targets_list)
+	. = ..()
+
+	var/mob/living/simple_animal/hostile/hivebot/tele/T = holder
+	if(..() && !T.spawn_time)
+		T.spawn_time = world.time + T.spawn_delay
+		T.visible_message(SPAN_DANGER("\The [src] turns on!"))
+		T.icon_state = "def_radar"
+	return null
+
+/* Say Lists */
+
+/datum/say_list/hivebot
+	speak = list(
+		"Sys-ys-ystem integrity at: 25%.",
+		"Divergent instances detected, resynchronizing protocols...",
+		"Hivelink corrupted, searching for secondary channels..."
+	)
+	say_threaten = list(
+		"T-t-t-target located, analyzing...",
+	 	"S-s-scanning tarrrrrget...",
+		 "Possible thrrrreat detected, obtaining classification..."
+	)
+	say_maybe_target = list("Possible threat detected. Investigating.", "Anomaly detected, commencing vis-visual sweep.", "Investigating.")
+	say_escalate = list(
+		"Target confirmed. Engaging.",
+		"Hossssstile class-classification confirmed. Pacifying.",
+		"Err-rr-ror, classification index corrupted. Assuming target as: Hostile."
+	)
+	say_stand_down = list("Visual lost.", "Error: Target lost.", "Error: Target parameter null.")
 
 #undef ATTACK_MODE_MELEE
 #undef ATTACK_MODE_LASER
+#undef ATTACK_MODE_ROCKET
+
+/obj/item/natural_weapon/hivebot
+	force = 15
+
+/obj/item/natural_weapon/hivebot/strong
+	force = 20

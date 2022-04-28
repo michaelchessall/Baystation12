@@ -119,15 +119,15 @@
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/fixedsecurity)
 "aU" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
 /obj/machinery/door/airlock/external/glass{
 	dir = 4;
 	frequency = 1379;
 	id_tag = "oldlab_interior";
 	locked = 1;
 	name = "Lab Interior Airlock"
-	},
-/obj/machinery/atmospherics/pipe/simple/visible{
-	dir = 4
 	},
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/oldlab2/Airlock)
@@ -181,7 +181,7 @@
 /area/map_template/oldlab2/recandlockers)
 "bk" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/reagent_containers/food/drinks/glass2/coffeecup/SCG{
+/obj/item/reagent_containers/food/drinks/glass2/coffeecup/SCG{
 	pixel_x = 7;
 	pixel_y = 5
 	},
@@ -221,7 +221,7 @@
 /area/map_template/oldlab2/test1)
 "bA" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/brown,
+/obj/item/bedsheet/brown,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living4)
 "bD" = (
@@ -299,7 +299,7 @@
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/test2)
 "ca" = (
-/obj/item/weapon/storage/firstaid/empty,
+/obj/item/storage/firstaid/empty,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/medical)
 "cb" = (
@@ -308,12 +308,12 @@
 /area/map_template/oldlab2/engineerhall)
 "ch" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/brown,
+/obj/item/bedsheet/brown,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living3)
 "ck" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/rd,
+/obj/item/bedsheet/rd,
 /obj/machinery/light,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living6)
@@ -337,15 +337,15 @@
 /area/map_template/oldlab2/living2)
 "cq" = (
 /obj/structure/table/woodentable,
-/obj/item/weapon/reagent_containers/food/drinks/glass2/coffeecup/SCG{
+/obj/item/reagent_containers/food/drinks/glass2/coffeecup/SCG{
 	pixel_x = 7;
 	pixel_y = 5
 	},
-/obj/item/weapon/reagent_containers/food/drinks/glass2/coffeecup/SCG{
+/obj/item/reagent_containers/food/drinks/glass2/coffeecup/SCG{
 	pixel_x = -1;
 	pixel_y = 1
 	},
-/obj/item/weapon/reagent_containers/food/drinks/glass2/coffeecup/SCG{
+/obj/item/reagent_containers/food/drinks/glass2/coffeecup/SCG{
 	pixel_x = -5;
 	pixel_y = 9
 	},
@@ -714,7 +714,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
-/obj/item/weapon/storage/toolbox,
+/obj/item/storage/toolbox,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/Engineering)
 "ec" = (
@@ -787,8 +787,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/office)
@@ -1013,7 +1012,7 @@
 /area/map_template/oldlab2/lab)
 "fn" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/yellow,
+/obj/item/bedsheet/yellow,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living6)
 "fr" = (
@@ -1221,7 +1220,7 @@
 /area/map_template/oldlab2/office)
 "gC" = (
 /obj/structure/largecrate,
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "gG" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
@@ -1324,7 +1323,6 @@
 	dir = 1
 	},
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -1347,7 +1345,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
 	},
-/obj/item/weapon/stool/padded,
+/obj/item/stool/padded,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/recandlockers)
 "hp" = (
@@ -1550,7 +1548,7 @@
 	dir = 4
 	},
 /obj/structure/largecrate,
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "iE" = (
 /obj/effect/floor_decal/industrial/warning{
@@ -1702,7 +1700,7 @@
 /area/map_template/oldlab2/engineerhall)
 "jI" = (
 /obj/structure/bed/roller/ironingboard,
-/obj/item/weapon/ironingiron,
+/obj/item/ironingiron,
 /turf/simulated/floor/tiled/freezer,
 /area/map_template/oldlab2/recandlockers)
 "jJ" = (
@@ -1723,7 +1721,7 @@
 	dir = 4
 	},
 /obj/structure/table/standard,
-/obj/item/weapon/storage/box/beakers,
+/obj/item/storage/box/beakers,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/chem)
 "jT" = (
@@ -1740,8 +1738,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/lab)
@@ -1927,7 +1924,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -2020,7 +2016,6 @@
 	},
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/wood/walnut,
@@ -2176,10 +2171,10 @@
 /obj/machinery/atmospherics/unary/vent_scrubber/on{
 	dir = 1
 	},
-/obj/item/weapon/storage/box/rxglasses,
+/obj/item/storage/box/rxglasses,
 /obj/random/firstaid,
 /obj/random/firstaid,
-/obj/item/weapon/defibrillator/compact,
+/obj/item/defibrillator/compact,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/server)
 "mh" = (
@@ -2258,7 +2253,7 @@
 /area/map_template/oldlab2/test2)
 "mF" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/storage/firstaid/surgery{
+/obj/item/storage/firstaid/surgery{
 	pixel_y = 5
 	},
 /obj/effect/floor_decal/corner/pink{
@@ -2375,7 +2370,7 @@
 "nr" = (
 /obj/machinery/light,
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/captain,
+/obj/item/bedsheet/captain,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living5)
 "ns" = (
@@ -2403,7 +2398,7 @@
 /area/map_template/oldlab2/office)
 "nw" = (
 /obj/machinery/floodlight,
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "nx" = (
 /turf/simulated/wall/titanium,
@@ -2513,10 +2508,10 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/Airlock)
 "oc" = (
-/obj/item/weapon/stock_parts/scanning_module,
-/obj/item/weapon/stock_parts/manipulator,
-/obj/item/weapon/stock_parts/manipulator,
-/obj/item/weapon/reagent_containers/dropper{
+/obj/item/stock_parts/scanning_module,
+/obj/item/stock_parts/manipulator,
+/obj/item/stock_parts/manipulator,
+/obj/item/reagent_containers/dropper{
 	pixel_y = -4
 	},
 /obj/structure/closet/crate/plastic,
@@ -2528,7 +2523,7 @@
 /obj/item/organ/internal/posibrain,
 /obj/item/organ/internal/posibrain,
 /obj/item/organ/internal/posibrain,
-/obj/item/weapon/aicard,
+/obj/item/aicard,
 /obj/item/clothing/gloves/insulated,
 /obj/item/clothing/gloves/insulated,
 /obj/item/device/multitool{
@@ -2537,8 +2532,8 @@
 /obj/item/device/multitool{
 	pixel_x = 3
 	},
-/obj/item/weapon/storage/belt/utility/full,
-/obj/item/weapon/storage/belt/utility/full,
+/obj/item/storage/belt/utility/full,
+/obj/item/storage/belt/utility/full,
 /obj/item/clothing/glasses/welding,
 /obj/item/clothing/head/welding{
 	pixel_x = -3;
@@ -2736,7 +2731,7 @@
 	dir = 4
 	},
 /obj/structure/table/standard,
-/obj/item/weapon/reagent_containers/glass/beaker/insulated/large,
+/obj/item/reagent_containers/glass/beaker/insulated/large,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/chem)
 "pj" = (
@@ -2788,7 +2783,7 @@
 /area/map_template/oldlab2/living2)
 "pr" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/rd,
+/obj/item/bedsheet/rd,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living5)
 "ps" = (
@@ -2807,7 +2802,6 @@
 "pD" = (
 /obj/machinery/atmospherics/unary/vent_pump/on,
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/tiled/techfloor,
@@ -2881,7 +2875,7 @@
 /area/map_template/oldlab2/test2)
 "qc" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/blue,
+/obj/item/bedsheet/blue,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living4)
 "qg" = (
@@ -2925,7 +2919,7 @@
 /area/map_template/oldlab2/medical)
 "qm" = (
 /obj/structure/closet/secure_closet/chemical,
-/obj/item/weapon/storage/box/pillbottles,
+/obj/item/storage/box/pillbottles,
 /obj/effect/floor_decal/industrial/outline/yellow,
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4
@@ -2962,7 +2956,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
-/obj/item/weapon/stool/padded,
+/obj/item/stool/padded,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/recandlockers)
 "qv" = (
@@ -2972,7 +2966,7 @@
 /obj/structure/table/rack{
 	dir = 4
 	},
-/obj/item/weapon/inflatable_dispenser,
+/obj/item/inflatable_dispenser,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/powerandatmos)
 "qx" = (
@@ -3022,8 +3016,7 @@
 /area/map_template/oldlab2/medical)
 "qJ" = (
 /obj/machinery/light/spot,
-/obj/vehicle/train/cargo/trolley,
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "qL" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
@@ -3178,15 +3171,14 @@
 /area/map_template/oldlab2/test1)
 "rs" = (
 /obj/machinery/access_button{
-	active_power_usage = "oldlab_airlock";
 	command = "cycle_exterior";
-	frequency = 1380;
+	frequency = 1379;
 	master_tag = "oldlab_airlock";
 	name = "interior access button";
 	pixel_x = 24;
 	pixel_y = -24
 	},
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "rt" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
@@ -3292,7 +3284,6 @@
 	},
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/white,
@@ -3401,7 +3392,7 @@
 	name = "east bump";
 	pixel_x = 24
 	},
-/obj/item/weapon/bedsheet/captain,
+/obj/item/bedsheet/captain,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living4)
 "sd" = (
@@ -3418,7 +3409,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -3864,7 +3854,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -4020,7 +4009,7 @@
 "vf" = (
 /obj/effect/floor_decal/industrial/outline/yellow,
 /obj/structure/closet/emcloset,
-/obj/item/weapon/inflatable_dispenser,
+/obj/item/inflatable_dispenser,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/hall)
 "vg" = (
@@ -4039,11 +4028,11 @@
 /area/map_template/oldlab2/Engineering)
 "vo" = (
 /obj/structure/table/steel,
-/obj/item/weapon/storage/box/detergent{
+/obj/item/storage/box/detergent{
 	pixel_x = -5;
 	pixel_y = 5
 	},
-/obj/item/weapon/storage/box/detergent{
+/obj/item/storage/box/detergent{
 	pixel_x = -3
 	},
 /turf/simulated/floor/tiled/freezer,
@@ -4079,7 +4068,6 @@
 /area/map_template/oldlab2/engineerhall)
 "vv" = (
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/tiled/white,
@@ -4241,7 +4229,7 @@
 /area/map_template/oldlab2/recandlockers)
 "wl" = (
 /obj/machinery/reagentgrinder,
-/obj/item/weapon/reagent_containers/glass/beaker/large,
+/obj/item/reagent_containers/glass/beaker/large,
 /obj/machinery/atmospherics/unary/vent_pump/on{
 	dir = 4
 	},
@@ -4286,7 +4274,7 @@
 	pixel_x = -12;
 	pixel_y = 2
 	},
-/obj/item/weapon/storage/mirror{
+/obj/item/storage/mirror{
 	pixel_x = -32
 	},
 /turf/simulated/floor/tiled/freezer,
@@ -4304,7 +4292,7 @@
 /area/map_template/oldlab2/test2)
 "wH" = (
 /obj/structure/table/standard,
-/obj/item/weapon/storage/lockbox/vials,
+/obj/item/storage/lockbox/vials,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/chem)
 "wJ" = (
@@ -4395,9 +4383,9 @@
 /obj/structure/table/rack{
 	dir = 4
 	},
-/obj/item/weapon/material/hatchet/machete,
-/obj/item/weapon/material/hatchet/machete,
-/obj/item/weapon/inflatable_dispenser,
+/obj/item/material/hatchet/machete,
+/obj/item/material/hatchet/machete,
+/obj/item/inflatable_dispenser,
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/Airlock)
@@ -4471,7 +4459,7 @@
 /obj/machinery/light/spot{
 	dir = 4
 	},
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "xy" = (
 /obj/machinery/power/smes/buildable/outpost_substation,
@@ -4790,7 +4778,7 @@
 /area/map_template/oldlab2/Engineering)
 "zv" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet,
+/obj/item/bedsheet,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living3)
 "zw" = (
@@ -4913,8 +4901,7 @@
 	},
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/lab)
@@ -4964,7 +4951,7 @@
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/lab)
 "As" = (
-/obj/item/weapon/storage/toolbox/electrical{
+/obj/item/storage/toolbox/electrical{
 	pixel_x = 1;
 	pixel_y = -1
 	},
@@ -5127,10 +5114,6 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/test1)
-"Be" = (
-/obj/vehicle/train/cargo/engine,
-/turf/simulated/floor/reinforced,
-/area/map_template/oldlab2/Airlock)
 "Bi" = (
 /turf/simulated/wall/titanium,
 /area/map_template/oldlab2/living5)
@@ -5361,14 +5344,14 @@
 /area/map_template/oldlab2/living4)
 "Cq" = (
 /obj/structure/table/rack,
-/obj/item/weapon/melee/baton/loaded,
+/obj/item/melee/baton/loaded,
 /obj/effect/floor_decal/corner/red{
 	dir = 6
 	},
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/fixedsecurity)
 "Cx" = (
-/obj/item/weapon/stool/padded,
+/obj/item/stool/padded,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
@@ -5439,7 +5422,7 @@
 	dir = 1;
 	pixel_y = -22
 	},
-/obj/item/weapon/storage/med_pouch/radiation,
+/obj/item/storage/med_pouch/radiation,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living2)
 "CV" = (
@@ -5572,7 +5555,7 @@
 	dir = 1
 	},
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/hop,
+/obj/item/bedsheet/hop,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living5)
 "DA" = (
@@ -5583,7 +5566,7 @@
 /area/map_template/oldlab2/engineerhall)
 "DB" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/reagent_containers/food/drinks/glass2/coffeecup/SCG{
+/obj/item/reagent_containers/food/drinks/glass2/coffeecup/SCG{
 	pixel_x = 7;
 	pixel_y = 5
 	},
@@ -5623,7 +5606,7 @@
 	dir = 4
 	},
 /obj/structure/table/standard,
-/obj/item/weapon/hand_labeler,
+/obj/item/hand_labeler,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/chem)
 "DH" = (
@@ -5726,7 +5709,6 @@
 	},
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/freezer,
@@ -5813,7 +5795,7 @@
 /obj/machinery/light_switch{
 	pixel_x = -24
 	},
-/obj/item/weapon/bedsheet/hop,
+/obj/item/bedsheet/hop,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living6)
 "Et" = (
@@ -6046,7 +6028,7 @@
 	dir = 4
 	},
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/storage/mre{
+/obj/item/storage/mre{
 	pixel_x = 5;
 	pixel_y = 10
 	},
@@ -6115,11 +6097,11 @@
 	dir = 4
 	},
 /obj/structure/table/standard,
-/obj/item/weapon/reagent_containers/glass/beaker/large{
+/obj/item/reagent_containers/glass/beaker/large{
 	pixel_x = 4;
 	pixel_y = 10
 	},
-/obj/item/weapon/reagent_containers/glass/beaker/insulated/large,
+/obj/item/reagent_containers/glass/beaker/insulated/large,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/chem)
 "FB" = (
@@ -6135,10 +6117,9 @@
 "FJ" = (
 /obj/machinery/atmospherics/pipe/simple/visible,
 /obj/machinery/access_button{
-	active_power_usage = "oldlab_airlock";
 	active_timers = "interior access button";
 	command = "cycle_exterior";
-	frequency = 1380;
+	frequency = 1379;
 	master_tag = "oldlab_airlock";
 	name = "exterior access button";
 	pixel_x = 24;
@@ -6176,7 +6157,7 @@
 /area/map_template/oldlab2/server)
 "FW" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/rd,
+/obj/item/bedsheet/rd,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living2)
 "FX" = (
@@ -6205,7 +6186,6 @@
 	},
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/white,
@@ -6280,7 +6260,7 @@
 /area/map_template/oldlab2/lab)
 "Gx" = (
 /obj/structure/table/steel,
-/obj/item/weapon/storage/belt/utility/full,
+/obj/item/storage/belt/utility/full,
 /obj/machinery/alarm{
 	dir = 1;
 	pixel_y = -22
@@ -6306,10 +6286,6 @@
 	},
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/server)
-"GO" = (
-/obj/vehicle/train/cargo/trolley,
-/turf/simulated/floor/reinforced,
-/area/map_template/oldlab2/Airlock)
 "GP" = (
 /obj/machinery/light{
 	dir = 1
@@ -6359,7 +6335,7 @@
 	id_tag = "oldlab_sensor_exterior";
 	pixel_y = -32
 	},
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "GX" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
@@ -6405,7 +6381,7 @@
 	dir = 4
 	},
 /obj/structure/table/standard,
-/obj/item/weapon/reagent_containers/glass/beaker/large{
+/obj/item/reagent_containers/glass/beaker/large{
 	pixel_x = -4;
 	pixel_y = 13
 	},
@@ -6441,7 +6417,7 @@
 /area/map_template/oldlab2/recandlockers)
 "Hm" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/purple,
+/obj/item/bedsheet/purple,
 /obj/machinery/light{
 	dir = 1
 	},
@@ -6462,7 +6438,7 @@
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/hall)
 "Hv" = (
-/obj/item/weapon/storage/secure/safe{
+/obj/item/storage/secure/safe{
 	pixel_x = 32
 	},
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
@@ -6489,7 +6465,7 @@
 "HC" = (
 /obj/structure/largecrate,
 /obj/machinery/light/spot,
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "HF" = (
 /obj/structure/cable/yellow{
@@ -6518,7 +6494,7 @@
 /area/map_template/oldlab2/recandlockers)
 "HT" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/orange,
+/obj/item/bedsheet/orange,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living6)
 "HU" = (
@@ -6534,9 +6510,7 @@
 	dir = 1
 	},
 /obj/structure/table/steel_reinforced,
-/obj/machinery/photocopier/faxmachine{
-	department = "Brig Chief's Office"
-	},
+/obj/machinery/photocopier/faxmachine,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/cso)
 "Ia" = (
@@ -6695,7 +6669,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -6846,7 +6819,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -7144,7 +7116,7 @@
 "Lo" = (
 /obj/structure/table/standard,
 /obj/random/medical/lite,
-/obj/item/weapon/storage/belt/medical,
+/obj/item/storage/belt/medical,
 /obj/structure/sign/warning/nosmoking_1{
 	pixel_y = 32
 	},
@@ -7161,7 +7133,7 @@
 /area/map_template/oldlab2/medical)
 "Lr" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/mime,
+/obj/item/bedsheet/mime,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living3)
 "Ls" = (
@@ -7278,7 +7250,7 @@
 /obj/effect/floor_decal/corner/blue/diagonal{
 	dir = 4
 	},
-/obj/item/weapon/stool/bar/padded,
+/obj/item/stool/bar/padded,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/mess)
 "Me" = (
@@ -7395,10 +7367,8 @@
 	pixel_y = -6
 	},
 /obj/machinery/embedded_controller/radio/airlock/airlock_controller{
-	active_power_usage = "oldlab_sensor";
 	anchor_fall = "labport_airlock";
 	dir = 8;
-	frequency = 1380;
 	id_tag = "oldlab_airlock";
 	pixel_x = 25;
 	pixel_y = 8;
@@ -7607,7 +7577,7 @@
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/mess)
 "Nz" = (
-/turf/simulated/floor/reinforced,
+/turf/simulated/floor/reinforced/airless,
 /area/map_template/oldlab2/Airlock)
 "NC" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
@@ -7632,8 +7602,7 @@
 "NH" = (
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
 /turf/simulated/floor/tiled/white,
@@ -7738,7 +7707,7 @@
 /area/map_template/oldlab2/chem)
 "Op" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/ce,
+/obj/item/bedsheet/ce,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living)
 "Or" = (
@@ -7794,8 +7763,7 @@
 "OD" = (
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/lab)
@@ -7918,7 +7886,7 @@
 /area/map_template/oldlab2/test2)
 "Ph" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/yellow,
+/obj/item/bedsheet/yellow,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living2)
 "Pk" = (
@@ -8053,7 +8021,7 @@
 /area/map_template/oldlab2/mess)
 "PU" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/folder/yellow,
+/obj/item/folder/yellow,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/cso)
 "PV" = (
@@ -8076,7 +8044,6 @@
 "Qc" = (
 /obj/machinery/atmospherics/unary/vent_scrubber/on,
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/tiled/techfloor,
@@ -8195,7 +8162,7 @@
 /area/map_template/oldlab2/test1)
 "QK" = (
 /obj/structure/table/steel,
-/obj/item/weapon/storage/toolbox,
+/obj/item/storage/toolbox,
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/oldlab2/Engineering)
 "QL" = (
@@ -8426,7 +8393,6 @@
 "Ss" = (
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -8684,7 +8650,7 @@
 /area/map_template/oldlab2/medical)
 "TD" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/purple,
+/obj/item/bedsheet/purple,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living2)
 "TK" = (
@@ -8791,9 +8757,9 @@
 /area/map_template/oldlab2/test1)
 "Um" = (
 /obj/structure/bookcase/manuals/engineering,
-/obj/item/weapon/book/manual/medical_diagnostics_manual,
-/obj/item/weapon/book/manual/stasis,
-/obj/item/weapon/book/manual/anomaly_testing,
+/obj/item/book/manual/medical_diagnostics_manual,
+/obj/item/book/manual/stasis,
+/obj/item/book/manual/anomaly_testing,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living4)
 "Un" = (
@@ -8976,7 +8942,7 @@
 /area/map_template/oldlab2/test2)
 "Vt" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/purple,
+/obj/item/bedsheet/purple,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living5)
 "Vu" = (
@@ -9067,7 +9033,7 @@
 	name = "west bump";
 	pixel_x = -24
 	},
-/obj/item/weapon/bedsheet/hos,
+/obj/item/bedsheet/hos,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living)
 "VP" = (
@@ -9132,7 +9098,7 @@
 /area/map_template/oldlab2/lab)
 "Wl" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/weapon/storage/belt/utility/full,
+/obj/item/storage/belt/utility/full,
 /obj/machinery/alarm{
 	dir = 1;
 	pixel_y = -22
@@ -9189,7 +9155,7 @@
 "Wx" = (
 /obj/structure/closet/emcloset,
 /obj/effect/floor_decal/industrial/outline/yellow,
-/obj/item/weapon/inflatable_dispenser,
+/obj/item/inflatable_dispenser,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/hall)
 "Wz" = (
@@ -9237,7 +9203,7 @@
 /area/map_template/oldlab2/cso)
 "WH" = (
 /obj/structure/bed/padded,
-/obj/item/weapon/bedsheet/hop,
+/obj/item/bedsheet/hop,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living)
 "WL" = (
@@ -9279,7 +9245,7 @@
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/oldlab2/engineerhall)
 "WW" = (
-/obj/item/weapon/stool/padded,
+/obj/item/stool/padded,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/recandlockers)
 "WX" = (
@@ -9364,7 +9330,7 @@
 /obj/effect/floor_decal/corner/grey/diagonal{
 	dir = 4
 	},
-/obj/item/weapon/storage/box/donut{
+/obj/item/storage/box/donut{
 	pixel_x = -2;
 	pixel_y = 5
 	},
@@ -9631,7 +9597,6 @@
 	},
 /obj/effect/catwalk_plated,
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/plating,
@@ -9688,10 +9653,10 @@
 	dir = 1
 	},
 /obj/structure/closet/crate/freezer,
-/obj/item/weapon/reagent_containers/ivbag/nanoblood,
-/obj/item/weapon/reagent_containers/ivbag/nanoblood,
-/obj/item/weapon/reagent_containers/ivbag/nanoblood,
-/obj/item/weapon/reagent_containers/ivbag/nanoblood,
+/obj/item/reagent_containers/ivbag/nanoblood,
+/obj/item/reagent_containers/ivbag/nanoblood,
+/obj/item/reagent_containers/ivbag/nanoblood,
+/obj/item/reagent_containers/ivbag/nanoblood,
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/medical)
 "YW" = (
@@ -9701,7 +9666,6 @@
 /obj/machinery/light,
 /obj/machinery/firealarm{
 	dir = 1;
-	pixel_x = 0;
 	pixel_y = -24
 	},
 /turf/simulated/floor/tiled/dark,
@@ -9738,8 +9702,7 @@
 	},
 /obj/machinery/firealarm{
 	dir = 8;
-	pixel_x = -24;
-	pixel_y = 0
+	pixel_x = -24
 	},
 /turf/simulated/floor/tiled/white,
 /area/map_template/oldlab2/test1)
@@ -9841,7 +9804,6 @@
 	dir = 4
 	},
 /obj/machinery/firealarm{
-	dir = 2;
 	pixel_y = 24
 	},
 /turf/simulated/floor/tiled/white,
@@ -9866,7 +9828,7 @@
 /obj/machinery/light_switch{
 	pixel_x = -24
 	},
-/obj/item/weapon/bedsheet/red,
+/obj/item/bedsheet/red,
 /turf/simulated/floor/tiled/dark,
 /area/map_template/oldlab2/living5)
 "ZZ" = (
@@ -11763,7 +11725,7 @@ Nz
 Nz
 Nz
 Nz
-GO
+Nz
 gb
 uX
 DJ
@@ -11867,7 +11829,7 @@ Nz
 Nz
 Nz
 Nz
-Be
+Nz
 gb
 gb
 aU

@@ -6,9 +6,9 @@
 	desc = "It opens and closes."
 	icon = 'icons/obj/doors/Doorint.dmi'
 	icon_state = "door1"
-	anchored = 1
+	anchored = TRUE
 	opacity = 1
-	density = 1
+	density = TRUE
 	layer = CLOSED_DOOR_LAYER
 	interact_offline = TRUE
 
@@ -83,15 +83,16 @@
 	if (turf_hand_priority)
 		set_extension(src, /datum/extension/turf_hand, turf_hand_priority)
 
+/obj/machinery/door/Initialize()
+	set_extension(src, /datum/extension/penetration, /datum/extension/penetration/proc_call, .proc/CheckPenetration)
+	. = ..()
+
 	health = maxhealth
 	update_connections(1)
 	update_icon()
 
 	update_nearby_tiles(need_rebuild=1)
 
-/obj/machinery/door/Initialize()
-	set_extension(src, /datum/extension/penetration, /datum/extension/penetration/proc_call, .proc/CheckPenetration)
-	. = ..()
 	if(autoset_access)
 #ifdef UNIT_TEST
 		if(length(req_access))
@@ -185,10 +186,10 @@
 		if (destroy_hits <= 0)
 			visible_message("<span class='danger'>\The [src.name] disintegrates!</span>")
 			switch (Proj.damage_type)
-				if(BRUTE)
+				if (DAMAGE_BRUTE)
 					new /obj/item/stack/material/steel(src.loc, 2)
 					new /obj/item/stack/material/rods(src.loc, 3)
-				if(BURN)
+				if (DAMAGE_BURN)
 					new /obj/effect/decal/cleanable/ash(src.loc) // Turn it to ashes!
 			qdel(src)
 
@@ -214,7 +215,7 @@
 // This is legacy code that should be revisited, probably by moving the bulk of the logic into here.
 /obj/machinery/door/interface_interact(user)
 	if(CanInteract(user, DefaultTopicState()))
-		return attackby(user, user)
+		return attackby(user = user)
 
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, I)
@@ -232,7 +233,7 @@
 
 		//figure out how much metal we need
 		var/amount_needed = (maxhealth - health) / DOOR_REPAIR_AMOUNT
-		amount_needed = ceil(amount_needed)
+		amount_needed = Ceil(amount_needed)
 
 		var/obj/item/stack/stack = I
 		var/transfer
@@ -243,7 +244,7 @@
 		else
 			repairing = stack.split(amount_needed)
 			if (repairing)
-				repairing.dropInto(src)
+				repairing.forceMove(src)
 				transfer = repairing.amount
 
 		if (transfer)
@@ -256,7 +257,7 @@
 			to_chat(user, "<span class='warning'>\The [src] must be closed before you can repair it.</span>")
 			return
 
-		var/obj/item/weapon/weldingtool/welder = I
+		var/obj/item/weldingtool/welder = I
 		if(welder.remove_fuel(0,user))
 			to_chat(user, "<span class='notice'>You start to fix dents and weld \the [repairing] into place.</span>")
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
@@ -265,7 +266,7 @@
 					return //the materials in the door have been removed before welding was finished.
 
 				to_chat(user, "<span class='notice'>You finish repairing the damage to \the [src].</span>")
-				health = between(health, health + repairing.amount*DOOR_REPAIR_AMOUNT, maxhealth)
+				health = clamp(health + repairing.amount * DOOR_REPAIR_AMOUNT, health, maxhealth)
 				update_icon()
 				qdel(repairing)
 				repairing = null
@@ -307,9 +308,11 @@
 		return 1
 
 /obj/machinery/door/proc/check_force(obj/item/I, mob/user)
+	if (!istype(I))
+		return FALSE
 	if (!density || user.a_intent != I_HURT)
 		return FALSE
-	if (I.damtype != BRUTE && I.damtype != BURN)
+	if (I.damtype != DAMAGE_BRUTE && I.damtype != DAMAGE_BURN)
 		return FALSE
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(src)
@@ -560,8 +563,8 @@
 // Most doors will never be deconstructed over the course of a round,
 // so as an optimization defer the creation of electronics until
 // the airlock is deconstructed
-/obj/machinery/door/proc/create_electronics(var/electronics_type = /obj/item/weapon/airlock_electronics)
-	var/obj/item/weapon/airlock_electronics/electronics = new electronics_type(loc)
+/obj/machinery/door/proc/create_electronics(var/electronics_type = /obj/item/airlock_electronics)
+	var/obj/item/airlock_electronics/electronics = new electronics_type(loc)
 	electronics.set_access(src)
 	electronics.autoset = autoset_access
 	return electronics

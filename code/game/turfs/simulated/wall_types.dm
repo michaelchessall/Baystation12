@@ -9,11 +9,11 @@
 	icon_state = "r_generic"
 
 /turf/simulated/wall/r_wall/New(var/newloc)
-	..(newloc, MATERIAL_PLASTEEL,MATERIAL_PLASTEEL) //3strong
+	..(newloc, MATERIAL_STEEL,MATERIAL_PLASTEEL) //3strong
 
 /turf/simulated/wall/r_wall/hull
 	name = "hull"
-	color = COLOR_HULL
+	color = COLOR_SOL
 
 /turf/simulated/wall/r_wall/hull/vox
 	initial_gas = list("nitrogen" = 101.38)
@@ -155,15 +155,10 @@
 /turf/simulated/wall/alium
 	icon_state = "jaggy"
 	floor_type = /turf/simulated/floor/fixed/alium
-	list/blend_objects = newlist()
+	blend_objects = newlist()
 
 /turf/simulated/wall/alium/New(var/newloc)
 	..(newloc,MATERIAL_ALIENALLOY)
-
-/turf/simulated/wall/alium/ex_act(severity)
-	if(prob(explosion_resistance))
-		return
-	..()
 
 //Cult wall
 /turf/simulated/wall/cult

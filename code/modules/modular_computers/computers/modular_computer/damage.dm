@@ -9,7 +9,7 @@
 	visible_message("\The [src] breaks apart!")
 	var/turf/newloc = get_turf(src)
 	new /obj/item/stack/material/steel(newloc, round(steel_sheet_cost/2))
-	for(var/obj/item/weapon/stock_parts/computer/H in get_all_components())
+	for(var/obj/item/stock_parts/computer/H in get_all_components())
 		uninstall_component(null, H)
 		H.forceMove(newloc)
 		if(prob(25))
@@ -26,10 +26,10 @@
 	amount = round(amount)
 	if(damage_casing)
 		damage += amount
-		damage = between(0, damage, max_damage)
+		damage = clamp(damage, 0, max_damage)
 
 	if(component_probability)
-		for(var/obj/item/weapon/stock_parts/computer/H in get_all_components())
+		for(var/obj/item/stock_parts/computer/H in get_all_components())
 			if(prob(component_probability))
 				H.take_damage(round(amount / 2))
 
@@ -50,9 +50,9 @@
 // "Brute" damage mostly damages the casing.
 /obj/item/modular_computer/bullet_act(var/obj/item/projectile/Proj)
 	switch(Proj.damage_type)
-		if(BRUTE)
+		if (DAMAGE_BRUTE)
 			take_damage(Proj.damage, Proj.damage / 2)
-		if(PAIN)
+		if (DAMAGE_PAIN)
 			take_damage(Proj.damage, Proj.damage / 3, 0)
-		if(BURN)
+		if (DAMAGE_BURN)
 			take_damage(Proj.damage, Proj.damage / 1.5)

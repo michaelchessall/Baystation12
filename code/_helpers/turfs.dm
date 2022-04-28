@@ -2,7 +2,7 @@
 // For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
 /proc/get_atom_on_turf(var/atom/movable/M)
 	var/atom/mloc = M
-	while(mloc && mloc.loc && !istype(mloc.loc, /turf/))
+	while(mloc && mloc.loc && !isturf(mloc.loc))
 		mloc = mloc.loc
 	return mloc
 
@@ -63,6 +63,12 @@
 
 /proc/is_not_space_turf(var/turf/T)
 	return !is_space_turf(T)
+
+/proc/is_open_space(turf/T)
+	return isopenspace(T)
+
+/proc/is_not_open_space(turf/T)
+	return !isopenspace(T)
 
 /proc/is_holy_turf(var/turf/T)
 	return T && T.holy
@@ -166,3 +172,26 @@
 		GLOB.mob_spawners[source] = null
 
 	return new_turf
+
+/*
+	List generation helpers
+*/
+
+/proc/get_turfs_in_range(turf/center, range, list/predicates)
+	. = list()
+
+	if (!istype(center))
+		return
+
+	for (var/turf/T in trange(range, center))
+		if (!predicates || all_predicates_true(list(T), predicates))
+			. += T
+
+/*
+	Pick helpers
+*/
+
+/proc/pick_turf_in_range(turf/center, range, list/turf_predicates)
+	var/list/turfs = get_turfs_in_range(center, range, turf_predicates)
+	if (length(turfs))
+		return pick(turfs)

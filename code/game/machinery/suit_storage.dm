@@ -21,8 +21,8 @@
 	desc = "An industrial U-Stor-It Storage unit designed to accomodate all kinds of space suits. Its on-board equipment also allows the user to decontaminate the contents through a UV-ray purging cycle. There's a warning label dangling from the control pad, reading \"STRICTLY NO BIOLOGICALS IN THE CONFINES OF THE UNIT\"."
 	icon = 'icons/obj/suitstorage.dmi'
 	icon_state = "close"
-	anchored = 1
-	density = 1
+	anchored = TRUE
+	density = TRUE
 	idle_power_usage = 50
 	active_power_usage = 200
 	interact_offline = 1
@@ -32,7 +32,7 @@
 	var/obj/item/clothing/suit/space/suit = null
 	var/obj/item/clothing/head/helmet/space/helmet = null
 	var/obj/item/clothing/shoes/magboots/boots = null
-	var/obj/item/weapon/tank/tank = null
+	var/obj/item/tank/tank = null
 	var/obj/item/clothing/mask/mask = null
 
 	var/isopen = FALSE
@@ -152,7 +152,7 @@
 	TRY_INSERT_SUIT_PIECE(suit, clothing/suit/space)
 	TRY_INSERT_SUIT_PIECE(helmet, clothing/head/helmet/space)
 	TRY_INSERT_SUIT_PIECE(boots, clothing/shoes/magboots)
-	TRY_INSERT_SUIT_PIECE(tank, weapon/tank)
+	TRY_INSERT_SUIT_PIECE(tank, tank)
 	TRY_INSERT_SUIT_PIECE(mask, clothing/mask)
 	update_icon()
 	SSnano.update_uis(src)
@@ -171,7 +171,7 @@
 	data["superuv"] = issuperUV
 	data["safeties"] = safetieson
 	data["helmet"] = helmet
-	data["suit"] = suit 
+	data["suit"] = suit
 	data["boots"] = boots
 	data["tank"] = tank
 	data["mask"] = mask
@@ -328,7 +328,7 @@
 
 /obj/machinery/suit_storage_unit/proc/uv_burn()
 	if(occupant)
-		occupant.apply_damage(50, IRRADIATE, damage_flags = DAM_DISPERSED)
+		occupant.apply_damage(50, DAMAGE_RADIATION, damage_flags = DAMAGE_FLAG_DISPERSED)
 		var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in occupant.internal_organs
 		if(!rad_organ)
 			if(occupant.can_feel_pain())

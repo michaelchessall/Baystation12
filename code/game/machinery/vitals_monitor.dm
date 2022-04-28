@@ -120,8 +120,8 @@
 	if(victim)
 		update_victim()
 	else if(ishuman(over_object))
-		update_victim(over_object)	
-	else if(istype(over_object, /obj/machinery/optable/))
+		update_victim(over_object)
+	else if(istype(over_object, /obj/machinery/optable))
 		var/obj/machinery/optable/new_table_connection = over_object
 		update_optable(new_table_connection)
 
@@ -249,15 +249,15 @@
 		read_alerts = !read_alerts
 		to_chat(user, SPAN_NOTICE("You turn the alert reader on \the [src] [read_alerts ? "on" : "off"]."))
 
-/obj/item/weapon/stock_parts/circuitboard/vitals_monitor
+/obj/item/stock_parts/circuitboard/vitals_monitor
 	name = "circuit board (Vitals Monitor)"
 	build_path = /obj/machinery/vitals_monitor
 	board_type = "machine"
 	req_components = list(
-		/obj/item/weapon/stock_parts/console_screen = 1)
+		/obj/item/stock_parts/console_screen = 1)
 	additional_spawn_components = list(
-		/obj/item/weapon/stock_parts/power/battery/buildable/stock = 1,
-		/obj/item/weapon/cell/high = 1
+		/obj/item/stock_parts/power/battery/buildable/stock = 1,
+		/obj/item/cell/high = 1
 	)
 
 #undef PULSE_ALERT

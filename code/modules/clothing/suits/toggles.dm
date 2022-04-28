@@ -50,7 +50,7 @@
 				to_chat(H, "<span class='warning'>You're already wearing something on your head!</span>")
 				return
 			else
-				H.equip_to_slot_if_possible(hood,slot_head,0,0,1)
+				H.equip_to_slot_if_possible(hood, slot_head)
 				suittoggled = 1
 				update_icon()
 				H.update_inv_wear_suit()
@@ -77,7 +77,7 @@
 		)
 	action_button_name = "Toggle Winter Hood"
 	hoodtype = /obj/item/clothing/head/winterhood
-	allowed = list (/obj/item/weapon/pen, /obj/item/weapon/paper, /obj/item/device/flashlight,/obj/item/weapon/storage/fancy/cigarettes, /obj/item/weapon/storage/box/matches, /obj/item/weapon/reagent_containers/food/drinks/flask)
+	allowed = list (/obj/item/pen, /obj/item/paper, /obj/item/device/flashlight,/obj/item/storage/fancy/cigarettes, /obj/item/storage/box/matches, /obj/item/reagent_containers/food/drinks/flask)
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/head/winterhood

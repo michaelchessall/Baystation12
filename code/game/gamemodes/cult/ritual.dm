@@ -1,4 +1,4 @@
-/obj/item/weapon/book/tome
+/obj/item/book/tome
 	name = "arcane tome"
 	icon = 'icons/obj/weapons/melee_physical.dmi'
 	icon_state = "tome"
@@ -8,20 +8,35 @@
 	unique = 1
 	carved = 2 // Don't carve it
 
-/obj/item/weapon/book/tome/attack_self(var/mob/user)
+/obj/item/book/tome/attack_self(mob/living/user)
 	if(!iscultist(user))
-		to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
+		to_chat(user, SPAN_NOTICE("\The [src] seems full of illegible scribbles. Is this a joke?"))
 	else
 		to_chat(user, "Hold \the [src] in your hand while drawing a rune to use it.")
 
-/obj/item/weapon/book/tome/examine(mob/user)
+/obj/item/book/tome/examine(mob/user)
 	. = ..()
 	if(!iscultist(user))
 		to_chat(user, "An old, dusty tome with frayed edges and a sinister looking cover.")
 	else
 		to_chat(user, "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though.")
 
-/obj/item/weapon/book/tome/afterattack(var/atom/A, var/mob/user, var/proximity)
+/obj/item/book/tome/attack(mob/living/M, mob/living/user)
+	if (user.a_intent != I_HELP || user.zone_sel.selecting != BP_EYES)
+		return ..()
+	user.visible_message(
+		SPAN_NOTICE("\The [user] shows \the [src] to \the [M]."),
+		SPAN_NOTICE("You open up \the [src] and show it to \the [M].")
+	)
+	if (iscultist(M))
+		if (user != M)
+			to_chat(user, SPAN_NOTICE("But they already know all there is to know."))
+		to_chat(M, SPAN_NOTICE("But you already know all there is to know."))
+	else
+		to_chat(M, SPAN_NOTICE("\The [src] seems full of illegible scribbles. Is this a joke?"))
+	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+
+/obj/item/book/tome/afterattack(var/atom/A, var/mob/user, var/proximity)
 	if(!proximity || !iscultist(user))
 		return
 	if(A.reagents && A.reagents.has_reagent(/datum/reagent/water/holywater))
@@ -34,7 +49,7 @@
 	var/has_tome = 0
 	var/has_robes = 0
 	var/cult_ground = 0
-	if(istype(get_active_hand(), /obj/item/weapon/book/tome) || istype(get_inactive_hand(), /obj/item/weapon/book/tome))
+	if(istype(get_active_hand(), /obj/item/book/tome) || istype(get_inactive_hand(), /obj/item/book/tome))
 		has_tome = 1
 	else if(tome_required && mob_needs_tome())
 		to_chat(src, "<span class='warning'>This rune is too complex to draw by memory, you need to have a tome in your hand to draw it.</span>")
@@ -138,7 +153,7 @@
 /mob/living/carbon/human/get_rune_color()
 	return species.blood_color
 
-var/list/Tier1Runes = list(
+var/global/list/Tier1Runes = list(
 	/mob/proc/convert_rune,
 	/mob/proc/teleport_rune,
 	/mob/proc/tome_rune,
@@ -152,7 +167,7 @@ var/list/Tier1Runes = list(
 	/mob/proc/reveal
 	)
 
-var/list/Tier2Runes = list(
+var/global/list/Tier2Runes = list(
 	/mob/proc/armor_rune,
 	/mob/proc/offering_rune,
 	/mob/proc/drain_rune,
@@ -160,7 +175,7 @@ var/list/Tier2Runes = list(
 	/mob/proc/massdefile_rune
 	)
 
-var/list/Tier3Runes = list(
+var/global/list/Tier3Runes = list(
 	/mob/proc/weapon_rune,
 	/mob/proc/shell_rune,
 	/mob/proc/bloodboil_rune,
@@ -168,7 +183,7 @@ var/list/Tier3Runes = list(
 	/mob/proc/revive_rune
 )
 
-var/list/Tier4Runes = list(
+var/global/list/Tier4Runes = list(
 	/mob/proc/tearreality_rune
 	)
 

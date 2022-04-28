@@ -1,7 +1,7 @@
 // This system is used to grab a ghost from observers with the required preferences
 // and lack of bans set. See posibrain.dm for an example of how they are called/used.
 
-var/list/ghost_traps
+var/global/list/ghost_traps
 
 /proc/get_ghost_trap(var/trap_key)
 	if(!ghost_traps)
@@ -211,12 +211,12 @@ var/list/ghost_traps
 	minutes_since_death = DRONE_SPAWN_DELAY
 	..()
 
-datum/ghosttrap/drone/assess_candidate(var/mob/observer/ghost/candidate, var/mob/target)
+/datum/ghosttrap/drone/assess_candidate(var/mob/observer/ghost/candidate, var/mob/target)
 	. = ..()
 	if(. && !target.can_be_possessed_by(candidate))
 		return 0
 
-datum/ghosttrap/drone/transfer_personality(var/mob/candidate, var/mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/drone/transfer_personality(var/mob/candidate, var/mob/living/silicon/robot/drone/drone)
 	if(!assess_candidate(candidate))
 		return 0
 	drone.transfer_personality(candidate.client)
@@ -231,10 +231,10 @@ datum/ghosttrap/drone/transfer_personality(var/mob/candidate, var/mob/living/sil
 	ghost_trap_role = "pAI"
 	list_as_special_role = TRUE
 
-datum/ghosttrap/pai/assess_candidate(var/mob/observer/ghost/candidate, var/mob/target)
+/datum/ghosttrap/pai/assess_candidate(var/mob/observer/ghost/candidate, var/mob/target)
 	return 0
 
-datum/ghosttrap/pai/transfer_personality(var/mob/candidate, var/mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/pai/transfer_personality(var/mob/candidate, var/mob/living/silicon/robot/drone/drone)
 	return 0
 
 /******************
@@ -263,12 +263,15 @@ datum/ghosttrap/pai/transfer_personality(var/mob/candidate, var/mob/living/silic
 /datum/ghosttrap/cult/welcome_candidate(var/mob/target)
 	var/obj/item/device/soulstone/S = target.loc
 	if(istype(S))
-		if(S.is_evil)
-			GLOB.cult.add_antagonist(target.mind)
-			to_chat(target, "<b>Remember, you serve the one who summoned you first, and the cult second.</b>")
-		else
-			to_chat(target, "<b>This soultone has been purified. You do not belong to the cult.</b>")
-			to_chat(target, "<b>Remember, you only serve the one who summoned you.</b>")
+		switch (S.owner_flag)
+			if (SOULSTONE_OWNER_CULT)
+				GLOB.cult.add_antagonist(target.mind)
+				to_chat(target, "<b>Remember, you serve the one who summoned you first, and the cult second.</b>")
+			if (SOULSTONE_OWNER_WIZARD)
+				to_chat(target, "<b>Remember, you only serve the wizard who summoned you.</b>")
+			else
+				to_chat(target, "<b>This soultone has been purified. You do not belong to the cult.</b>")
+				to_chat(target, "<b>Remember, you only serve the one who summoned you.</b>")
 
 /datum/ghosttrap/cult/shade
 	object = "soul stone"

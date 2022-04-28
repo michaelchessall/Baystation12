@@ -2,7 +2,7 @@
 	name = "bolt of change"
 	icon_state = "ice_1"
 	damage = 0
-	damage_type = BURN
+	damage_type = DAMAGE_BURN
 	damage_flags = 0
 	nodamage = TRUE
 
@@ -22,7 +22,7 @@
 				qdel(Robot.mmi)
 		else
 			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
+				if(istype(W, /obj/item/implant))	//TODO: Carn. give implants a dropped() or something
 					qdel(W)
 					continue
 				M.drop_from_inventory(W)

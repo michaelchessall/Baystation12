@@ -1,11 +1,11 @@
 /obj/item/device/personal_shield
 	name = "personal shield"
 	desc = "Truly a life-saver: this device protects its user from being hit by objects moving very, very fast, as long as it holds a charge."
-	icon = 'icons/obj/device.dmi'
+	icon = 'icons/obj/batterer.dmi'
 	icon_state = "battereroff"
 	slot_flags = SLOT_BELT
 	var/open = FALSE
-	var/obj/item/weapon/cell/power_cell = /obj/item/weapon/cell/high
+	var/obj/item/cell/power_cell = /obj/item/cell/high
 	var/shield_type = /obj/aura/personal_shield/device
 	var/shield_power_cost = 1000
 	var/obj/aura/personal_shield/device/shield
@@ -47,7 +47,7 @@
 	to_chat(user, "The internal capacitor currently has [round(currently_stored_power/max_stored_power * 100)]% charge.")
 
 /obj/item/device/personal_shield/attackby(var/obj/item/W, var/mob/user)
-	if(istype(W, /obj/item/weapon/cell))
+	if(istype(W, /obj/item/cell))
 		if(!open)
 			to_chat(user, SPAN_WARNING("\The [src] needs to be open first."))
 		else if(power_cell)
@@ -76,7 +76,7 @@
 	if(open && (loc == user))
 		if(power_cell)
 			user.visible_message("\The [user] removes \the [power_cell] from \the [src].", SPAN_NOTICE("You remove \the [power_cell] from \the [src]."))
-			turn_off()	
+			turn_off()
 			user.put_in_active_hand(power_cell)
 			on_remove_cell()
 		else
@@ -156,7 +156,7 @@
 
 	currently_stored_power -= shield_power_cost
 	START_PROCESSING(SSobj, src)
-	
+
 	if(currently_stored_power < shield_power_cost)
 		enable_when_powered = TRUE
 		return FALSE

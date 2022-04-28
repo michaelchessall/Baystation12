@@ -1,16 +1,19 @@
 /obj/effect/mine
 	name = "Mine"
 	desc = "I Better stay away from that thing."
-	density = 1
-	anchored = 1
+	density = TRUE
+	anchored = TRUE
 	layer = OBJ_LAYER
 	icon = 'icons/obj/weapons/other.dmi'
 	icon_state = "uglymine"
 	var/triggerproc = "explode" //name of the proc thats called when the mine is triggered
 	var/triggered = 0
 
-/obj/effect/mine/New()
+
+/obj/effect/mine/Initialize()
+	. = ..()
 	icon_state = "uglyminearmed"
+
 
 /obj/effect/mine/Crossed(AM as mob|obj)
 	Bumped(AM)

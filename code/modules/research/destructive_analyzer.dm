@@ -17,9 +17,12 @@ Note: Must be placed within 3 tiles of the R&D Console
 	active_power_usage = 2500
 	construct_state = /decl/machine_construction/default/panel_closed
 
+	machine_name = "destructive analyzer"
+	machine_desc = "Breaks down objects into their component parts, gaining new information in the process. Part of an R&D network."
+
 /obj/machinery/r_n_d/destructive_analyzer/RefreshParts()
 	var/T = 0
-	for(var/obj/item/weapon/stock_parts/S in src)
+	for(var/obj/item/stock_parts/S in src)
 		T += S.rating
 	decon_mod = min(T * 0.1, 3)
 	..()
@@ -81,5 +84,9 @@ Note: Must be placed within 3 tiles of the R&D Console
 		spawn(10)
 			update_icon()
 			busy = 0
+
+			if (linked_console.quick_deconstruct)
+				linked_console.deconstruct(weakref(user))
+
 		return 1
 	return

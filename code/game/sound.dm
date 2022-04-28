@@ -75,7 +75,7 @@ GLOBAL_LIST_INIT(tray_hit_sound,list('sound/items/trayhit1.ogg', 'sound/items/tr
 			if(T && T.z == turf_source.z && (!is_ambiance || M.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))
 				M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, is_global, extrarange)
 
-var/const/FALLOFF_SOUNDS = 0.5
+var/global/const/FALLOFF_SOUNDS = 0.5
 
 /mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange)
 	if(!src.client || ear_deaf > 0)	return
@@ -134,7 +134,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 
 	if(!is_global)
 
-		if(istype(src,/mob/living/))
+		if(istype(src,/mob/living))
 			var/mob/living/carbon/M = src
 			if (istype(M) && M.hallucination_power > 50 && M.chem_effects[CE_MIND] < 1)
 				S.environment = PSYCHOTIC
@@ -163,8 +163,9 @@ var/const/FALLOFF_SOUNDS = 0.5
 	sound_to(src, S)
 
 /client/proc/playtitlemusic()
-	if(get_preference_value(/datum/client_preference/play_lobby_music) == GLOB.PREF_YES)
-		GLOB.using_map.lobby_track.play_to(src)
+	if (get_preference_value(/datum/client_preference/play_lobby_music) == GLOB.PREF_YES)
+		sound_to(src, GLOB.using_map.lobby_track.get_sound())
+		to_chat(src, GLOB.using_map.lobby_track.get_info())
 
 /proc/get_rand_frequency()
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.

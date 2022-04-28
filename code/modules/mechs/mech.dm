@@ -12,6 +12,7 @@
 	status_flags = PASSEMOTES
 	a_intent =     I_HURT
 	mob_size =     MOB_LARGE
+	mob_flags = MOB_FLAG_UNPINNABLE
 
 	meat_type = null
 	meat_amount = 0
@@ -19,6 +20,8 @@
 	skin_amount = 0
 	bone_material = null
 	bone_amount = 0
+
+	can_be_buckled = FALSE
 
 	var/emp_damage = 0
 
@@ -29,7 +32,7 @@
 	var/mech_step_sound = 'sound/mecha/mechstep.ogg'
 
 	// Access updating/container.
-	var/obj/item/weapon/card/id/access_card
+	var/obj/item/card/id/access_card
 	var/list/saved_access = list()
 	var/sync_access = 1
 
@@ -69,6 +72,16 @@
 	var/obj/screen/exosuit/health/hud_health
 	var/obj/screen/exosuit/toggle/hatch_open/hud_open
 	var/obj/screen/exosuit/power/hud_power
+	var/obj/screen/exosuit/heat/hud_heat
+	var/obj/screen/exosuit/toggle/power_control/hud_power_control
+	var/obj/screen/exosuit/toggle/camera/hud_camera
+	//POWER
+	var/power = MECH_POWER_OFF
+
+/mob/living/exosuit/MayZoom()
+	if(head?.vision_flags)
+		return FALSE
+	return TRUE
 
 /mob/living/exosuit/is_flooded(lying_mob, absolute)
 	. = (body && body.pilot_coverage >= 100 && hatch_closed) ? FALSE : ..()
@@ -136,6 +149,12 @@
 		pilot.forceMove(get_turf(src))
 	pilots = null
 
+	hud_health = null
+	hud_open = null
+	hud_power = null
+	hud_power_control = null
+	hud_camera = null
+
 	for(var/thing in hud_elements)
 		qdel(thing)
 	hud_elements.Cut()
@@ -186,7 +205,7 @@
 	to_chat(user, "It menaces with reinforcements of [material].")
 
 /mob/living/exosuit/return_air()
-	return (body && body.pilot_coverage >= 100 && hatch_closed) ? body.cockpit : loc.return_air()
+	return (body && body.pilot_coverage >= 100 && hatch_closed && body.cockpit) ? body.cockpit : loc.return_air()
 
 /mob/living/exosuit/GetIdCard()
 	return access_card
@@ -196,6 +215,22 @@
 	if(.)
 		update_pilots()
 
-
-
-
+/mob/living/exosuit/proc/toggle_power(var/mob/user)
+	if(power == MECH_POWER_TRANSITION)
+		to_chat(user, SPAN_NOTICE("Power transition in progress. Please wait."))
+	else if(power == MECH_POWER_ON) //Turning it off is instant
+		playsound(src, 'sound/mecha/mech-shutdown.ogg', 100, 0)
+		power = MECH_POWER_OFF
+	else if(get_cell(TRUE))
+		//Start power up sequence
+		power = MECH_POWER_TRANSITION
+		playsound(src, 'sound/mecha/powerup.ogg', 50, 0)
+		if(user.do_skilled(1.5 SECONDS, SKILL_MECH, src, 0.5) && power == MECH_POWER_TRANSITION)
+			playsound(src, 'sound/mecha/nominal.ogg', 50, 0)
+			power = MECH_POWER_ON
+		else
+			to_chat(user, SPAN_WARNING("You abort the powerup sequence."))
+			power = MECH_POWER_OFF
+		hud_power_control?.queue_icon_update()
+	else
+		to_chat(user, SPAN_WARNING("Error: No power cell was detected."))

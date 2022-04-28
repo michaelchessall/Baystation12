@@ -35,7 +35,8 @@
 	id = "awaysite_bearcat_wreck"
 	description = "A wrecked light freighter."
 	suffixes = list("bearcat/bearcat-1.dmm", "bearcat/bearcat-2.dmm")
-	cost = 1
+	spawn_cost = 1
+	player_cost = 4
 	shuttles_to_initialise = list(/datum/shuttle/autodock/ferry/lift)
 	area_usage_test_exempted_root_areas = list(/area/ship)
 	apc_test_exempt_areas = list(
@@ -72,7 +73,7 @@
 	icon_state = "tiny"
 	icon_keyboard = "tiny_keyboard"
 	icon_screen = "lift"
-	density = 0
+	density = FALSE
 
 /obj/effect/shuttle_landmark/lift/top
 	name = "Top Deck"
@@ -86,7 +87,7 @@
 	base_turf = /turf/simulated/floor
 
 /obj/machinery/power/apc/derelict
-	cell_type = /obj/item/weapon/cell/crap/empty
+	cell_type = /obj/item/cell/crap/empty
 	locked = 0
 	coverlocked = 0
 
@@ -98,12 +99,15 @@
 
 /obj/effect/landmark/deadcap
 	name = "Dead Captain"
-	delete_me = 1
 
 /obj/effect/landmark/deadcap/Initialize()
+	..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/landmark/deadcap/LateInitialize()
 	var/turf/T = get_turf(src)
 	var/mob/living/carbon/human/corpse = new(T)
-	scramble(1,corpse,100)
+	scramble(1, corpse, 100)
 	corpse.real_name = "Captain"
 	corpse.name = "Captain"
 	var/decl/hierarchy/outfit/outfit = outfit_by_type(/decl/hierarchy/outfit/deadcap)
@@ -111,9 +115,9 @@
 	corpse.adjustOxyLoss(corpse.maxHealth)
 	corpse.setBrainLoss(corpse.maxHealth)
 	var/obj/structure/bed/chair/C = locate() in T
-	if(C)
+	if (C)
 		C.buckle_mob(corpse)
-	. = ..()
+	qdel(src)
 
 /decl/hierarchy/outfit/deadcap
 	name = "Derelict Captain"
@@ -131,5 +135,5 @@
 			uniform.attach_accessory(null, eyegore)
 		else
 			qdel(eyegore)
-	var/obj/item/weapon/cell/super/C = new()
+	var/obj/item/cell/super/C = new()
 	H.put_in_any_hand_if_possible(C)

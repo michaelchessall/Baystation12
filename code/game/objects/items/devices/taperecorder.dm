@@ -1,13 +1,14 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
 	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
+	icon = 'icons/obj/tape_recorder.dmi'
 	icon_state = "taperecorder"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 
 	matter = list(MATERIAL_ALUMINIUM = 60,MATERIAL_GLASS = 30)
 
-	var/emagged = 0.0
+	var/emagged = FALSE
 	var/recording = 0.0
 	var/playing = 0.0
 	var/playsleepseconds = 0.0
@@ -130,8 +131,8 @@
 		mytape.record_noise("[strip_html_properly(recordedtext)]")
 
 /obj/item/device/taperecorder/emag_act(var/remaining_charges, var/mob/user)
-	if(emagged == 0)
-		emagged = 1
+	if(!emagged)
+		emagged = TRUE
 		recording = 0
 		to_chat(user, "<span class='warning'>PZZTTPFFFT</span>")
 		update_icon()
@@ -341,15 +342,16 @@
 		return
 
 	to_chat(usr, "<span class='notice'>Transcript printed.</span>")
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
 	var/t1 = "<B>Transcript:</B><BR><BR>"
 	for(var/i=1,mytape.storedinfo.len >= i,i++)
 		var/printedmessage = mytape.storedinfo[i]
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	P.info = t1
-	P.SetName("Transcript")
+	P.set_content(t1, "Transcript", FALSE)
+	usr.put_in_hands(P)
+	playsound(src, "sound/machines/dotprinter.ogg", 30)
 	canprint = 0
 	sleep(300)
 	canprint = 1
@@ -381,6 +383,7 @@
 /obj/item/device/tape
 	name = "tape"
 	desc = "A magnetic tape that can hold up to ten minutes of content."
+	icon = 'icons/obj/tape_recorder.dmi'
 	icon_state = "tape_white"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_TINY
@@ -444,7 +447,7 @@
 			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
 			fix()
 		return
-	else if(istype(I, /obj/item/weapon/pen))
+	else if(istype(I, /obj/item/pen))
 		if(loc == user)
 			var/new_name = input(user, "What would you like to label the tape?", "Tape labeling") as null|text
 			if(isnull(new_name)) return
@@ -496,7 +499,7 @@
 		var/index = text2num(href_list["cut_after"])
 		if(index >= timestamp.len)
 			return
-		
+
 		to_chat(user, "<span class='notice'>You remove part of the tape off.</span>")
 		get_loose_tape(user, index)
 		cut(user)
@@ -525,6 +528,7 @@
 /obj/item/device/tape/loose
 	name = "magnetic tape"
 	desc = "Quantum-enriched self-repairing nanotape, used for magnetic storage of information."
+	icon = 'icons/obj/tape_recorder.dmi'
 	icon_state = "magtape"
 	ruined = 1
 

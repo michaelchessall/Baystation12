@@ -8,7 +8,7 @@
 	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/suit/trenchcoat
-	allowed_roles = list(/datum/job/assistant, /datum/job/bartender, /datum/job/detective, /datum/job/merchant, /datum/job/submap/bearcat_captain, /datum/job/submap/bearcat_crewman, /datum/job/submap/CTI_pilot, /datum/job/submap/CTI_engineer, /datum/job/submap/CTI_Undergraduate_Xenoscience_Researcher,  /datum/job/submap/colonist, /datum/job/submap/pod)
+	allowed_roles = list(/datum/job/assistant, /datum/job/detective, /datum/job/merchant, /datum/job/submap/bearcat_captain, /datum/job/submap/bearcat_crewman, /datum/job/submap/colonist, /datum/job/submap/pod)
 	allowed_branches = CIVILIAN_BRANCHES
 
 /datum/gear/suit/poncho
@@ -70,6 +70,20 @@
 	path = /obj/item/clothing/suit/storage/toggle/labcoat/science/ec
 	allowed_roles = DOCTOR_ROLES
 	allowed_branches = list(/datum/mil_branch/expeditionary_corps)
+
+/datum/gear/suit/labcoat_cmo
+	display_name = "labcoat, chief medical officer"
+	allowed_roles = list(
+		/datum/job/cmo
+	)
+	path = /obj/item/clothing/suit/storage/toggle/labcoat
+
+/datum/gear/suit/labcoat_cmo/New()
+	..()
+	var/list/options = list()
+	options["chief medical officer's labcoat"] = /obj/item/clothing/suit/storage/toggle/labcoat/cmo
+	options["chief medical officer's command labcoat"] = /obj/item/clothing/suit/storage/toggle/labcoat/cmoalt
+	gear_tweaks += new/datum/gear_tweak/path(options)
 
 /datum/gear/suit/labcoat_ec_cso
 	display_name = "labcoat, chief science officer, Expeditionary Corps"

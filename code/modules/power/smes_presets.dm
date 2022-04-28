@@ -1,4 +1,4 @@
-/obj/machinery/power/smes/buildable/preset/
+/obj/machinery/power/smes/buildable/preset
 	var/_fully_charged = FALSE
 	var/_input_maxed = FALSE
 	var/_input_on = FALSE
@@ -25,7 +25,7 @@
 
 /obj/machinery/power/smes/buildable/preset/admin
 	uncreated_component_parts = list(
-		/obj/item/weapon/stock_parts/smes_coil/advanced = 4
+		/obj/item/stock_parts/smes_coil/advanced = 4
 	)
 	_input_maxed = TRUE
 	_output_maxed = TRUE

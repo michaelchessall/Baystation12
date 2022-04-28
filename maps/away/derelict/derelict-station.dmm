@@ -72,7 +72,7 @@
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "ai" = (
-/obj/item/weapon/cell/standard,
+/obj/item/cell/standard,
 /turf/simulated/floor/plating,
 /area/derelict/ship)
 "aj" = (
@@ -117,8 +117,7 @@
 /area/derelict/ship)
 "aq" = (
 /obj/structure/shuttle/engine/heater{
-	dir = 4;
-	icon_state = "heater"
+	dir = 4
 	},
 /obj/structure/window/reinforced{
 	dir = 8
@@ -127,13 +126,12 @@
 /area/derelict/ship)
 "ar" = (
 /obj/structure/shuttle/engine/propulsion{
-	dir = 4;
-	icon_state = "propulsion"
+	dir = 4
 	},
 /turf/space,
 /area/derelict/ship)
 "as" = (
-/obj/item/weapon/scalpel,
+/obj/item/scalpel,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "at" = (
@@ -199,7 +197,7 @@
 /area/derelict/ship)
 "aB" = (
 /obj/structure/table/standard,
-/obj/item/weapon/cell/standard,
+/obj/item/cell/standard,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "aC" = (
@@ -207,7 +205,7 @@
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "aD" = (
-/obj/item/weapon/cell/hyper,
+/obj/item/cell/hyper,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "aE" = (
@@ -320,7 +318,7 @@
 /area/derelict/ship)
 "aT" = (
 /obj/structure/bed,
-/obj/item/weapon/bedsheet,
+/obj/item/bedsheet,
 /obj/structure/window/reinforced{
 	dir = 8
 	},
@@ -378,7 +376,7 @@
 /area/derelict/ship)
 "bb" = (
 /obj/structure/table/standard,
-/obj/item/weapon/tank/oxygen,
+/obj/item/tank/oxygen,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "bc" = (
@@ -467,7 +465,7 @@
 /area/derelict/ship)
 "bs" = (
 /obj/structure/bed,
-/obj/item/weapon/bedsheet,
+/obj/item/bedsheet,
 /obj/structure/window/reinforced{
 	dir = 4
 	},
@@ -580,7 +578,7 @@
 /area/constructionsite/bridge)
 "bP" = (
 /obj/structure/table/standard,
-/obj/item/weapon/paper{
+/obj/item/paper/spacer{
 	info = "\\\[center]\\\[b]ATTN: Regarding Meteor Storms\\\[/b]\[/center]\\\[br]\\\[br]We've recently heard mutterings from the Atmospheric Technicians that the meteor showers in this sector are becoming too much. However, this should be disregarded.\\\[br]\\\[br] High Command has assured us that our shields can easily keep pace with any meteor storm and then some. Any uneasiness the crew may feel should be disspelled swiftly. Thank you.";
 	name = "ATTN: Regarding Meteor Storms"
 	},
@@ -608,23 +606,23 @@
 /area/derelict/ship)
 "bU" = (
 /obj/structure/table/rack,
-/obj/item/weapon/tank/emergency/oxygen,
-/obj/item/weapon/tank/emergency/oxygen,
-/obj/item/weapon/tank/emergency/oxygen,
-/obj/item/weapon/tank/emergency/oxygen,
+/obj/item/tank/oxygen_emergency,
+/obj/item/tank/oxygen_emergency,
+/obj/item/tank/oxygen_emergency,
+/obj/item/tank/oxygen_emergency,
 /obj/random/tank,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "bV" = (
 /obj/structure/table/rack,
 /obj/item/clothing/mask/breath,
-/obj/item/weapon/cell/standard,
+/obj/item/cell/standard,
 /obj/random/hardsuit,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
 "bW" = (
 /obj/structure/table/rack,
-/obj/item/weapon/storage/toolbox/syndicate,
+/obj/item/storage/toolbox/syndicate,
 /obj/random/maintenance,
 /turf/simulated/floor/tiled,
 /area/derelict/ship)
@@ -649,7 +647,7 @@
 /turf/simulated/floor/plating,
 /area/derelict/ship)
 "bZ" = (
-/obj/item/weapon/cell/hyper,
+/obj/item/cell/hyper,
 /turf/simulated/floor/plating,
 /area/derelict/ship)
 "ca" = (
@@ -755,8 +753,7 @@
 /obj/structure/cable{
 	d1 = 4;
 	d2 = 8;
-	icon_state = "4-8";
-	pixel_x = 0
+	icon_state = "4-8"
 	},
 /turf/simulated/floor/plating,
 /area/derelict/ship)
@@ -845,7 +842,7 @@
 /area/constructionsite/hallway/fore)
 "cJ" = (
 /obj/structure/table/standard,
-/obj/item/weapon/screwdriver,
+/obj/item/screwdriver,
 /obj/machinery/light,
 /obj/random/maintenance,
 /turf/simulated/floor/tiled,
@@ -861,7 +858,7 @@
 /area/derelict/ship)
 "cM" = (
 /obj/structure/bookcase,
-/obj/item/weapon/book/manual/excavation,
+/obj/item/book/manual/excavation,
 /turf/simulated/floor/airless,
 /area/constructionsite/hallway/fore)
 "cN" = (
@@ -879,7 +876,7 @@
 /area/constructionsite/hallway/fore)
 "cQ" = (
 /obj/structure/bookcase,
-/obj/item/weapon/book/manual/ripley_build_and_repair,
+/obj/item/book/manual/ripley_build_and_repair,
 /turf/simulated/floor/airless,
 /area/constructionsite/hallway/fore)
 "cR" = (
@@ -966,7 +963,7 @@
 /area/constructionsite/hallway/fore)
 "dc" = (
 /obj/structure/table/marble,
-/obj/item/weapon/material/kitchen/rollingpin,
+/obj/item/material/kitchen/rollingpin,
 /turf/simulated/floor/airless,
 /area/constructionsite/hallway/fore)
 "dd" = (
@@ -986,7 +983,7 @@
 /area/constructionsite/hallway/fore)
 "dg" = (
 /obj/structure/bookcase/manuals/medical,
-/obj/item/weapon/book/manual/nuclear,
+/obj/item/book/manual/nuclear,
 /turf/simulated/floor/airless{
 	icon_state = "dmg2"
 	},
@@ -1251,12 +1248,10 @@
 "ej" = (
 /obj/machinery/shieldgen,
 /obj/structure/window/basic{
-	dir = 8;
-	icon_state = "window"
+	dir = 8
 	},
 /obj/structure/window/basic{
-	dir = 1;
-	icon_state = "window"
+	dir = 1
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1264,12 +1259,10 @@
 "ek" = (
 /obj/machinery/shieldgen,
 /obj/structure/window/basic{
-	dir = 4;
-	icon_state = "window"
+	dir = 4
 	},
 /obj/structure/window/basic{
-	dir = 1;
-	icon_state = "window"
+	dir = 1
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1277,12 +1270,10 @@
 "el" = (
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/structure/window/basic{
-	dir = 8;
-	icon_state = "window"
+	dir = 8
 	},
 /obj/structure/window/basic{
-	dir = 1;
-	icon_state = "window"
+	dir = 1
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1290,12 +1281,10 @@
 "em" = (
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/structure/window/basic{
-	dir = 4;
-	icon_state = "window"
+	dir = 4
 	},
 /obj/structure/window/basic{
-	dir = 1;
-	icon_state = "window"
+	dir = 1
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1307,29 +1296,19 @@
 	icon_state = "tube1"
 	},
 /obj/item/stack/material/steel{
-	amount = 50;
-	pixel_x = 0;
-	pixel_y = 0
+	amount = 50
 	},
 /obj/item/stack/material/steel{
-	amount = 50;
-	pixel_x = 0;
-	pixel_y = 0
+	amount = 50
 	},
 /obj/item/stack/material/steel{
-	amount = 50;
-	pixel_x = 0;
-	pixel_y = 0
+	amount = 50
 	},
 /obj/item/stack/material/steel{
-	amount = 50;
-	pixel_x = 0;
-	pixel_y = 0
+	amount = 50
 	},
 /obj/item/stack/material/steel{
-	amount = 50;
-	pixel_x = 0;
-	pixel_y = 0
+	amount = 50
 	},
 /obj/random/tech_supply,
 /obj/random/maintenance,
@@ -1383,8 +1362,7 @@
 "ew" = (
 /obj/machinery/shieldgen,
 /obj/structure/window/basic{
-	dir = 8;
-	icon_state = "window"
+	dir = 8
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1392,8 +1370,7 @@
 "ex" = (
 /obj/machinery/shieldgen,
 /obj/structure/window/basic{
-	dir = 4;
-	icon_state = "window"
+	dir = 4
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1401,8 +1378,7 @@
 "ey" = (
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/structure/window/basic{
-	dir = 8;
-	icon_state = "window"
+	dir = 8
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1410,8 +1386,7 @@
 "ez" = (
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/structure/window/basic{
-	dir = 4;
-	icon_state = "window"
+	dir = 4
 	},
 /obj/effect/floor_decal/industrial/outline/yellow,
 /turf/simulated/floor/tiled/dark,
@@ -1423,7 +1398,7 @@
 /obj/structure/table/reinforced,
 /obj/item/clothing/shoes/magboots,
 /obj/item/clothing/glasses/meson,
-/obj/item/weapon/tank/oxygen,
+/obj/item/tank/oxygen,
 /obj/random/tech_supply,
 /obj/random/tech_supply,
 /obj/random/tech_supply,
@@ -1583,16 +1558,13 @@
 	icon_state = "warning"
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/blue{
-	dir = 5;
-	icon_state = "intact"
+	dir = 5
 	},
 /turf/simulated/floor,
 /area/constructionsite/teleporter)
 "fb" = (
 /obj/machinery/airlock_sensor{
-	frequency = 1379;
 	id_tag = "constructionsite_sensor";
-	pixel_x = 0;
 	pixel_y = -25
 	},
 /obj/effect/floor_decal/industrial/warning{
@@ -1604,8 +1576,7 @@
 /area/constructionsite/teleporter)
 "fc" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/blue{
-	dir = 4;
-	icon_state = "intact"
+	dir = 4
 	},
 /obj/machinery/door/airlock/external{
 	frequency = 1379;
@@ -1617,8 +1588,7 @@
 /area/constructionsite/teleporter)
 "fd" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/blue{
-	dir = 4;
-	icon_state = "intact"
+	dir = 4
 	},
 /obj/effect/floor_decal/industrial/warning{
 	dir = 8;
@@ -1628,8 +1598,7 @@
 /area/constructionsite/teleporter)
 "fe" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/blue{
-	dir = 10;
-	icon_state = "intact"
+	dir = 10
 	},
 /turf/simulated/floor/tiled,
 /area/constructionsite/teleporter)
@@ -1649,9 +1618,7 @@
 /turf/simulated/floor/tiled,
 /area/constructionsite/teleporter)
 "fh" = (
-/obj/machinery/power/smes/batteryrack{
-	should_be_mapped = 1
-	},
+/obj/machinery/power/smes/batteryrack,
 /obj/structure/cable/blue{
 	d2 = 2;
 	icon_state = "0-2"
@@ -1689,13 +1656,11 @@
 /area/constructionsite/storage)
 "fn" = (
 /obj/structure/window/basic{
-	dir = 1;
-	icon_state = "window"
+	dir = 1
 	},
 /obj/machinery/portable_atmospherics/canister/air/airlock,
 /obj/machinery/atmospherics/portables_connector{
-	dir = 4;
-	icon_state = "map_connector"
+	dir = 4
 	},
 /obj/effect/floor_decal/industrial/warning/corner{
 	dir = 4;
@@ -1708,8 +1673,7 @@
 /area/constructionsite/teleporter)
 "fo" = (
 /obj/machinery/atmospherics/pipe/manifold/hidden/blue{
-	dir = 4;
-	icon_state = "map"
+	dir = 4
 	},
 /turf/simulated/floor/tiled,
 /area/constructionsite/teleporter)
@@ -1760,15 +1724,13 @@
 /obj/structure/window/basic,
 /obj/machinery/portable_atmospherics/canister/air/airlock,
 /obj/machinery/atmospherics/portables_connector{
-	dir = 4;
-	icon_state = "map_connector"
+	dir = 4
 	},
 /turf/simulated/floor/tiled/dark,
 /area/constructionsite/teleporter)
 "fv" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/blue{
-	dir = 9;
-	icon_state = "intact"
+	dir = 9
 	},
 /turf/simulated/floor/tiled/dark,
 /area/constructionsite/teleporter)
@@ -1776,11 +1738,9 @@
 /obj/structure/cable/blue,
 /obj/machinery/alarm{
 	dir = 8;
-	icon_state = "alarm0";
 	pixel_x = 24
 	},
 /obj/machinery/power/apc/high/inactive{
-	dir = 2;
 	name = "south bump";
 	pixel_y = -24
 	},
@@ -1843,7 +1803,7 @@
 /turf/simulated/floor/tiled/dark,
 /area/constructionsite/teleporter)
 "fI" = (
-/obj/machinery/teleport/station,
+/obj/machinery/tele_projector,
 /obj/effect/floor_decal/industrial/warning{
 	dir = 1;
 	icon_state = "warning"
@@ -1851,7 +1811,7 @@
 /turf/simulated/floor/tiled/dark,
 /area/constructionsite/teleporter)
 "fJ" = (
-/obj/machinery/teleport/hub,
+/obj/machinery/tele_pad,
 /obj/effect/floor_decal/industrial/warning{
 	dir = 1;
 	icon_state = "warning"
@@ -1951,7 +1911,6 @@
 "gf" = (
 /obj/machinery/door/airlock/highsecurity{
 	icon_state = "door_closed";
-	locked = 0;
 	name = "AI Upload Access"
 	},
 /turf/simulated/floor/bluegrid/airless,
@@ -1984,7 +1943,6 @@
 "gn" = (
 /obj/machinery/door/airlock/highsecurity{
 	icon_state = "door_closed";
-	locked = 0;
 	name = "AI Upload"
 	},
 /turf/simulated/floor/bluegrid/airless,
@@ -2170,7 +2128,6 @@
 "gZ" = (
 /obj/machinery/door/airlock/highsecurity{
 	icon_state = "door_closed";
-	locked = 0;
 	name = "AI Upload Access"
 	},
 /turf/simulated/floor/bluegrid/airless,
@@ -2300,9 +2257,9 @@
 /turf/simulated/floor/tiled/white/airless,
 /area/constructionsite/medical)
 "hz" = (
-/obj/item/weapon/reagent_containers/ivbag,
-/obj/item/weapon/reagent_containers/ivbag,
-/obj/item/weapon/reagent_containers/ivbag/blood/OMinus,
+/obj/item/reagent_containers/ivbag,
+/obj/item/reagent_containers/ivbag,
+/obj/item/reagent_containers/ivbag/blood/OMinus,
 /obj/structure/closet/medical_wall{
 	name = "Blood Closet"
 	},
@@ -2478,7 +2435,7 @@
 /turf/simulated/floor/airless,
 /area/constructionsite/medical)
 "il" = (
-/obj/item/weapon/storage/box/freezer,
+/obj/item/storage/box/freezer,
 /turf/simulated/floor/airless,
 /area/constructionsite/medical)
 "im" = (
@@ -2615,8 +2572,7 @@
 /area/constructionsite/hallway/aft)
 "iG" = (
 /obj/machinery/atmospherics/pipe/simple/hidden{
-	dir = 4;
-	icon_state = "intact"
+	dir = 4
 	},
 /turf/simulated/wall,
 /area/constructionsite/atmospherics)
@@ -2643,8 +2599,7 @@
 /area/constructionsite/hallway/aft)
 "iK" = (
 /obj/effect/floor_decal/industrial/warning/dust{
-	dir = 8;
-	icon_state = "warning_dust"
+	dir = 8
 	},
 /turf/simulated/floor/tiled/dark/airless,
 /area/constructionsite/atmospherics)
@@ -2655,15 +2610,13 @@
 "iM" = (
 /obj/effect/floor_decal/plaque{
 	desc = "In memory of Earl Whitenmeinster. We'll never forget you.";
-	icon_state = "plaque";
 	name = "Whitenmeister Memorial Hall Plaque"
 	},
 /turf/simulated/floor/tiled/dark/airless,
 /area/constructionsite/hallway/aft)
 "iN" = (
 /obj/effect/floor_decal/industrial/warning/dust{
-	dir = 8;
-	icon_state = "warning_dust"
+	dir = 8
 	},
 /turf/simulated/floor/airless,
 /area/constructionsite/atmospherics)
@@ -2855,7 +2808,6 @@
 "jp" = (
 /obj/structure/cable/blue,
 /obj/machinery/power/apc/high/inactive{
-	dir = 2;
 	name = "south bump";
 	pixel_y = -24
 	},
@@ -2863,8 +2815,7 @@
 /area/constructionsite/atmospherics)
 "jq" = (
 /obj/machinery/atmospherics/pipe/simple/visible{
-	dir = 5;
-	icon_state = "intact"
+	dir = 5
 	},
 /turf/simulated/floor/airless,
 /area/constructionsite/atmospherics)
@@ -2975,7 +2926,7 @@
 	},
 /area/constructionsite)
 "jO" = (
-/obj/item/weapon/bedsheet,
+/obj/item/bedsheet,
 /turf/simulated/floor/tiled/dark/airless,
 /area/constructionsite)
 "jP" = (
@@ -3444,7 +3395,7 @@
 /turf/simulated/floor/airless,
 /area/AIsattele)
 "lD" = (
-/obj/machinery/teleport/station,
+/obj/machinery/tele_projector,
 /obj/structure/cable{
 	d2 = 2;
 	icon_state = "0-2"
@@ -3452,7 +3403,7 @@
 /turf/simulated/floor/airless,
 /area/AIsattele)
 "lE" = (
-/obj/machinery/teleport/hub,
+/obj/machinery/tele_pad,
 /turf/simulated/floor/airless,
 /area/AIsattele)
 "lF" = (
@@ -3487,7 +3438,7 @@
 /turf/simulated/floor/airless,
 /area/constructionsite/engineering)
 "lI" = (
-/obj/item/weapon/material/shard{
+/obj/item/material/shard{
 	icon_state = "medium"
 	},
 /turf/simulated/floor/airless,
@@ -3518,7 +3469,7 @@
 /turf/simulated/floor/airless,
 /area/AIsattele)
 "lP" = (
-/obj/item/weapon/cell/standard,
+/obj/item/cell/standard,
 /turf/simulated/floor/airless,
 /area/AIsattele)
 "lQ" = (
@@ -3558,7 +3509,7 @@
 /turf/space,
 /area/AIsattele)
 "lY" = (
-/obj/item/weapon/storage/toolbox/electrical{
+/obj/item/storage/toolbox/electrical{
 	pixel_x = 1;
 	pixel_y = -1
 	},

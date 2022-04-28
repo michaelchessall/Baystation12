@@ -21,7 +21,7 @@
 	icon_state = "tiny"
 	icon_keyboard = "tiny_keyboard"
 	icon_screen = "lift"
-	density = 0
+	density = FALSE
 
 /obj/machinery/computer/shuttle_control/lift/robotics
 	name = "robotics lift controls"
@@ -30,7 +30,7 @@
 	icon_state = "tiny"
 	icon_keyboard = "tiny_keyboard"
 	icon_screen = "lift"
-	density = 0
+	density = FALSE
 
 /obj/machinery/computer/shuttle_control/lift/medical
 	name = "medical lift controls"
@@ -39,7 +39,7 @@
 	icon_state = "tiny"
 	icon_keyboard = "tiny_keyboard"
 	icon_screen = "lift"
-	density = 0
+	density = FALSE
 
 /datum/shuttle/autodock/ferry/cargo_lift
 	name = "Primary Cargo Lift"
@@ -97,7 +97,7 @@
 	name = "Lower Deck"
 	landmark_tag = "nav_robotics_lift_bottom"
 	flags = SLANDMARK_FLAG_AUTOSET
-	base_area = /area/assembly/robotics/
+	base_area = /area/assembly/robotics
 	base_turf = /turf/simulated/floor/plating
 
 /obj/effect/shuttle_landmark/lift/medical_top
