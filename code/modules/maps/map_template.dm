@@ -168,7 +168,7 @@
 
 	return TRUE
 
-/datum/map_template/proc/after_load(z)
+/datum/map_template/after_load(z)
 	for(var/obj/effect/landmark/map_load_mark/mark in subtemplates_to_spawn)
 		subtemplates_to_spawn -= mark
 		if(LAZYLEN(mark.templates))
