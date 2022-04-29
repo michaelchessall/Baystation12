@@ -1,7 +1,12 @@
+#define TOPIC_UPDATE_PREVIEW 4
+#define TOPIC_HARD_REFRESH   8 // use to force a browse() call, unblocking some rsc operations
+#define TOPIC_REFRESH_UPDATE_PREVIEW (TOPIC_HARD_REFRESH|TOPIC_UPDATE_PREVIEW)
+
+var/global/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 
 // PERSISTENCE EDIT
 // This greatly improves the way inputs work, plus its really hard to understand/use, it fits right in with baycode
-var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
+
 proc
 	get_input(wait = 100 as num,mob/U,Message,Title,Default,Type,list/List)
 		var/prompts/input/Input = new
@@ -44,6 +49,7 @@ prompts
 			return alert(U,Message,Title,Button1,Button2,Button3)
 //to use them
 
+
 // PERSISTENCE EDIT ENDS HERE
 
 /datum/category_group/player_setup_category/welcome_preferences
@@ -61,6 +67,25 @@ prompts
 	sort_order = 3
 	category_item_type = /datum/category_item/player_setup_item/background
 
+/datum/category_group/player_setup_category/background_preferences/content(var/mob/user)
+	. = ""
+	for(var/datum/category_item/player_setup_item/player_setup_item in items)
+		. += "[player_setup_item.content(user)]<br>"
+
+/datum/category_group/player_setup_category/occupation_preferences
+	name = "Occupation"
+	sort_order = 3
+	category_item_type = /datum/category_item/player_setup_item/occupation
+
+/datum/category_group/player_setup_category/appearance_preferences
+	name = "Roles"
+	sort_order = 4
+	category_item_type = /datum/category_item/player_setup_item/antagonism
+
+/datum/category_group/player_setup_category/loadout_preferences
+	name = "Loadout"
+	sort_order = 6
+	category_item_type = /datum/category_item/player_setup_item/loadout
 
 /datum/category_group/player_setup_category/global_preferences
 	name = "Game Settings"
@@ -258,10 +283,23 @@ prompts
 		return 1
 
 	. = OnTopic(href, href_list, usr)
+
 	if(. & TOPIC_UPDATE_PREVIEW)
 		pref_mob.client.prefs.preview_icon = null
 	if(. & TOPIC_REFRESH)
 		pref_mob.client.prefs.ShowChoices(usr)
+
+	// The user might have joined the game or otherwise had a change of mob while tweaking their preferences.
+	pref_mob = preference_mob()
+	if(!pref_mob || !pref_mob.client)
+		return 1
+
+	if (. & TOPIC_UPDATE_PREVIEW)
+		pref_mob.client.prefs.preview_icon = null
+	if (. & TOPIC_HARD_REFRESH)
+		pref_mob.client.prefs.open_setup_window(usr)
+	else if (. & TOPIC_REFRESH)
+		pref_mob.client.prefs.update_setup_window(usr)
 
 /datum/category_item/player_setup_item/CanUseTopic(var/mob/user)
 	return 1

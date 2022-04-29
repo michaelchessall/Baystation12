@@ -151,7 +151,6 @@
 	mannequin.spawn_type = 2
 	mannequin.species.equip_survival_gear(mannequin)
 	mannequin.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(mannequin),slot_shoes)
-
 	/**
 	for(var/lang in alternate_languages)
 		var/datum/language/chosen_language = all_languages[lang]

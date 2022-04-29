@@ -34,7 +34,7 @@
 	area_ref = "\ref[A]"
 
 /mob/proc/get_id_name(var/if_no_id = "Unknown")
-//	return if_no_id
+	return if_no_id
 
 
 
@@ -94,12 +94,13 @@
 	RefreshParts()
 	..()
 
-/obj/machinery/power/solar_control/after_load()
-	..()
-	src.search_for_connected()
+///obj/machinery/power/solar_control/after_load()
+//	..()
+//	src.search_for_connected()
+
 //	if(connected_tracker && track == 2)
 //		connected_tracker.set_angle(GLOB.sun.angle)
-	src.set_panels(cdir)
+//	src.set_panels(cdir)
 
 
 /obj/structure/cable/after_load()
@@ -110,6 +111,7 @@
 		if(level==1) hide(!T.is_plating())
 	mergeConnectedNetworks(d1)
 	mergeConnectedNetworks(d2)
+
 
 /obj/item/stock_parts/power/terminal/map_storage_saved_vars = "density;icon_state;name;pixel_x;pixel_y;contents;dir;terminal"
 
@@ -366,6 +368,11 @@
 //			has_suit.verbs += /obj/item/clothing/accessory/bowtie/verb/toggle
 //	icon_tied = icon_tied || icon_state
 //		..()
+///obj/item/clothing/accessory/bowtie/after_load()
+//	if(has_suit)
+//		has_suit.verbs += /obj/item/clothing/accessory/bowtie/verb/toggle
+//	icon_tied = icon_tied || icon_state
+	..()
 
 /**
 /obj/item/clothing/accessory/holster/after_load()

@@ -32,7 +32,6 @@ var/world_currently_loading = 0
 	Load_Overmap()
 	for(var/datum/controller/subsystem/ss in ss_to_wake)
 		ss.wake()
-
 	to_world("Load Completed!")
 	log_world("LOAD COMPLETED!")
 	world_currently_loading = 0

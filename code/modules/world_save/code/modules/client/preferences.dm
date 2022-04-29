@@ -76,6 +76,9 @@ datum/preferences
 		save_preferences()
 		save_character()
 
+/datum/preferences/proc/update_setup_window(mob/user)
+	send_output(user, url_encode(get_content(user)), "preferences_browser.browser:update_content")
+
 
 /datum/preferences/proc/open_setup_window(mob/user)
 	if (!SScharacter_setup.initialized)
