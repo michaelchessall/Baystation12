@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;client&#x2F;preferences.dm - Space Station 13 - Baystation 12</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Space Station 13 - Baystation 12</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+</header>
+<main>
+<h1>code/modules/world_save/code/modules/client/preferences.dm 
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/client/preferences.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;client&#x2F;preferences.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th>/proc/<a href="global.html#proc/UpdateCharacter">UpdateCharacter</a></th>
+                <td>// Destroy/cyborgize organs and limbs. The order is important for preserving low-level choices for robolimb sprites being overridden.
+for(var/name in BP_BY_DEPTH)
+var/status = organ_data[name]
+var/obj/item/organ/external/O = character.organs_by_name[name]
+if(!O)
+continue
+O.status = 0
+O.model = null
+if(status == &quot;amputated&quot;)
+character.organs_by_name[O.organ_tag] = null
+character.organs -= O
+if(O.children) // This might need to become recursive.
+for(var/obj/item/organ/external/child in O.children)
+character.organs_by_name[child.organ_tag] = null
+character.organs -= child
+else if(status == &quot;cyborg&quot;)
+if(rlimb_data[name])
+O.robotize(rlimb_data[name])
+else
+O.robotize()
+else //normal organ
+O.force_icon = null
+O.name = initial(O.name)
+O.desc = initial(O.desc)</td></tr></table></main>
+<footer>
+    baystation12.dme
+    <a href="https://github.com/FaurnsGoldberg/Baystation12/tree/cb7398607417ade9bb420d42ede9de36ccba3abd">cb73986</a>
+        (dev) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

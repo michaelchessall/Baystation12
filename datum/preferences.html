@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;preferences - Space Station 13 - Baystation 12</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Space Station 13 - Baystation 12</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/preferences.html#proc">Proc Details</a></header>
+<main>
+<h1>preferences <aside>/<a href="datum.html">datum</a>/<a href="datum/preferences.html">preferences</a></aside>
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/client/preference_setup/antagonism/01_candidacy.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;client&#x2F;preference_setup&#x2F;antagonism&#x2F;01_candidacy.dm 1"/></a></h1>
+
+<p>for(var/module in GLOB.robot_module_types)
+HTML += &quot;<a href='?src=\ref[src];flavour_text_robot=[module]'>[module]:</a> &quot;
+HTML += TextPreview(pref.flavour_texts_robot[module])
+HTML += &quot;<br>&quot;</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/preferences.html#proc/sanitize_preferences">sanitize_preferences</a></th><td></td></tr>
+            <tr><th><a href="datum/preferences.html#proc/save_character">save_character</a></th><td>if(slot != SAVE_RESET) // SAVE_RESET will reset the slot as though it does not exist, but keep the current slot for saving purposes.
+slot = sanitize_integer(slot, 1, config.character_slots, initial(default_slot))
+if(slot != default_slot)
+default_slot = slot
+S[&quot;default_slot&quot;] &lt;&lt; slot
+else
+S[&quot;default_slot&quot;] &lt;&lt; default_slot</td></tr></table><h2 id="proc">Proc Details</h2><h3 id="proc/sanitize_preferences"><aside class="declaration">proc </aside>sanitize_preferences<aside>() 
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/client/preferences_savefile.dm#L172">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;client&#x2F;preferences_savefile.dm 172"/></a></aside>
+        </h3>
+        <ul>
+<li>var/remembered_info = &quot;&quot;
+remembered_info += &quot;<b>Your email account is :</b> [email.login]<br>&quot;
+remembered_info += &quot;<b>Your email password is :</b> [email.password]<br>&quot;
+remembered_info += &quot;<b>Your account number is:</b> #[M.account_number]<br>&quot;
+remembered_info += &quot;<b>Your account pin is:</b> [M.remote_access_pin]<br>&quot;
+remembered_info += &quot;<b>Your account funds are:</b> [M.money]<br>&quot;
+mannequin.mind.store_memory(remembered_info) *</li>
+</ul>
+<p>for(var/lang in alternate_languages)
+var/datum/language/chosen_language = all_languages[lang]
+if(chosen_language)
+var/is_species_lang = 1//(chosen_language.name in mannequin.species.secondary_langs)
+if(is_species_lang || ((!(chosen_language.flags &amp; RESTRICTED) || check_rights(R_ADMIN, 0, client))))
+mannequin.add_language(lang)</p><h3 id="proc/save_character"><aside class="declaration">proc </aside>save_character<aside>() 
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/client/preferences_savefile.dm#L77">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;client&#x2F;preferences_savefile.dm 77"/></a></aside>
+        </h3>
+        <p>if(slot != SAVE_RESET) // SAVE_RESET will reset the slot as though it does not exist, but keep the current slot for saving purposes.
+slot = sanitize_integer(slot, 1, config.character_slots, initial(default_slot))
+if(slot != default_slot)
+default_slot = slot
+S[&quot;default_slot&quot;] &lt;&lt; slot
+else
+S[&quot;default_slot&quot;] &lt;&lt; default_slot</p>
+<p>if(slot != SAVE_RESET)
+S.cd = GLOB.using_map.character_load_path(S, slot)
+player_setup.load_character(S)
+else
+player_setup.load_character(S)
+S.cd = GLOB.using_map.character_load_path(S, default_slot)</p>
+<p>loaded_character = S</p></main>
+<footer>
+    baystation12.dme
+    <a href="https://github.com/FaurnsGoldberg/Baystation12/tree/cb7398607417ade9bb420d42ede9de36ccba3abd">cb73986</a>
+        (dev) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

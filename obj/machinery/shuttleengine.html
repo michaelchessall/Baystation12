@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;machinery&#x2F;shuttleengine - Space Station 13 - Baystation 12</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Space Station 13 - Baystation 12</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/machinery/shuttleengine.html#proc">Proc Details</a></header>
+<main>
+<h1>shuttleengine <aside>/<a href="obj.html">obj</a>/<a href="obj/machinery.html">machinery</a>/<a href="obj/machinery/shuttleengine.html">shuttleengine</a></aside>
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/shuttles/shuttle_engines.dm#L2">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;shuttles&#x2F;shuttle_engines.dm 2"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/machinery/shuttleengine.html#proc/AltClick">AltClick</a></th><td>if(default_deconstruction_screwdriver(user, O))
+return
+if(default_deconstruction_crowbar(user, O))
+return</td></tr>
+            <tr><th><a href="obj/machinery/shuttleengine.html#proc/rotateccw">rotateccw</a></th><td>/obj/machinery/shuttleengine/verb/rotate()
+set name = &quot;Rotate Clockwise&quot;
+set category = &quot;Object&quot;
+set src in oview(1)</td></tr></table><h2 id="proc">Proc Details</h2><h3 id="proc/AltClick">AltClick<aside>() 
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/shuttles/shuttle_engines.dm#L55">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;shuttles&#x2F;shuttle_engines.dm 55"/></a></aside>
+        </h3>
+        <p>if(default_deconstruction_screwdriver(user, O))
+return
+if(default_deconstruction_crowbar(user, O))
+return</p><h3 id="proc/rotateccw"><aside class="declaration">verb </aside>rotateccw<aside>() 
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/shuttles/shuttle_engines.dm#L70">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;shuttles&#x2F;shuttle_engines.dm 70"/></a></aside>
+        </h3>
+        <p>/obj/machinery/shuttleengine/verb/rotate()
+set name = &quot;Rotate Clockwise&quot;
+set category = &quot;Object&quot;
+set src in oview(1)</p>
+<pre><code>if (src.anchored || usr:stat)
+	to_chat(usr, &quot;It is fastened to the floor!&quot;)
+	return 0
+src.set_dir(turn(src.dir, 270))
+return 1
+</code></pre></main>
+<footer>
+    baystation12.dme
+    <a href="https://github.com/FaurnsGoldberg/Baystation12/tree/cb7398607417ade9bb420d42ede9de36ccba3abd">cb73986</a>
+        (dev) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

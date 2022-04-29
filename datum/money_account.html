@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;money_account - Space Station 13 - Baystation 12</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Space Station 13 - Baystation 12</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+</header>
+<main>
+<h1>money_account <aside>/<a href="datum.html">datum</a>/<a href="datum/money_account.html">money_account</a></aside>
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/code/modules/economy/Accounts.dm#L2">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;code&#x2F;modules&#x2F;economy&#x2F;Accounts.dm 2"/></a></h1>
+
+<p>/datum/category_item/player_setup_item/skills
+name = &quot;Skills&quot;
+sort_order = 1
+/datum/category_item/player_setup_item/skills/load_character(var/savefile/S)
+from_file(S[&quot;skills&quot;],pref.skills)
+from_file(S[&quot;used_skillpoints&quot;],pref.used_skillpoints)</p>
+<p>/datum/category_item/player_setup_item/skills/save_character(var/savefile/S)
+to_file(S[&quot;skills&quot;],pref.skills)
+to_file(S[&quot;used_skillpoints&quot;],pref.used_skillpoints)</p>
+<p>/datum/category_item/player_setup_item/skills/sanitize_character()
+if(SKILLS == null)				setup_skills()
+if(!istype(pref.skills))		pref.skills = list()
+if(!pref.skills.len)			pref.ZeroSkills()
+if(pref.used_skillpoints &lt; 0)	pref.used_skillpoints = 0</p>
+<p>/datum/category_item/player_setup_item/skills/content()
+. = list()
+. += &quot;<h1>Coming soon! Level up and improve attributes that change the way your character plays.<br><br><br>Dont worry, when the update comes older characters will get a chance to assign their points.</h1>&quot;
+. = jointext(.,null)
+/*
+. = list()
+. += &quot;<b>Select your Skills</b><br>&quot;
+. += &quot;Current skill level: <b>[pref.GetSkillClass(pref.used_skillpoints)]</b> ([pref.used_skillpoints])<br>&quot;
+. += &quot;<table>&quot;
+for(var/V in SKILLS)
+. += &quot;<tr><th colspan = 5><b>[V]</b>&quot;
+. += &quot;</th></tr>&quot;
+for(var/datum/skill/S in SKILLS[V])
+var/level = pref.skills[S.ID]
+. += &quot;<tr style='text-align:left;'>&quot;
+. += &quot;<th><a href='?src=\ref[src];skillinfo=\ref[S]'>[S.name]</a></th>&quot;
+. += skill_to_button(S, &quot;Untrained&quot;, level, SKILL_NONE)
+// secondary skills don't have an amateur level
+if(S.secondary)
+. += &quot;<th></th>&quot;
+else
+. += skill_to_button(S, &quot;Amateur&quot;, level, SKILL_BASIC)
+. += skill_to_button(S, &quot;Trained&quot;, level, SKILL_ADEPT)
+. += skill_to_button(S, &quot;Professional&quot;, level, SKILL_EXPERT)
+. += &quot;</tr>&quot;
+. += &quot;</table>&quot;
+. = jointext(.,null)
+*/
+/datum/category_item/player_setup_item/proc/skill_to_button(var/skill, var/level_name, var/current_level, var/selection_level)
+if(current_level == selection_level)
+return &quot;<th><span class='linkOn'>[level_name]</span></th>&quot;
+return &quot;<th><a href='?src=\ref[src];setskill=\ref[skill];newvalue=[selection_level]'>[level_name]</a></th>&quot;</p>
+<p>/datum/category_item/player_setup_item/skills/OnTopic(href, href_list, user)
+if(href_list[&quot;skillinfo&quot;])
+var/datum/skill/S = locate(href_list[&quot;skillinfo&quot;])
+var/HTML = &quot;<h2>[S.name][S.secondary ? &quot;(secondary)&quot; : &quot;&quot;]</h2>&quot;
+HTML += &quot;<b>Generic Description</b>: [S.desc]<br><br><b>Unskilled</b>: [S.desc_unskilled]<br>&quot;
+if(!S.secondary)
+HTML += &quot;<b>Amateur</b>: [S.desc_amateur]<br>&quot;
+HTML += &quot;<b>Trained</b>: [S.desc_trained]<br><b>Professional</b>: [S.desc_professional]&quot;</p>
+<pre><code>	user &lt;&lt; browse(HTML, &quot;window=\ref[user]skillinfo&quot;)
+	return TOPIC_HANDLED
+
+else if(href_list[&quot;setskill&quot;])
+	var/datum/skill/S = locate(href_list[&quot;setskill&quot;])
+	var/value = text2num(href_list[&quot;newvalue&quot;])
+	pref.skills[S.ID] = value
+	pref.CalculateSkillPoints()
+	return TOPIC_REFRESH
+
+return ..()
+</code></pre></main>
+<footer>
+    baystation12.dme
+    <a href="https://github.com/FaurnsGoldberg/Baystation12/tree/cb7398607417ade9bb420d42ede9de36ccba3abd">cb73986</a>
+        (dev) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;ammo_casing - Space Station 13 - Baystation 12</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Space Station 13 - Baystation 12</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/ammo_casing.html#proc">Proc Details</a></header>
+<main>
+<h1>ammo_casing <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/ammo_casing.html">ammo_casing</a></aside>
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/projectiles/ammunition.dm#L1">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;ammunition.dm 1"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/ammo_casing.html#proc/Initialize">Initialize</a></th><td>/obj/vehicle/train/cargo/engine/Initialize()
+. = ..()
+if(!map_storage_loaded)
+cell = new /obj/item/cell/high(src)
+key = new(src)</td></tr></table><h2 id="proc">Proc Details</h2><h3 id="proc/Initialize">Initialize<aside>() 
+        
+    
+            <a href="https://github.com/FaurnsGoldberg/Baystation12/blob/cb7398607417ade9bb420d42ede9de36ccba3abd/code/modules/world_save/after_load.dm#L904">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;world_save&#x2F;after_load.dm 904"/></a></aside>
+        </h3>
+        <p>/obj/vehicle/train/cargo/engine/Initialize()
+. = ..()
+if(!map_storage_loaded)
+cell = new /obj/item/cell/high(src)
+key = new(src)</p>
+<p>/obj/item/network_cards/food/snacks/slice/Initialize()
+. = ..()
+if(!map_storage_loaded)
+if(filled)
+var/obj/item/network_cards/food/snacks/whole = new whole_path()
+if(whole &amp;&amp; whole.slices_num)
+var/reagent_amount = whole.reagents.total_volume/whole.slices_num
+whole.reagents.trans_to_obj(src, reagent_amount)</p>
+<pre><code>		qdel(whole)
+</code></pre>
+<p>/obj/item/pizzabox/margherita/Initialize()
+. = ..()
+if(!map_storage_loaded)
+pizza = new /obj/item/network_cards/food/snacks/sliceable/pizza/margherita(src)
+boxtag = &quot;Margherita Deluxe&quot;</p>
+<p>/obj/item/pizzabox/vegetable/Initialize()
+. = ..()
+if(!map_storage_loaded)
+pizza = new /obj/item/network_cards/food/snacks/sliceable/pizza/vegetablepizza(src)
+boxtag = &quot;Gourmet Vegatable&quot;</p>
+<p>/obj/item/pizzabox/mushroom/Initialize()
+. = ..()
+if(!map_storage_loaded)
+pizza = new /obj/item/network_cards/food/snacks/sliceable/pizza/mushroompizza(src)
+boxtag = &quot;Mushroom Special&quot;</p>
+<p>/obj/item/pizzabox/meat/Initialize()
+. = ..()
+if(!map_storage_loaded)
+pizza = new /obj/item/network_cards/food/snacks/sliceable/pizza/meatpizza(src)
+boxtag = &quot;Meatlover's Supreme&quot;</p>
+<p>/obj/item/weapon/storage/box/mixedglasses/Initialize()
+. = ..()
+if(!map_storage_loaded)
+make_exact_fit()</p>
+<p>/obj/item/weapon/storage/box/glasses/Initialize()
+. = ..()
+if(!map_storage_loaded)
+for(var/i = 1 to 7)
+new glass_type(src)
+make_exact_fit()</p>
+<p>/obj/item/weapon/storage/box/glass_extras/Initialize()
+if(!map_storage_loaded)
+for(var/i = 1 to 14)
+new extra_type(src)
+. = ..()</p>
+<p>/obj/item/weapon/gun/projectile/dartgun/Initialize()
+if(!map_storage_loaded)
+if(starting_chems)
+for(var/chem in starting_chems)
+var/obj/B = new container_type(src)
+B.reagents.add_reagent(chem, 60)
+beakers += B
+. = ..()
+update_icon()</p>
+<p>/obj/item/weapon/gun/projectile/Initialize()
+. = ..()
+if(!map_storage_loaded)
+if(starts_loaded)
+if(ispath(ammo_type) &amp;&amp; (load_method &amp; (SINGLE_CASING|SPEEDLOADER)))
+for(var/i in 1 to max_shells)
+loaded += new ammo_type(src)
+if(ispath(magazine_type) &amp;&amp; (load_method &amp; MAGAZINE))
+ammo_magazine = new magazine_type(src)
+update_icon()</p>
+<p>/obj/item/weapon/gun/magnetic/railgun/Initialize()
+if(!map_storage_loaded)
+capacitor = new initial_capacitor_type(src)
+capacitor.charge = capacitor.max_charge</p>
+<pre><code>	cell = new initial_cell_type(src)
+	if (ispath(loaded))
+		loaded = new loaded
+slowdown_per_slot[slot_l_hand] =  slowdown_held
+slowdown_per_slot[slot_r_hand] =  slowdown_held
+slowdown_per_slot[slot_back] =    slowdown_worn
+slowdown_per_slot[slot_belt] =    slowdown_worn
+slowdown_per_slot[slot_s_store] = slowdown_worn
+
+. = ..()
+</code></pre>
+<p>/obj/item/weapon/gun/energy/Initialize()
+. = ..()
+if(!map_storage_loaded)
+if(cell_type)
+power_supply = new cell_type(src)
+else
+power_supply = new /obj/item/weapon/cell/device/variable(src, max_shots*charge_cost)
+if(self_recharge)
+START_PROCESSING(SSobj, src)
+update_icon()</p></main>
+<footer>
+    baystation12.dme
+    <a href="https://github.com/FaurnsGoldberg/Baystation12/tree/cb7398607417ade9bb420d42ede9de36ccba3abd">cb73986</a>
+        (dev) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>
