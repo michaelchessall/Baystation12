@@ -36,6 +36,10 @@
 				members.Remove(member)
 				break //Only delete 1 pipe per process
 
+/datum/pipeline/proc/temporarily_store_fluids()
+	//Update individual gas_mixtures by volume ratio
+	temporarily_store_air()
+
 /datum/pipeline/proc/temporarily_store_air()
 	//Update individual gas_mixtures by volume ratio
 

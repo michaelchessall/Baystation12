@@ -20,7 +20,8 @@
 
 /datum/shuttle/autodock/New(_name, obj/shuttle_landmark/start_waypoint)
 	..(_name, start_waypoint)
-
+	if(!current_location)
+		return .
 	//Initial dock
 	active_docking_controller = current_location.docking_controller
 	update_docking_target(current_location)

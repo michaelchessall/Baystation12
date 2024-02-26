@@ -97,12 +97,15 @@
 	var/datum/nano_module/subsystem
 
 /stat_silicon_subsystem/New(mob/living/silicon/loc, subsystem_type, ui_state)
+	if(!loc)
+		subsystem = new subsystem_type(loc)
+		return ..()
 	if(!istype(loc))
 		CRASH("Unexpected location. Expected /mob/living/silicon, was [loc.type].")
 	src.ui_state = ui_state
-	subsystem = new subsystem_type(loc)
-	name = subsystem.name
-	..()
+	if(subsystem)
+		name = subsystem.name
+		..()
 
 /stat_silicon_subsystem/Destroy()
 	qdel(subsystem)

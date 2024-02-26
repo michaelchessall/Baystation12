@@ -21,8 +21,10 @@
 	. = ..()
 	atom_flags |= ATOM_FLAG_INITIALIZED
 	SSlighting.total_lighting_overlays += 1
-
 	var/turf/T         = loc // If this runtimes atleast we'll know what's creating overlays in things that aren't turfs.
+	if(!T)
+		return qdel_self()
+
 	T.lighting_overlay = src
 	T.luminosity       = 0
 

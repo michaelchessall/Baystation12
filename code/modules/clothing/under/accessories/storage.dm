@@ -14,6 +14,8 @@
 
 /obj/item/clothing/accessory/storage/Initialize()
 	. = ..()
+	if(persistent_id)
+		return .
 	if (. == INITIALIZE_HINT_QDEL)
 		return
 	if (!slots)

@@ -99,6 +99,19 @@ SUBSYSTEM_DEF(machines)
 			return
 		current_step = SSMACHINES_PIPENETS
 
+///Divides the contents of all pipenets into their individual members.
+/datum/controller/subsystem/machines/proc/temporarily_store_pipenets()
+	if(can_fire)
+		log_warning(("Tried to store pipenets air while the subsystem is running!"))
+		CRASH("Tried to store pipenets air while the subsystem is running!")
+
+	for(var/datum/pipe_network/net in SSmachines.pipenets)
+		for(var/datum/pipeline/line in net.line_members)
+			line.temporarily_store_fluids()
+
+
+
+
 
 /// Rebuilds power networks from scratch. Called by world initialization and elevators.
 /datum/controller/subsystem/machines/proc/makepowernets()

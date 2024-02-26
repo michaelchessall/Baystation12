@@ -78,6 +78,7 @@
 
 /obj/machinery/Initialize(mapload, d=0, populate_parts = TRUE)
 	. = ..()
+	if(persistent_id) populate_parts = FALSE
 	if(d)
 		set_dir(d)
 	if (init_flags & INIT_MACHINERY_START_PROCESSING)

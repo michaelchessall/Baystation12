@@ -73,8 +73,8 @@
 	var/fire_colour = null //In case this reagent would burn a cool different colour
 
 /datum/reagent/New(datum/reagents/holder)
-	if(!istype(holder))
-		CRASH("Invalid reagents holder: [log_info_line(holder)]")
+//	if(!istype(holder))
+//		CRASH("Invalid reagents holder: [log_info_line(holder)]")
 	src.holder = holder
 	..()
 

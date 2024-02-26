@@ -1,5 +1,6 @@
 /datum/mind
 	var/list/memories
+	var/unique_id
 
 /mob/proc/StoreMemory(memory, options)
 	if(!mind)

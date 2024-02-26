@@ -8,6 +8,7 @@
 
 #define MAX_LOAD_TRIES 5
 
+
 /datum/preferences
 	//doohickeys for savefiles
 	var/is_guest = FALSE
@@ -36,6 +37,7 @@
 
 	var/datum/category_collection/player_setup_collection/player_setup
 	var/datum/browser/panel
+	var/creation_slot = 1
 
 /datum/preferences/New(client/C)
 	if(istype(C))
@@ -135,11 +137,9 @@
 	else if(load_failed)
 		dat += "Loading your savefile failed. Please adminhelp for assistance."
 	else
-		dat += "Slot - "
-		dat += "<a href='?src=\ref[src];load=1'>Load slot</a> - "
-		dat += "<a href='?src=\ref[src];save=1'>Save slot</a> - "
-		dat += "<a href='?src=\ref[src];resetslot=1'>Reset slot</a> - "
-		dat += "<a href='?src=\ref[src];reload=1'>Reload slot</a>"
+		dat += "Create in slot [creation_slot] - "
+		dat += "<a href='?src=\ref[src];close=1'>Cancel</a> - "
+		dat += "<a href='?src=\ref[src];finish=1'>Finalize Character</a>"
 
 	dat += "<br>"
 	dat += player_setup.header()
@@ -147,10 +147,12 @@
 	dat += player_setup.content(user)
 	return dat
 
-/datum/preferences/proc/open_setup_window(mob/user)
+/datum/preferences/proc/open_setup_window(mob/user, var/slot)
 	if (!SScharacter_setup.initialized)
 		return
-	popup = new (user, "preferences_browser", "Character Setup", 1200, 800, src)
+	if(slot)
+		creation_slot = text2num(slot)
+	popup = new (user, "preferences_browser", "Character Creation", 1200, 800, src)
 	var/content = {"
 	<script type='text/javascript'>
 		function update_content(data){
@@ -182,43 +184,83 @@
 /datum/preferences/Topic(href, list/href_list)
 	if(..())
 		return 1
+	if(href_list["finish"])
+		if(!creation_slot)
+			return
+		if(!real_name)
+			to_chat(usr, "<span class='danger'>The must set a unique character name to continue.</span>")
+			return
+		switch(alert("Are you sure you want to finalize your character in slot [creation_slot]?", "Character Confirmation", "Yes", "No"))
+			if("No")
+				return
+		if(!establish_save_db_connection())
+			CRASH("Couldn't connect realname duplication check")
+		var/DBQuery/char_query = dbcon_save.NewQuery("SELECT `CharacterID` FROM `[SQLS_TABLE_CHARACTERS]` WHERE `RealName` = '[sanitize_sql(real_name)]'")
+		if(!char_query.Execute())
+			to_world_log("DUPLICATE NAME CHECK DESERIALIZATION FAILED: [char_query.ErrorMsg()].")
+		if(char_query.NextRow())
+			to_chat(usr, "<span class='danger'>[real_name] is already a name in use! Please select a different name.</span>")
+			real_name = null
+			return
+		var/DBQuery/query = dbcon_save.NewQuery("SELECT `status` FROM `[SQLS_TABLE_CHARACTERS]` WHERE `ckey` = '[sanitize_sql(client_ckey)]' AND `slot` = [creation_slot] ORDER BY `CharacterID` DESC LIMIT 1;")
+		var/allowed = 1
+		SQLS_EXECUTE_AND_REPORT_ERROR(query, "Character Slot load failed")
+		if(query.NextRow())
+			var/status = query.item[1]
+			if(status != SQLS_CHAR_STATUS_DELETED)
+				allowed = 0
+		if(!allowed)
+			to_chat(usr, "You already have a character in slot [creation_slot].")
+			return
 
-	if (href_list["close"])
-		popup = null
-
-	if(href_list["save"])
-		save_preferences()
-		save_character()
-	else if(href_list["reload"])
-		load_preferences()
-		load_character()
-		sanitize_preferences()
-	else if(href_list["load"])
-		if(!IsGuestKey(usr.key))
-			open_load_dialog(usr, href_list["details"])
-			return 1
-	else if(href_list["changeslot"])
-		load_character(text2num(href_list["changeslot"]))
-		sanitize_preferences()
-		close_load_dialog(usr)
-
-		if (winget(usr, "preferences_browser", "is-visible") == "true")
-			open_setup_window(usr)
-
-		if (istype(client.mob, /mob/new_player))
+		if(isnewplayer(client.mob))
+			var/mob/living/carbon/human/hu
 			var/mob/new_player/M = client.mob
+			var/datum/species/chosen_species
+			if(client.prefs.species)
+				chosen_species = all_species[client.prefs.species]
+			if(chosen_species)
+				hu = new(null, chosen_species.name)
+				if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
+					var/obj/item/organ/internal/posibrain/B = hu.internal_organs_by_name[BP_POSIBRAIN]
+					if(B)	B.shackle(client.prefs.get_lawset())
+			else
+				hu = new()
+
+			var/datum/job/job = SSjobs.get_by_path(DEFAULT_JOB_TYPE)
+			var/domain
+			var/addr = real_name
+			var/pass
+			domain = "freemail.net"
+			if (M.client.prefs.email_pass)
+				pass = M.client.prefs.email_pass
+			if(domain)
+				ntnet_global.create_email(hu, addr, domain, "", pass)
+			// END EMAIL GENERATION
+
+			job.equip(hu)
+			job.apply_fingerprints(hu)
+			hu.mind_initialize()
+			if(client.prefs.memory)
+				hu.StoreMemory(client.prefs.memory)
+			copy_to(hu)
+			hu.mind.transfer_to(hu)
+
+			hu.dna.ready_dna(hu)
+			hu.dna.b_type = client.prefs.b_type
+			hu.sync_organ_dna()
+			if(client.prefs.disabilities)
+				// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
+				hu.dna.SetSEState(GLOB.GLASSESBLOCK,1,0)
+				hu.disabilities |= NEARSIGHTED
+
+			SSpersistence.NewCharacter(sanitize_sql(real_name), sanitize_sql(client_ckey), creation_slot, hu)
+			popup.close()
+
 			M.new_player_panel()
-
-		if (href_list["details"])
-			return 1
-	else if(href_list["resetslot"])
-		if(real_name != input("This will reset the current slot. Enter the character's full name to confirm."))
-			return 0
-		load_character(SAVE_RESET)
-		sanitize_preferences()
-	else
-		return 0
-
+			return TRUE
+		if(href_list["close"])
+			popup.close()
 	update_setup_window(usr)
 	return 1
 

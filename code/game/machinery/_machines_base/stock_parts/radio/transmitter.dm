@@ -33,6 +33,9 @@
 	var/list/transmit_on_change
 	var/list/transmit_on_tick
 
+/obj/item/stock_parts/radio/transmitter/basic/after_deserialize()
+	. = ..()
+	start_processing(loc)
 /obj/item/stock_parts/radio/transmitter/basic/proc/var_changed(singleton/public_access/public_variable/variable, obj/machinery/machine, old_value, new_value)
 	var/list/L = list()
 	for(var/thing in transmit_on_change)

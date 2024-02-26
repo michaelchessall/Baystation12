@@ -144,7 +144,7 @@
 	density = TRUE
 	anchored = TRUE
 	dir = WEST
-
+	var/unique_id
 	var/base_icon_state = "cryopod"
 	var/occupied_icon_state = "cryopod_closed"
 	var/on_store_message = "has entered long-term storage."

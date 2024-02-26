@@ -15,15 +15,26 @@
 
 /obj/machinery/light_switch/Initialize()
 	. = ..()
+	if(!persistent_id)
+		if(other_area)
+			src.connected_area = locate(other_area)
+		else
+			src.connected_area = get_area(src)
+
+		if(name == initial(name))
+			SetName("light switch ([connected_area.name])")
+
+		connected_area.set_lightswitch(on)
+		update_icon()
+
+/obj/machinery/light_switch/after_deserialize()
+	. = ..()
 	if(other_area)
 		src.connected_area = locate(other_area)
 	else
 		src.connected_area = get_area(src)
-
-	if(name == initial(name))
-		SetName("light switch ([connected_area.name])")
-
 	connected_area.set_lightswitch(on)
+
 	update_icon()
 
 /obj/machinery/light_switch/on_update_icon()

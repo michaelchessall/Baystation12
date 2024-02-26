@@ -432,3 +432,10 @@ Geometry processing completed in [(Uptime() - start_uptime)/10] seconds!
 		active_edges -= E
 	if(processing_edges)
 		processing_edges -= E
+
+
+/datum/controller/subsystem/air/proc/invalidate_all_zones()
+	while(SSair.zones.len)
+		var/zone/zone = SSair.zones[SSair.zones.len]
+		SSair.zones.len--
+		zone.c_invalidate()

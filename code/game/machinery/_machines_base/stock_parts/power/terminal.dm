@@ -9,6 +9,10 @@
 	var/obj/machinery/power/terminal/terminal
 	var/terminal_dir = 0
 
+/obj/item/stock_parts/power/terminal/after_deserialize()
+	. = ..()
+	start_processing(loc)
+
 /obj/item/stock_parts/power/terminal/on_uninstall(obj/machinery/machine)
 	if(status & PART_STAT_ACTIVE)
 		machine.update_power_channel(cached_channel)

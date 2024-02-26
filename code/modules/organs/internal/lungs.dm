@@ -16,7 +16,7 @@
 	var/exhale_type
 	var/list/poison_types
 
-	var/min_breath_pressure
+	var/min_breath_pressure = 16
 	var/last_int_pressure
 	var/last_ext_pressure
 	var/max_pressure_diff = 60
@@ -60,6 +60,10 @@
 
 /obj/item/organ/internal/lungs/replaced()
 	..()
+	sync_breath_types()
+
+/obj/item/organ/internal/lungs/after_deserialize()
+	. = ..()
 	sync_breath_types()
 
 /**
@@ -223,6 +227,7 @@
 	if(failed_breath)
 		handle_failed_breath()
 	else
+
 		owner.oxygen_alert = 0
 	return failed_breath
 

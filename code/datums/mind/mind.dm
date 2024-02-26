@@ -28,6 +28,8 @@
 		yourself.
 
 */
+var/global/list/player_minds = list()
+
 
 /datum/mind
 	var/key
@@ -68,12 +70,15 @@
 
 /datum/mind/New(key)
 	src.key = key
+	unique_id = 0
+	global.player_minds += src
 	..()
 
 /datum/mind/Destroy()
 	QDEL_NULL_LIST(memories)
 	QDEL_NULL_LIST(goals)
 	SSticker.minds -= src
+	global.player_minds -= src
 	. = ..()
 
 /datum/mind/proc/transfer_to(mob/living/new_character)

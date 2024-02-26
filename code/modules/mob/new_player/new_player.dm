@@ -43,28 +43,73 @@
 			output += "<a href='byond://?src=\ref[src];show_rules=1'>Rules</a>"
 		if (config.lore_url)
 			output += "<a href='byond://?src=\ref[src];show_lore=1'>Lore</a>"
+	if (!(GAME_STATE > RUNLEVEL_LOBBY))
+		output += "<b>The game is still loading. Selection is unavailable</b><br>"
 	output += "<hr>"
-	if (GAME_STATE > RUNLEVEL_LOBBY)
-		output += "<a href='byond://?src=\ref[src];manifest=1'>Manifest</a>"
-	output += "<a href='byond://?src=\ref[src];show_preferences=1'>Options</a>"
-	output += "<hr>"
-	output += "<b>Playing As</b><br>"
-	output += "<a href='byond://?src=\ref[client.prefs];load=1;details=1'>[client.prefs.real_name || "(Random)"]</a><br>"
-	output += client.prefs.job_high ? "[client.prefs.job_high]" : null
-	output += "<hr>"
-	output += "<a href='byond://?src=\ref[src];observe=1'>Join As Observer</a>"
-	if (GAME_STATE > RUNLEVEL_LOBBY)
-		output += "<a href='byond://?src=\ref[src];late_join=1'>Join As Selected</a>"
-	else
-		output += "<a [ready?"class='linkOn'":""] href='byond://?src=\ref[src];ready=[!ready]'>Round Start Join</a>"
-	output += "<hr>"
-	output += "<i>[GLOB.using_map.get_map_info()||"No information available for the current map."]</i>"
-	output += "</div>"
-	panel = new (src, "Welcome","Welcome to [GLOB.using_map.full_name]", 560, 340, src)
+	var/slots = 4
+	output += "<div style='width:575px;max-width:575px;border-width:2px;border-style:solid;border-color:black;display:flex;text-align:center;'>"
+	for(var/i= 1 to slots)
+		var/state
+		output += "<div style='width:150px;max-width:150px;border-width:2px;border-style:solid;border-color:black;'>"
+		if(!establish_save_db_connection())
+			CRASH("Couldn't connect realname duplication check")
+		var/DBQuery/query = dbcon_save.NewQuery("SELECT `RealName`, `CharacterID`, `status` FROM `[SQLS_TABLE_CHARACTERS]` WHERE `ckey` = '[sanitize_sql(key)]' AND `slot` = [i] ORDER BY `CharacterID` DESC LIMIT 1;")
+		SQLS_EXECUTE_AND_REPORT_ERROR(query, "Character Slot load failed")
+		var/sub_output = ""
+		var/ico = "0"
+		send_rsc(src, icon('icons/mob/hologram.dmi', "Question"), "[0].png")
+		send_rsc(src, icon('icons/obj/machines/medical/cryopod.dmi', "cryopod_closed"), "[1].png")
+
+		if(query.NextRow())
+			var/realname = query.item[1]
+			var/characterid = query.item[2]
+			state = query.item[3]
+			sub_output += "<b>[realname]</b><br><hr>"
+			switch(text2num(state))
+				if(SQLS_CHAR_STATUS_CRYO) // cryo
+					ico =  "1"
+					if (GAME_STATE > RUNLEVEL_LOBBY)
+						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid]'>Select</a>"
+					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+				if(SQLS_CHAR_STATUS_WORLD) // world
+					for(var/datum/mind/target_mind in global.player_minds)   // A mob with a matching saved_ckey is already in the game, put the player back where they were.
+						if(target_mind.unique_id == characterid)
+							if(!target_mind.current || istype(target_mind.current, /mob/new_player) || QDELETED(target_mind.current))
+								continue
+						//	transition_to_game()
+							to_chat(src, SPAN_NOTICE("A character is already in game."))
+							spawning = TRUE
+							target_mind.current.key = key
+							target_mind.current.on_persistent_join()
+							qdel(src)
+							return
+					ico =  "1"
+					if (GAME_STATE > RUNLEVEL_LOBBY)
+						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
+					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+				if(SQLS_CHAR_STATUS_FIRST) // first
+					ico =  "1"
+					if (GAME_STATE > RUNLEVEL_LOBBY)
+						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
+					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+				if(SQLS_CHAR_STATUS_DELETED) // deleted
+					ico =  "1"
+					sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a>"
+
+		else // empty character slot.
+			sub_output += "<b>Open Slot #[i]</b><br><hr>"
+			sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a><br>"
+		output += "<img style='width:100px;height:100px;'src=\"[ico].png\"><br>"
+		output += sub_output
+
+		output += "</div>"
+	output += "</div><hr>"
+	output += "" // persistence explanation goes here
+	output += "</div><hr>"
+	panel = new (src, "Character Selection","Persistence SS13", 600, 400, src)
 	panel.set_window_options("can_close=0")
 	panel.set_content(output.Join())
 	panel.open()
-
 
 /mob/new_player/Stat()
 	. = ..()
@@ -112,7 +157,7 @@
 	if (!client)
 		return TOPIC_NOACTION
 	if (href_list["show_preferences"])
-		client.prefs.open_setup_window(src)
+		client.prefs.open_setup_window(src, href_list["show_preferences"])
 		return 1
 	if (href_list["show_wiki"])
 		client.link_url(config.wiki_url, "Wiki", TRUE)
@@ -128,6 +173,13 @@
 	if (href_list["refresh"])
 		panel.close()
 		new_player_panel()
+
+	if(href_list["joinGame"])
+		if(JoinPersistent(href_list["joinGame"], href_list["status"]))
+			panel.close()
+			new_player_panel()
+			qdel(src)
+		return 0
 
 	if(href_list["observe"])
 		if(GAME_STATE < RUNLEVEL_LOBBY)
@@ -171,6 +223,13 @@
 
 			return 1
 
+	if(href_list["deleteCharacter"])
+		if(input("Are you SURE you want to delete [href_list["realname"]]? THIS IS PERMANENT. Enter the character\'s full name to confirm.", "DELETE A CHARACTER", "") == href_list["realname"])
+			SSpersistence.AcceptDeath(href_list["deleteCharacter"], sanitize_sql(key))
+			panel.close()
+			new_player_panel()
+		return 1
+
 	if(href_list["late_join"])
 		if(GAME_STATE != RUNLEVEL_GAME)
 			to_chat(usr, SPAN_WARNING("The round has either not started yet or already ended."))
@@ -208,6 +267,46 @@
 
 	else if(!href_list["late_join"])
 		new_player_panel()
+
+
+/mob/new_player/proc/JoinPersistent(var/c_id, var/status)
+
+	if(src != usr)
+		return 0
+	if(GAME_STATE != RUNLEVEL_GAME)
+		to_chat(usr, SPAN_WARNING("The round is either not ready, or has already finished..."))
+		return 0
+	if(!config.enter_allowed)
+		to_chat(usr, SPAN_NOTICE("There is an administrative lock on entering the game!"))
+		return 0
+	var/mob/person = SSpersistence.LoadCharacter(c_id)
+	var/datum/job/job = SSjobs.get_by_path(DEFAULT_JOB_TYPE)
+	var/datum/spawnpoint/spawnpoint = job.get_spawnpoint(client)
+	var/turf/spawn_turf = pick(spawnpoint.turfs)
+	close_spawn_windows()
+	switch(text2num(status))
+		if(SQLS_CHAR_STATUS_CRYO)
+			person.loc = spawn_turf
+		if(SQLS_CHAR_STATUS_FIRST)
+			if(!spawn_turf && istype(person, /mob/living/carbon/human)) return
+			else
+				person.loc = spawn_turf
+		if(SQLS_CHAR_STATUS_WORLD)
+			person.loc = spawn_turf
+		else
+			person.loc = spawn_turf
+	person.key = key
+	person.update_hud()
+	return 1
+
+
+
+
+
+
+
+
+
 
 /mob/new_player/proc/AttemptLateSpawn(datum/job/job, spawning_at)
 

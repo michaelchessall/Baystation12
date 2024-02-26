@@ -31,7 +31,9 @@
 /obj/machinery/atmospherics/omni/Initialize()
 	. = ..()
 	icon_state = "base"
-
+	if(persistent_id && length(ports))
+		build_icons()
+		return .
 	ports = new()
 	for(var/d in GLOB.cardinal)
 		var/datum/omni_port/new_port = new(src, d)

@@ -49,9 +49,11 @@
 	else
 		current_location = SSshuttle.get_landmark(current_location)
 	if(!istype(current_location))
+		return
 		CRASH("Shuttle \"[name]\" could not find its starting location.")
 
 	if(src.name in SSshuttle.shuttles)
+		return
 		CRASH("A shuttle with the name '[name]' is already defined.")
 	SSshuttle.shuttles[src.name] = src
 	if(logging_home_tag)

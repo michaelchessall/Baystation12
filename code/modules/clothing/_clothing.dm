@@ -21,6 +21,8 @@
 
 /obj/item/clothing/Initialize()
 	. = ..()
+	if(persistent_id)
+		return .
 	var/list/init_accessories = accessories
 	accessories = list()
 	for (var/path in init_accessories)

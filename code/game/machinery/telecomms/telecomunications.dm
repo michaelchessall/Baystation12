@@ -125,19 +125,25 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms/LateInitialize(mapload)
 	//Set the listening_levels if there's none.
-	if(!listening_levels)
-		//Defaults to our Z level!
-		var/turf/position = get_turf(src)
-		listening_levels = GetConnectedZlevels(position.z)
+	if(!persistent_id)
+		if(!listening_levels)
+			//Defaults to our Z level!
+			var/turf/position = get_turf(src)
+			listening_levels = GetConnectedZlevels(position.z)
 
-	if(length(autolinkers))
-		// Links nearby machines
-		if(!long_range_link)
-			for(var/obj/machinery/telecomms/T in orange(20, src))
-				add_link(T)
-		else
-			for(var/obj/machinery/telecomms/T in telecomms_list)
-				add_link(T)
+		if(length(autolinkers))
+			// Links nearby machines
+			if(!long_range_link)
+				for(var/obj/machinery/telecomms/T in orange(20, src))
+					add_link(T)
+			else
+				for(var/obj/machinery/telecomms/T in telecomms_list)
+					add_link(T)
+	update_power()
+	update_icon()
+
+/obj/machinery/telecomms/after_deserialize()
+	. = ..()
 	update_power()
 	update_icon()
 

@@ -1,0 +1,1 @@
+var/global/list/protected_areas = list() // Associative list of areas -> area_control server

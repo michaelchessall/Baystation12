@@ -16,8 +16,16 @@
 /obj/machinery/power/terminal/New()
 	..()
 	var/turf/T = src.loc
-	if(level==ATOM_LEVEL_UNDER_TILE) hide(!T.is_plating())
+	if(T)
+		if(level==ATOM_LEVEL_UNDER_TILE) hide(!T.is_plating())
 	return
+
+/obj/machinery/power/terminal/after_deserialize()
+	. = ..()
+	var/turf/T = src.loc
+	if(T)
+		if(level==ATOM_LEVEL_UNDER_TILE) hide(!T.is_plating())
+
 
 /obj/machinery/power/terminal/proc/master_machine()
 	var/obj/machinery/machine = master && master.loc

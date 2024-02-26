@@ -125,7 +125,8 @@
 		color = (icon_state == LIGHTING_DARKNESS_ICON_STATE) ? COLOR_WHITE : SHADOWER_DARKENING_COLOR
 
 	var/turf/parent = loc
-	ASSERT(isturf(parent))
+	if(!isturf(parent)) return
+	//ASSERT(isturf(parent))
 	UpdateOverlays()
 
 	if (bound_overlay)

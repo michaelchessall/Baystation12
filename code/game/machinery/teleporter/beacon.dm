@@ -128,7 +128,7 @@ var/global/const/TELEBEACON_WIRE_SIGNALLER = 4
 
 /obj/machinery/tele_beacon/is_powered()
 	. = ..()
-	if (!.)
+	if (!. || !istype(wires))
 		return
 	if (power_cut || wires.IsIndexCut(TELEBEACON_WIRE_POWER))
 		return FALSE
@@ -136,7 +136,7 @@ var/global/const/TELEBEACON_WIRE_SIGNALLER = 4
 
 /obj/machinery/tele_beacon/on_update_icon()
 	. = ..()
-
+	if(!istype(wires)) return
 	icon_state = initial(icon_state)
 
 	if (panel_open)

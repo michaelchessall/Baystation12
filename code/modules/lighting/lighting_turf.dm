@@ -148,8 +148,8 @@
 
 /turf/proc/lighting_clear_overlay()
 	if (lighting_overlay)
-		if (lighting_overlay.loc != src)
-			stack_trace("Lighting overlay variable on turf [log_info_line(src)] is insane, lighting overlay actually located on [log_info_line(lighting_overlay.loc)]!")
+//		if (lighting_overlay.loc != src)
+//			stack_trace("Lighting overlay variable on turf [log_info_line(src)] is insane, lighting overlay actually located on [log_info_line(lighting_overlay.loc)]!")
 
 		qdel(lighting_overlay, TRUE)
 		lighting_overlay = null

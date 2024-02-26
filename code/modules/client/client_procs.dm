@@ -409,12 +409,6 @@
 	// Something went wrong, client is usually kicked or transfered to a new mob at this point
 	return 0
 
-/client/verb/character_setup()
-	set name = "Character Setup"
-	set category = "OOC"
-	if(prefs)
-		prefs.open_setup_window(usr)
-
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()

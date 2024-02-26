@@ -10,6 +10,10 @@
 	var/last_cell_charge  = 0     // Used for UI stuff.
 	var/seek_alternatives = 5     // How many ticks we wait before seeking other power sources, if we can provide the machine with power. Set to 0 to never do this.
 
+/obj/item/stock_parts/power/battery/after_deserialize()
+	. = ..()
+	start_processing(loc)
+
 /obj/item/stock_parts/power/battery/Destroy()
 	qdel(cell)
 	. = ..()

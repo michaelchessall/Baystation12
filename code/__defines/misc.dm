@@ -45,6 +45,18 @@
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
 #define 	  LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
 
+///Formats into a readable string neatly an exception's details.
+#define EXCEPTION_TEXT(E) "'[E.name]' ('[E.type]'): '[E.file]':[E.line][length(E.desc)? ":\n'[E.desc]'" : ""]"
+
+// Defined here due to being used immediately below.
+#define GET_DECL(P)\
+	(ispath(P, /singleton) ? (Singletons.resolved_instances[P] ? Singletons.instances[P] : Singletons.GetInstance(P)) : null)
+
+#define REALTIMEOFDAY2SEC(T) ((REALTIMEOFDAY - T) / (1 SECOND))
+
+#define RANDBYTE  num2hex(rand(1,255))
+
+
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
 #define SHUTTLE_WARMUP    1
@@ -283,6 +295,9 @@
 #define FOURSPACES "&nbsp;&nbsp;&nbsp;&nbsp;"
 
 #define INCREMENT_WORLD_Z_SIZE world.maxz++; if (length(SSzcopy.zlev_maximums)) { SSzcopy.calculate_zstack_limits() }
+
+#define MAX_MEDIUM_TEXT_LEN 65535
+
 
 //-- Masks for /atom/var/init_flags --
 //- machinery

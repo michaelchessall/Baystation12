@@ -13,6 +13,8 @@
 /// Value or the next multiple of divisor in a negative direction: Floorm(-1.5, 0.3) = -1.5 , Floorm(-1.5, 0.4) = -1.6
 #define Floorm(value, divisor) ( round((value) / (divisor)) * (divisor) )
 
+#define CEILING(x) (-round(-(x)))
+
 
 /// Value or the nearest integer in either direction
 #define Round(value) round((value), 1)

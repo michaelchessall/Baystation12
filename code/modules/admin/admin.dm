@@ -911,6 +911,22 @@ GLOBAL_VAR_INIT(skip_allow_lists, FALSE)
 	log_and_message_admins("[key_name_admin(usr)] toggled new player game entering.")
 	world.update_status()
 
+/datum/admins/proc/save_server()
+	set category = "Server"
+	set desc="Forces a save of the server."
+	set name="Save Server"
+
+	SSpersistence.SaveWorld(usr)
+
+/datum/admins/proc/load_server()
+	set category = "Server"
+	set desc="Forces a load of the server."
+	set name="Load Server"
+
+	SSpersistence.LoadWorld()
+
+
+
 /datum/admins/proc/toggleaban()
 	set category = "Server"
 	set desc="Respawn basically"

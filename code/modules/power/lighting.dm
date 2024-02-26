@@ -223,22 +223,36 @@
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
 	. = ..(mapload)
+	if(!persistent_id)
+		s.set_up(1, 1, src)
 
+		if(construct)
+			construct_type = construct.type
+			construct.transfer_fingerprints_to(src)
+			set_dir(construct.dir)
+		else
+			var/light_color = get_color_from_area()
+			lightbulb = new light_type(src, light_color)
+			if(prob(lightbulb.broken_chance))
+				broken(TRUE)
+
+		on = powered()
+		update_icon(FALSE)
+
+		switch (dir)
+			if(NORTH)
+				light_offset_y = WORLD_ICON_SIZE * 0.5
+			if(SOUTH)
+				light_offset_y = WORLD_ICON_SIZE * -0.5
+			if(EAST)
+				light_offset_x = WORLD_ICON_SIZE * 0.5
+			if(WEST)
+				light_offset_x = WORLD_ICON_SIZE * -0.5
+/obj/machinery/light/after_deserialize()
+	. = ..()
 	s.set_up(1, 1, src)
 
-	if(construct)
-		construct_type = construct.type
-		construct.transfer_fingerprints_to(src)
-		set_dir(construct.dir)
-	else
-		var/light_color = get_color_from_area()
-		lightbulb = new light_type(src, light_color)
-		if(prob(lightbulb.broken_chance))
-			broken(TRUE)
-
-	on = powered()
 	update_icon(FALSE)
-
 	switch (dir)
 		if(NORTH)
 			light_offset_y = WORLD_ICON_SIZE * 0.5

@@ -9,6 +9,15 @@
  */
 
 
+
+// Run all strings to be used in an SQL query through this proc first to properly escape out injection attempts.
+/proc/sanitize_sql(var/t)
+	establish_save_db_connection()
+	var/sqltext = dbcon_save.Quote("[t]") // http://www.byond.com/forum/post/2218538
+	return copytext(sqltext, 2, -1)
+
+
+
 /*
  * SQL sanitization
  */
@@ -17,6 +26,8 @@
 /proc/sanitizeSQL(t as text)
 	var/sqltext = dbcon.Quote(t);
 	return copytext(sqltext, 2, length(sqltext));//Quote() adds quotes around input, we already do that
+
+
 
 /*
  * Text sanitization

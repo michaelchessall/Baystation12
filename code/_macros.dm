@@ -120,6 +120,38 @@
 #define to_target(target, payload)            target << (payload)
 #define from_target(target, receiver)         target >> (receiver)
 
+//Persistence
+#define SPAN_SERIALIZER(X)    SPAN_CLASS("serializer",    X)
+#define SPAN_AUTOSAVE(X)      SPAN_CLASS("autosave",      X)
+#define SPAN_AUTOSAVE_WARN(X) SPAN_CLASS("autosave_warn", X)
+
+#define SPAN_STYLE(S, X) "<span style='[S]'>[X]</span>"
+
+#define SPAN_CLASS(C, X) "<span class='[C]'>[X]</span>"
+#define SPAN_ITALIC(X)   SPAN_CLASS("italic",        X)
+#define SPAN_BOLD(X)     SPAN_CLASS("bold",          X)
+#define SPAN_NOTICE(X)   SPAN_CLASS("notice",        X)
+#define SPAN_WARNING(X)  SPAN_CLASS("warning",       X)
+#define SPAN_DANGER(X)   SPAN_CLASS("danger",        X)
+#define SPAN_OCCULT(X)   SPAN_CLASS("cult",          X)
+#define SPAN_MFAUNA(X)   SPAN_CLASS("mfauna",        X)
+#define SPAN_SUBTLE(X)   SPAN_CLASS("subtle",        X)
+#define SPAN_INFO(X)     SPAN_CLASS("info",          X)
+#define SPAN_RED(X)      SPAN_CLASS("font_red",      X)
+#define SPAN_ORANGE(X)   SPAN_CLASS("font_orange",   X)
+#define SPAN_YELLOW(X)   SPAN_CLASS("font_yellow",   X)
+#define SPAN_GREEN(X)    SPAN_CLASS("font_green",    X)
+#define SPAN_BLUE(X)     SPAN_CLASS("font_blue",     X)
+#define SPAN_VIOLET(X)   SPAN_CLASS("font_violet",   X)
+#define SPAN_PURPLE(X)   SPAN_CLASS("font_purple",   X)
+#define SPAN_GREY(X)     SPAN_CLASS("font_grey",     X)
+#define SPAN_MAROON(X)   SPAN_CLASS("font_maroon",   X)
+#define SPAN_PINK(X)     SPAN_CLASS("font_pink",     X)
+#define SPAN_PALEPINK(X) SPAN_CLASS("font_palepink", X)
+#define SPAN_SINISTER(X) SPAN_CLASS("sinister", X)
+
+
+
 /// Common use
 #define legacy_chat(target, message)          to_target(target, message)
 #define to_world(message)                     to_chat(world, message)

@@ -168,28 +168,41 @@
 /obj/machinery/power/apc/Initialize(mapload, ndir, populate_parts = TRUE, building=0)
 	// offset 22 pixels in direction of dir
 	// this allows the APC to be embedded in a wall, yet still inside an area
-	if (building)
-		set_dir(ndir)
+	. = ..()
+	if(!persistent_id)
+		if (building)
+			set_dir(ndir)
 
-	if(areastring)
-		area = get_area_name(areastring)
-	else
-		var/area/A = get_area(src)
-		//if area isn't specified use current
-		area = A
-	if(autoname)
-		SetName("\improper [area.name] APC")
-	area.apc = src
+		if(areastring)
+			area = get_area_name(areastring)
+		else
+			var/area/A = get_area(src)
+			//if area isn't specified use current
+			area = A
+		if(autoname)
+			SetName("\improper [area.name] APC")
+		area.apc = src
 
+
+
+		if (building==0)
+			init_round_start()
+		else
+			opened = 1
+			operating = 0
+			set_stat(MACHINE_STAT_MAINT, TRUE)
+			queue_icon_update()
+
+		if(operating)
+			force_update_channels()
+		power_change()
+
+/obj/machinery/power/apc/after_deserialize()
 	. = ..()
 
-	if (building==0)
-		init_round_start()
-	else
-		opened = 1
-		operating = 0
-		set_stat(MACHINE_STAT_MAINT, TRUE)
-		queue_icon_update()
+	var/area/A = get_area(src)
+	area = A
+	area.apc = src
 
 	if(operating)
 		force_update_channels()
@@ -902,6 +915,7 @@
 
 /obj/machinery/power/apc/Process()
 	if(!area.requires_power)
+		to_world("APC DISABLED")
 		return PROCESS_KILL
 
 	if(MACHINE_IS_BROKEN(src) || GET_FLAGS(stat, MACHINE_STAT_MAINT))
