@@ -109,7 +109,7 @@
 	output += "" // persistence explanation goes here
 	output += "</div><hr>"
 	if(check_rights(R_DEBUG, FALSE, client))
-		output += "<a href='byond://?src=\ref[src];observeGame=1'>Observe</a>"
+		output += "<a href='byond://?src=\ref[src];observe=1'>Observe</a>"
 	panel = new (src, "Character Selection","Persistence SS13", 600, 400, src)
 	panel.set_window_options("can_close=0")
 	panel.set_content(output.Join())
