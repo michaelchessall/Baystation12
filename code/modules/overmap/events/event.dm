@@ -215,6 +215,7 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	opacity = 0
 	weaknesses = OVERMAP_WEAKNESS_MINING | OVERMAP_WEAKNESS_EXPLOSIVE
 	colors = list("#fc1100", "#ca3227", "#be1e12")
+	icon_state = "meteor1"
 
 /obj/overmap/event/electric
 	name = "electrical storm"
@@ -224,6 +225,7 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	difficulty = EVENT_LEVEL_MAJOR
 	weaknesses = OVERMAP_WEAKNESS_EMP
 	colors = list("#f5ed0c", "#f0e935", "#faf450")
+	icon_state = "electrical1"
 
 /obj/overmap/event/dust
 	name = "dust cloud"
@@ -232,6 +234,7 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	event_icon_states = list("dust1", "dust2", "dust3", "dust4")
 	weaknesses = OVERMAP_WEAKNESS_MINING | OVERMAP_WEAKNESS_EXPLOSIVE | OVERMAP_WEAKNESS_FIRE
 	color = "#bdbdbd"
+	icon_state = "dust1"
 
 /obj/overmap/event/ion
 	name = "ion cloud"
@@ -241,6 +244,7 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	difficulty = EVENT_LEVEL_MAJOR
 	weaknesses = OVERMAP_WEAKNESS_EMP
 	colors = list("#02faee", "#34d1c9", "#1b9ce7")
+	icon_state = "ion1"
 
 /obj/overmap/event/carp
 	name = "carp shoal"
@@ -250,13 +254,14 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	event_icon_states = list("carp1", "carp2")
 	weaknesses = OVERMAP_WEAKNESS_EXPLOSIVE | OVERMAP_WEAKNESS_FIRE
 	colors = list("#a960dd", "#cd60d3", "#ea50f2", "#f67efc")
+	icon_state = "carp1"
 
 /obj/overmap/event/carp/major
 	name = "carp school"
 	difficulty = EVENT_LEVEL_MAJOR
 	event_icon_states = list("carp3", "carp4")
 	colors = list("#a709db", "#c228c7", "#c444e4")
-
+	icon_state = "carp3"
 
 /obj/overmap/event/gravity
 	name = "dark matter influx"
@@ -265,6 +270,7 @@ var/global/singleton/overmap_event_handler/overmap_event_handler = new()
 	event_icon_states = list("grav1", "grav2", "grav3", "grav4")
 	opacity = 0
 	colors = list("#9e5bd1", "#9339d8", "#9121e7")
+	icon_state = "grav1"
 
 //These now are basically only used to spawn hazards. Will be useful when we need to spawn group of moving hazards
 /datum/overmap_event

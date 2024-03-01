@@ -60,52 +60,51 @@
 	output += "<hr>"
 	var/slots = 4
 	output += "<div style='width:575px;max-width:575px;border-width:2px;border-style:solid;border-color:black;display:flex;text-align:center;'>"
-	for(var/i= 1 to slots)
-		var/state
-		output += "<div style='width:150px;max-width:150px;border-width:2px;border-style:solid;border-color:black;'>"
-		if(!establish_save_db_connection())
-			CRASH("Couldn't connect realname duplication check")
-		var/DBQuery/query = dbcon_save.NewQuery("SELECT `RealName`, `CharacterID`, `status` FROM `[SQLS_TABLE_CHARACTERS]` WHERE `ckey` = '[sanitize_sql(key)]' AND `slot` = [i] ORDER BY `CharacterID` DESC LIMIT 1;")
-		SQLS_EXECUTE_AND_REPORT_ERROR(query, "Character Slot load failed")
-		var/sub_output = ""
-		var/ico = "0"
-		send_rsc(src, icon('icons/mob/hologram.dmi', "Question"), "[0].png")
-		send_rsc(src, icon('icons/obj/machines/medical/cryopod.dmi', "cryopod_closed"), "[1].png")
+	if(establish_save_db_connection())
+		for(var/i= 1 to slots)
+			var/state
+			output += "<div style='width:150px;max-width:150px;border-width:2px;border-style:solid;border-color:black;'>"
+			var/DBQuery/query = dbcon_save.NewQuery("SELECT `RealName`, `CharacterID`, `status` FROM `[SQLS_TABLE_CHARACTERS]` WHERE `ckey` = '[sanitize_sql(key)]' AND `slot` = [i] ORDER BY `CharacterID` DESC LIMIT 1;")
+			SQLS_EXECUTE_AND_REPORT_ERROR(query, "Character Slot load failed")
+			var/sub_output = ""
+			var/ico = "0"
+			send_rsc(src, icon('icons/mob/hologram.dmi', "Question"), "[0].png")
+			send_rsc(src, icon('icons/obj/machines/medical/cryopod.dmi', "cryopod_closed"), "[1].png")
 
-		if(query.NextRow())
-			var/realname = query.item[1]
-			var/characterid = query.item[2]
-			state = query.item[3]
-			sub_output += "<b>[realname]</b><br><hr>"
-			switch(text2num(state))
-				if(SQLS_CHAR_STATUS_CRYO) // cryo
-					ico =  "1"
-					if (GAME_STATE > RUNLEVEL_LOBBY)
-						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid]'>Select</a>"
-					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
-				if(SQLS_CHAR_STATUS_WORLD) // world
-					if (GAME_STATE > RUNLEVEL_LOBBY)
-						findandspawn(characterid)
-					ico =  "1"
-					if (GAME_STATE > RUNLEVEL_LOBBY)	sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
-					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+			if(query.NextRow())
+				var/realname = query.item[1]
+				var/characterid = query.item[2]
+				state = query.item[3]
+				sub_output += "<b>[realname]</b><br><hr>"
+				switch(text2num(state))
+					if(SQLS_CHAR_STATUS_CRYO) // cryo
+						ico =  "1"
+						if (GAME_STATE > RUNLEVEL_LOBBY)
+							sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid]'>Select</a>"
+						sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+					if(SQLS_CHAR_STATUS_WORLD) // world
+						if (GAME_STATE > RUNLEVEL_LOBBY)
+							findandspawn(characterid)
+						ico =  "1"
+						if (GAME_STATE > RUNLEVEL_LOBBY)	sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
+						sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
 
-				if(SQLS_CHAR_STATUS_FIRST) // first
-					ico =  "1"
-					if (GAME_STATE > RUNLEVEL_LOBBY)
-						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
-					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
-				if(SQLS_CHAR_STATUS_DELETED) // deleted
-					ico =  "1"
-					sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a>"
+					if(SQLS_CHAR_STATUS_FIRST) // first
+						ico =  "1"
+						if (GAME_STATE > RUNLEVEL_LOBBY)
+							sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
+						sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+					if(SQLS_CHAR_STATUS_DELETED) // deleted
+						ico =  "1"
+						sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a>"
 
-		else // empty character slot.
-			sub_output += "<b>Open Slot #[i]</b><br><hr>"
-			sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a><br>"
-		output += "<img style='width:100px;height:100px;'src=\"[ico].png\"><br>"
-		output += sub_output
+			else // empty character slot.
+				sub_output += "<b>Open Slot #[i]</b><br><hr>"
+				sub_output += "<a href='byond://?src=\ref[src];show_preferences=[i]'>Create</a><br>"
+			output += "<img style='width:100px;height:100px;'src=\"[ico].png\"><br>"
+			output += sub_output
 
-		output += "</div>"
+			output += "</div>"
 	output += "</div><hr>"
 	output += "" // persistence explanation goes here
 	output += "</div><hr>"
