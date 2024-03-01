@@ -291,6 +291,7 @@ var/global/const/enterloopsanity = 100
 /turf/proc/remove_decals()
 	if(decals && length(decals))
 		decals.Cut()
+		decals_obj.Cut()
 		decals = null
 
 // Called when turf is hit by a thrown object

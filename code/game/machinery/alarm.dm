@@ -59,7 +59,7 @@
 	idle_power_usage = 80
 	active_power_usage = 1000 //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
 	power_channel = ENVIRON
-	req_access = list(list(access_atmospherics, access_engine_equip))
+	req_access = list(DEFAULT_ACCESS_ENGINEERING)
 	clicksound = "button"
 	clickvol = 30
 
@@ -514,6 +514,13 @@
 	data["remote_access"] = remote_access
 	data["rcon"] = rcon_setting
 	data["screen"] = screen
+	var/datum/WorldFaction/faction
+	var/faction_name
+	if(req_access_faction && req_access_faction != "")
+		faction = GetWorldFactionGlobal(req_access_faction)
+		if(faction)
+			faction_name = faction.display_name
+	data["faction_name"] = faction_name
 
 	populate_status(data)
 

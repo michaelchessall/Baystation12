@@ -1,6 +1,15 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
+#define DEFAULT_ACCESS_ASSIGNMENT "Assignment"
+#define DEFAULT_ACCESS_ENGINEERING  "Engineering Devices"
+var/global/list/default_access_list = list(DEFAULT_ACCESS_ASSIGNMENT, DEFAULT_ACCESS_ENGINEERING)
+
+
+SAVED_VAR(/obj, req_access_faction)
 /obj/var/list/req_access = list()
+/atom/movable/var/req_access_faction
+/obj/var/req_access_personal
+
 
 //returns 1 if this mob has sufficient access to use this object
 /atom/movable/proc/allowed(mob/M)
@@ -9,13 +18,13 @@
 		return TRUE
 	if(!istype(M))
 		return FALSE
-	return check_access_list(M.GetAccess())
+	return check_access_list(M.GetAccess(req_access_faction))
 
-/atom/movable/proc/GetAccess()
+/atom/movable/proc/GetAccess(var/raf)
 	. = list()
 	var/obj/item/card/id/id = GetIdCard()
 	if(id)
-		. += id.GetAccess()
+		. += id.GetAccess(raf)
 
 /atom/movable/proc/GetIdCard()
 	return null

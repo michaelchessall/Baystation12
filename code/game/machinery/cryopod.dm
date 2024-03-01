@@ -1,3 +1,8 @@
+var/global/list/all_cryopods = list()
+/proc/FindCryopod(var/uid)
+	for(var/obj/machinery/cryopod/pod in all_cryopods)
+		if(pod.unique_id == "[uid]")
+			return pod
 /*
  * Cryogenic refrigeration unit. Basically a despawner.
  * Stealing a lot of concepts/code from sleepers due to massive laziness.
@@ -26,6 +31,7 @@
 	var/storage_type = "crewmembers"
 	var/storage_name = "Cryogenic Oversight Control"
 	var/allow_items = 1
+
 
 /obj/machinery/computer/cryopod/robot
 	name = "robotic storage console"
@@ -144,7 +150,6 @@
 	density = TRUE
 	anchored = TRUE
 	dir = WEST
-	var/unique_id
 	var/base_icon_state = "cryopod"
 	var/occupied_icon_state = "cryopod_closed"
 	var/on_store_message = "has entered long-term storage."
@@ -155,7 +160,7 @@
 	var/disallow_occupant_types = list()
 
 	var/mob/occupant = null       // Person waiting to be despawned.
-	var/time_till_despawn = 9000  // Down to 15 minutes //30 minutes-ish is too long
+	var/time_till_despawn = 5 SECONDS  // Down to 15 minutes //30 minutes-ish is too long
 	var/time_entered = 0          // Used to keep track of the safe period.
 	var/obj/item/device/radio/intercom/announce //
 	var/announce_despawn = TRUE
@@ -180,6 +185,10 @@
 		/obj/item/clothing/head/helmet/space,
 		/obj/item/storage/internal
 	)
+
+
+	var/unique_id
+
 
 /obj/machinery/cryopod/robot
 	name = "robotic storage unit"
@@ -250,6 +259,8 @@
 
 /obj/machinery/cryopod/New()
 	announce = new /obj/item/device/radio/intercom(src)
+	unique_id = "[rand(1,9999)],[rand(1,9999)],[rand(1,9999)]"
+	all_cryopods += src
 	..()
 
 /obj/machinery/cryopod/Destroy()
@@ -314,9 +325,63 @@
 
 			despawn_occupant()
 
+
+
+
+
+
+
+
+/obj/machinery/cryopod/proc/despawn_occupant()
+	SHOULD_NOT_SLEEP(TRUE) // Sleeping causes the double-despawn bug
+
+	if (QDELETED(occupant))
+		log_and_message_admins("A mob was deleted while in a cryopod, or the cryopod double-processed. This may cause errors!")
+		return
+	var/mob/living/carbon/human/H = occupant
+	if(istype(H))
+		H.home_spawn = src.unique_id
+		var/datum/mind/occupant_mind = occupant.mind
+		if(occupant_mind)
+			var/success = SSpersistence.SaveCharacter(occupant, SQLS_CHAR_STATUS_CRYO)
+			if(!success)
+				log_and_message_admins("\The cryopod at ([x], [y], [z]) failed to despawn the occupant [occupant]!")
+				to_chat(occupant, SPAN_WARNING("Something has gone wrong while saving your character. Contact an admin!"))
+				audible_message("\The [src] emits a series of warning tones!")
+				return // We don't set despawning here in order to keep the mob safe without continuously retrying despawns.
+			QDEL_NULL(occupant.mind)
+		else
+			return
+	if(occupant.ckey && occupant.client)
+		var/mob/new_player/new_player = new()
+		new_player.ckey               = occupant.ckey
+		new_player.client.eye         = new_player.client.mob //Do this so we don't hear what's going on around the pod after cryo.
+		new_player.client.perspective = MOB_PERSPECTIVE
+
+	icon_state = base_icon_state
+
+	log_and_message_admins("[key_name(occupant)] entered cryostorage.")
+
+	if(announce_despawn)
+		invoke_async(announce, /obj/item/device/radio/proc/autosay, "[occupant.real_name], [on_store_message]", "[on_store_name]")
+
+	var/despawnmessage = replacetext(on_store_visible_message, "$occupant$", occupant.real_name)
+	visible_message(SPAN_NOTICE("\The [initial(name)] " + despawnmessage), range = 3)
+
+	//This should guarantee that ghosts don't spawn.
+	occupant.ckey = null
+
+	// Delete the mob.
+	qdel(occupant)
+	set_occupant(null)
+
+
+
+
+
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
-/obj/machinery/cryopod/proc/despawn_occupant()
+/obj/machinery/cryopod/proc/despawn_occupant_old()
 	SHOULD_NOT_SLEEP(TRUE) // Sleeping causes the double-despawn bug
 
 	if (QDELETED(occupant))
@@ -421,9 +486,9 @@
 	set_occupant(null)
 
 /obj/machinery/cryopod/proc/attempt_enter(mob/target, mob/user)
-	if (!user.IsAdvancedToolUser())
-		to_chat(user, SPAN_WARNING("You're too simple to understand how to do that."))
-		return
+//	if (!user.IsAdvancedToolUser())
+//		to_chat(user, SPAN_WARNING("You're too simple to understand how to do that."))
+//		return
 	if (user.incapacitated() || !user.Adjacent(src))
 		to_chat(user, SPAN_WARNING("You're in no position to do that."))
 		return

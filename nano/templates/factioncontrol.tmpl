@@ -1,0 +1,159 @@
+<div class='item'>
+	<h2>Faction Control</h2>
+</div>
+
+{{if data.menu == 0}}
+	<p>Log in to an existing faction to begin making changes. You will be logged in as soon as you enter a matching UID and password.</p><br><hr>
+	<div class='itemLabel'>
+		Faction UID:
+	</div>
+	<div class='itemContent'>
+		{{:helper.link(data.faction_uid, '', {'action' : 'login_uid'})}}
+	</div>
+	<div class='itemLabel'>
+		Faction Password:
+	</div>
+	<div class='itemContent'>
+		{{:helper.link(data.faction_password, '', {'action' : 'login_password'})}}
+	</div>
+	<br>
+
+{{else}}
+	{{:helper.link('Logout', '', {'action' : 'logout'})}} {{:helper.link('Assignment Menu', '', {'action' : 'menu', 'menu' : 2}, data.menu == 2 ? 'selected' : null)}}
+	{{:helper.link('Access Menu', '', {'action' : 'menu', 'menu' : 3}, data.menu == 3 ? 'selected' : null)}} {{:helper.link('Network Menu', '', {'action' : 'menu', 'menu' : 4}, data.menu == 4 ? 'selected' : null)}}
+	{{:helper.link('Faction Menu', '', {'action' : 'menu', 'menu' : 6}, data.menu == 6 ? 'selected' : null)}}
+	<div class='item'>
+		<h3>{{:data.faction_name}}</h3>
+	</div>
+	<hr>
+{{/if}}
+{{if data.menu == 2}}
+	<div class='item'>
+		<h2>Assignment Menu</h2>
+	</div>
+	<h3>Assignment Categories</h3>
+	<div class='block'>
+		{{for data.assignment_categories}}
+			{{:helper.link(value.name, '', {'action' : 'assigncat', 'assign_target' : value.ref})}} | {{:value.num_assign}} assignments<br><hr><br>
+		{{/for}}
+	</div>
+	{{:helper.link('Add New Assignment Category', '', {'action' : 'assigncat_new'})}}
+
+{{else data.menu == 3}}
+	<div class='item'>
+		<h2>Access Menu</h2>
+	</div>
+	Default Access (Click for a description of each)
+	<div class='block'>
+		{{for data.default_access}}
+			{{:helper.link(value.name, '', {'action' : 'access_default', 'target' : value.name})}}&nbsp;&nbsp;
+		{{/for}}
+		<br><hr>
+		{{:data.default_desc}}
+	</div>
+	Faction Access (Click to delete)
+	<div class='block'>
+		{{for data.faction_access}}
+			{{:helper.link(value.name, 'trash', {'action' : 'access_delete', 'target' : value.name})}}&nbsp;&nbsp;
+		{{/for}}
+	</div>
+	{{:helper.link('Add New Access', '', {'action' : 'access_new'})}}
+
+{{else data.menu == 4}}
+	<div class='item'>
+		<h2>Computer Network Menu</h2>
+	</div>
+	<div class="itemLabel">
+		Network Visibility:
+	</div>
+	<div class="itemContent">
+		{{:helper.link('VISIBLE', '', {'action' : 'network_vis_on'}, data.isVisible ? 'selected' : null)}}{{:helper.link('HIDDEN', '', {'action' : 'network_vis_off'}, data.isVisible ? null : 'selected')}}
+	</div>
+	<div class="itemLabel">
+		Network Passsword:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.network_pass, '', {'action' : 'network_pass'})}}
+	</div>
+{{else data.menu == 1}}
+	{{:helper.link('Back', '', {'action' : 'assign_back'})}}
+	<div class='item'>
+		<h2>Assignment: {{:data.assign_name}}</h2>
+	</div>
+	{{:helper.link('Change Name', 'pencil', {'action' : 'assign_changename'})}}{{:helper.link('Delete', 'trash', {'action' : 'access_delete'})}}<br><br>
+	<div class="itemLabel">
+		Rank:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.assign_rank, '', {'action' : 'assign_rank'})}}
+	</div>
+	<p>Assignments can only reassign those of a lower rank and can only assign to ranks lower than their own.</p>
+	<div class="itemLabel">
+		Wage:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.assign_wage, '', {'action' : 'assign_wage'})}}
+	</div>
+	<p>Wage is paid directly to holders of this assignment every thirty minutes they remain clocked in.</p>
+	<br><hr>
+	Accesses (Click to toggle)
+	<div class='block'>
+		{{for data.faction_access}}
+			{{:helper.link(value.name, '', {'action' : 'assign_access', 'target' : value.name}, null, value.selected ? 'selected' : null)}}
+		{{/for}}
+		<br><br>
+	</div>
+
+{{else data.menu == 5}}
+	{{:helper.link('Back', '', {'action' : 'menu', 'menu' : 2})}}
+	<div class='item'>
+		<h2>Assignment Category: {{:data.assigncat_name}}</h2>
+	</div>
+	{{:helper.link('Change Name', 'pencil', {'action' : 'accesscat_changename'})}}{{:helper.link('Delete', 'trash', {'action' : 'accesscat_delete'})}}<br><br>
+	<p>Assignments</p>
+	<div class='block'>
+		{{for data.ranks}}
+			<div class="itemLabel">
+				Rank {{:value.rank}}:
+			</div>
+			{{for value.assignments :assignValue:assignKey}}
+				{{:helper.link(assignValue.assign_name, '', {'action' : 'assign', 'assign_target' : assignValue.assign_ref})}}
+			{{/for}}
+			<br><hr><br>
+		{{/for}}
+	</div>
+	{{:helper.link('Add New Assignment', '', {'action' : 'assign_new'})}}<br><br>
+	<div class="itemLabel">
+		Command Category:
+	</div>
+	<div class="itemContent">
+		{{:helper.link('YES', '', {'action' : 'command_on'}, data.isCommand ? 'selected' : null)}}{{:helper.link('NO', '', {'action' : 'command_off'}, data.isCommand ? null : 'selected')}}
+	</div>
+	<p>When an Assignment Category is a Command Category assignments within it can reassign people who are in any assignment category.</p>
+
+{{else data.menu == 6}}
+	<div class='item'>
+		<h2>Faction Settings</h2>
+	</div>
+	<div class="itemLabel">
+		Display Name:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.faction_name, '', {'action' : 'faction_name'})}}
+	</div>
+	<br><hr><br>
+	<div class="itemLabel">
+		Faction Control Password:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.faction_pass, '', {'action' : 'faction_pass'})}}
+	</div>
+	<br><hr><br>
+	<div class="itemLabel">
+		Faction Leader:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.faction_leader, '', {'action' : 'faction_leader'})}}
+	</div>
+	<p>The faction leader will always hold all access and outrank everyone else allowing them to assign anyone to any assignment.</p>
+{{/if}}

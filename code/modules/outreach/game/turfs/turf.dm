@@ -8,6 +8,9 @@ SAVED_VAR(/turf, applied_decals)
 /turf/after_deserialize()
 	..()
 	initial_gas = null
+	if(decals_obj && decals_obj.len)
+		for(var/obj/ob in decals_obj)
+			ob.loc = src
 	if(lighting_overlay)
 		lighting_clear_overlay()
 		log_warning("[src]([x],[y],[z]) has a lighting overlay after load!!")

@@ -8,7 +8,7 @@
 
 	matter = list(MATERIAL_STEEL = 50,MATERIAL_GLASS = 50)
 
-	req_access = list(access_engine)
+	req_access = list(DEFAULT_ACCESS_ENGINEERING)
 
 	var/secure = 0 //if set, then wires will be randomized and bolts will drop if the door is broken
 	var/list/conf_access = list()
@@ -36,21 +36,19 @@
 
 /obj/item/airlock_electronics/ui_data()
 	var/list/data = list()
-	var/list/regions = list()
+	if(req_access_faction && req_access_faction != "")
+		var/datum/WorldFaction/faction = GetWorldFactionGlobal(req_access_faction)
+		if(faction)
+			data["faction_name"] = faction.display_name
+			var/list/access_list[0]
+			for(var/access in faction.GetAllAccess())
+				var/selected = (access in conf_access)
+				access_list.Add(list(list(
+					"name" = access,
+					"selected" = selected
+					)))
+			data["access"] = access_list
 
-	for(var/i in ACCESS_REGION_MIN to ACCESS_REGION_MAX) //code/game/jobs/_access_defs.dm
-		var/list/region = list()
-		var/list/accesses = list()
-		for(var/j in get_region_accesses(i))
-			var/list/access = list()
-			access["name"] = get_access_desc(j)
-			access["id"] = j
-			access["req"] = (j in src.conf_access)
-			accesses[LIST_PRE_INC(accesses)] = access
-		region["name"] = get_region_accesses_name(i)
-		region["accesses"] = accesses
-		regions[LIST_PRE_INC(regions)] = region
-	data["regions"] = regions
 	data["oneAccess"] = one_access
 	data["locked"] = locked
 	data["lockable"] = lockable
@@ -80,7 +78,24 @@
 		else if(href_list["lock"])
 			locked = TRUE
 			return TOPIC_REFRESH
-
+	if(href_list["disconnect"])
+		req_access_faction = null
+		conf_access.Cut()
+		return TOPIC_REFRESH
+	if(href_list["connect"])
+		var/obj/item/card/id/userid = user.GetIdCard()
+		if(userid)
+			var/list/choices = GetValidEDConnections(userid.registered_name)
+			if(choices && choices.len)
+				var/list/format_choices = list()
+				var/i = 0
+				for(var/datum/WorldFaction/faction in choices)
+					i++
+					format_choices["#[i] [faction.display_name]"] = faction
+				var/select = input("Choose the faction to connect to", "Faction Selection", null, null) as null|anything in format_choices
+				if(select)
+					var/datum/WorldFaction/choice = format_choices[select]
+					req_access_faction = choice.uid
 	if(href_list["clear"])
 		conf_access = list()
 		one_access = FALSE

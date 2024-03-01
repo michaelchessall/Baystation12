@@ -101,6 +101,8 @@ var/global/datum/ntnet/ntnet_global = new()
 
 /// Checks whether NTNet operates.
 /datum/ntnet/proc/check_function()
+	return TRUE
+
 	if(!relays || !length(relays)) // No relays found. NTNet is down for wireless devices
 		return FALSE
 

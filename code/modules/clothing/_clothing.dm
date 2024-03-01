@@ -33,7 +33,8 @@
 	for (var/obj/item/clothing/accessory/A as anything in accessories)
 		remove_accessory(null, A)
 		qdel(A)
-	accessories.Cut()
+	if(accessories)
+		accessories.Cut()
 	accessories = null
 	. = ..()
 

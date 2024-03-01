@@ -244,6 +244,7 @@
 
 /// Installs default programs on the drive
 /obj/item/stock_parts/computer/hard_drive/proc/install_default_programs()
+	create_file(new/datum/computer_file/program/network(src))			// File manager, allows text editor functions and basic file manipulation.
 	create_file(new/datum/computer_file/program/computerconfig(src)) 		// Computer configuration utility, allows hardware control and displays more info than status bar
 	create_file(new/datum/computer_file/program/ntnetdownload(src))			// NTNet Downloader Utility, allows users to download more software from NTNet repository
 	create_file(new/datum/computer_file/program/filemanager(src))			// File manager, allows text editor functions and basic file manipulation.

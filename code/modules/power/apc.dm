@@ -88,7 +88,7 @@
 		/obj/item/stock_parts/power/apc,
 		/obj/item/stock_parts/power/battery
 		)
-	req_access = list(access_engine_equip)
+	req_access = list(DEFAULT_ACCESS_ENGINEERING)
 	clicksound = "switch"
 	layer = ABOVE_WINDOW_LAYER
 	health_max = 80
@@ -223,7 +223,7 @@
 	return ..()
 
 /obj/machinery/power/apc/get_req_access()
-	if(!locked)
+	if(!locked || !req_access_faction || req_access_faction == "")
 		return list()
 	return ..()
 
@@ -717,8 +717,14 @@
 	if(!user)
 		return
 	var/obj/item/cell/cell = get_cell()
-
+	var/datum/WorldFaction/faction
+	var/faction_name
+	if(req_access_faction && req_access_faction != "")
+		faction = GetWorldFactionGlobal(req_access_faction)
+		if(faction)
+			faction_name = faction.display_name
 	var/list/data = list(
+		"faction_name" = faction_name,
 		"pChan_Off" = POWERCHAN_OFF,
 		"pChan_Off_T" = POWERCHAN_OFF_TEMP,
 		"pChan_Off_A" = POWERCHAN_OFF_AUTO,
@@ -840,6 +846,23 @@
 /obj/machinery/power/apc/Topic(href, href_list)
 	if(..())
 		return 1
+	if(href_list["disconnect"])
+		req_access_faction = null
+
+	if(href_list["connect"])
+		var/obj/item/card/id/userid = usr.GetIdCard()
+		if(userid)
+			var/list/choices = GetValidEDConnections(userid.registered_name)
+			if(choices && choices.len)
+				var/list/format_choices = list()
+				var/i = 0
+				for(var/datum/WorldFaction/faction in choices)
+					i++
+					format_choices["#[i] [faction.display_name]"] = faction
+				var/select = input("Choose the faction to connect to", "Faction Selection", null, null) as null|anything in format_choices
+				if(select)
+					var/datum/WorldFaction/choice = format_choices[select]
+					req_access_faction = choice.uid
 
 	if(!istype(usr, /mob/living/silicon) && (locked && !emagged) && !(isghost(usr) && isadmin(usr)))
 		// Shouldn't happen, this is here to prevent href exploits

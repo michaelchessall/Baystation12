@@ -207,7 +207,7 @@
 		SQLS_EXECUTE_AND_REPORT_ERROR(query, "Character Slot load failed")
 		if(query.NextRow())
 			var/status = query.item[1]
-			if(status != SQLS_CHAR_STATUS_DELETED)
+			if(text2num(status) != SQLS_CHAR_STATUS_DELETED)
 				allowed = 0
 		if(!allowed)
 			to_chat(usr, "You already have a character in slot [creation_slot].")

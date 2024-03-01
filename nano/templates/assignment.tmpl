@@ -1,0 +1,94 @@
+{{:helper.link('Assignment Modification', 'home', {'action' : 'switchm', 'target' : 'mod'}, data.mmode ? 'disabled' : null)}}
+{{:helper.link('Crew Manifest', 'folder-open', {'action' : 'switchm', 'target' : 'manifest'}, !data.mmode ? 'disabled' : null)}}
+{{if data.have_printer}}{{:helper.link('Print', 'print', {'action' : 'print'}, (!data.mmode || data.has_id) ? null : 'disabled')}}{{/if}}
+
+{{if !data.mmode}}
+	<div class='item'>
+		<h2>Crew Manifest</h2>
+	</div>
+	<div class='item'>
+		{{:data.manifest}}
+	</div>
+{{else}}
+	<div class='item'>
+		<h2>Assignment Modification</h2>
+	</div>
+	<div class='item'>
+		<div class='itemLabel'>
+			ID Card:
+		</div>
+		<div class='itemContent'>
+			{{:helper.link(data.id_name, 'eject', {'action' : 'eject'})}}{{if data.has_id}}{{:helper.link('Search by ID', 'search', {'action' : 'search_by_id'})}}{{/if}}
+		</div>
+	</div>
+	<div class='item'>
+		<div class='itemLabel'>
+			Search by name:
+		</div>
+		<div class='itemContent'>
+			{{:helper.link('Search by name', 'pencil', {'action' : 'search'})}}
+		</div>
+	</div>
+	<hr>
+	{{if data.account_name}}
+		<div class='item'>
+			<h2>Details</h2>
+		</div>
+		<div class='item'>
+			<div class='itemLabel'>
+				Registered Name:
+			</div>
+			<div class='itemContent'>
+				{{:data.account_name}}
+			</div>
+		</div>
+		<div class='item'>
+			<div class='itemLabel'>
+				Current Assignment:
+			</div>
+			<div class='itemContent'>
+				{{:data.assignment_name}}
+			</div>
+		</div>
+		{{if data.outrank}}
+			<div class='item'>
+				<div class='itemLabel'>
+					Remove Assignment:
+				</div>
+				<div class='itemContent'>
+					{{:helper.link('Remove Assignment', 'cross', {'action' : 'assign_unassign', 'assign_target' : data.record_ref})}}
+				</div>
+			</div>
+			<div class='item'>
+				<h2>Assignment</h2>
+			</div>
+			<div class='block'>
+				{{for data.assignment_categories}}
+					<div class="itemLabel">
+						{{:value.assignment_category_name}}
+					</div>
+					<br><br>
+					{{for value.ranks :rankValue:rankKey }}
+						<div class="itemLabel">
+							Rank {{:rankValue.rank}}:
+						</div>
+						{{for rankValue.assignments :assignValue:assignKey}}
+							{{if assignValue.outranked}}
+								{{:helper.link(assignValue.assign_name, '', {'action' : 'assign_disabled'}, 'disabled')}}
+							{{else}}
+								{{:helper.link(assignValue.assign_name, '', {'action' : 'assign', 'assign_target' : assignValue.assign_ref}, assignValue.current ? 'selected' : null)}}
+							{{/if}}
+						{{/for}}
+						<br><br>
+					{{/for}}
+					<hr>
+				{{/for}}
+			</div>
+		{{else}}
+			<div class='item'>
+				<h2>{{:data.account_name}} is too high of a rank for you to reassign!</h2>
+			</div>
+		{{/if}}
+
+	{{/if}}
+{{/if}}

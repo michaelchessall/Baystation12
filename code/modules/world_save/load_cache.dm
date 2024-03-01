@@ -1,6 +1,8 @@
 SAVED_VAR(/datum/persistence/load_cache/world, z_levels)
 SAVED_VAR(/datum/persistence/load_cache/world, area_chunks)
 SAVED_VAR(/datum/persistence/load_cache/world, areas)
+SAVED_VAR(/datum/persistence/load_cache/world, all_world_factions)
+SAVED_VAR(/datum/persistence/load_cache/world, all_money_accounts)
 
 
 SAVED_VAR(/datum/persistence/load_cache/z_level, index)
@@ -76,6 +78,9 @@ SAVED_VAR(/datum/persistence/load_cache/area, name)
 	var/list/z_levels = list()
 	var/list/area_chunks = list()
 	var/list/areas = list()
+	var/list/all_world_factions = list()
+	var/list/all_money_accounts = list()
+
 /datum/persistence/load_cache/character
 	var/mob/target
 
@@ -137,7 +142,6 @@ SAVED_VAR(/datum/persistence/load_cache/area, name)
 	var/area_chunks_cached = 0
 
 	var/failed_vars = 0
-	var/datum/persistence/load_cache/world/world_cache_s
 
 
 /datum/persistence/load_cache/resolver/proc/load_cache(var/instanceid)

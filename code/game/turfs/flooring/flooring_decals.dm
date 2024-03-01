@@ -3,6 +3,9 @@
 // when mapping in interesting floor designs.
 var/global/list/floor_decals = list()
 
+SAVED_VAR(/obj/floor_decal, supplied_dir)
+SAVED_VAR(/obj/floor_decal, alpha)
+
 /obj/floor_decal
 	name = "floor decal"
 	icon = 'icons/turf/flooring/decals.dmi'
@@ -18,6 +21,8 @@ var/global/list/floor_decals = list()
 	if(newcolour) color = newcolour
 	..(newloc)
 
+/turf/var/list/decals_obj = list()
+SAVED_VAR(/turf, decals_obj)
 /obj/floor_decal/Initialize()
 	SHOULD_CALL_PARENT(FALSE)
 	if(supplied_dir) set_dir(supplied_dir)
@@ -38,6 +43,11 @@ var/global/list/floor_decals = list()
 			floor_decals[cache_key] = I
 		LAZYADD(T.decals, floor_decals[cache_key])
 		T.queue_icon_update()
+		if(!(src in T.decals_obj))
+			LAZYADD(T.decals_obj, src)
+		atom_flags |= ATOM_FLAG_INITIALIZED
+		loc = null
+		return
 	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_QDEL
 

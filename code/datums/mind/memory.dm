@@ -2,6 +2,10 @@
 	var/list/memories
 	var/unique_id
 
+/datum/mind/after_save()
+	if(SSpersistence)
+		SSpersistence.seen_minds |= src
+	..()
 /mob/proc/StoreMemory(memory, options)
 	if(!mind)
 		return "There is no mind to store a memory in."

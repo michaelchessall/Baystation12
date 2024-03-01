@@ -1,0 +1,44 @@
+
+<div class="block">
+	<h3>Available Assignments</h3>
+	<br>
+	{{for data.assignments}}
+		{{:helper.link(value.name , null, {'select_assignment' : value.faction_ref, 'record_ref' : value.record_ref}, value.active ? "selected" : null)}}
+	{{empty}}
+		No available assignments found! Please recieve an assignment from any active faction to go on duty.
+	{{/for}}
+	<br>
+</div>
+<div class='item'>
+	<div class='itemLabel'>
+		Work Status:
+	</div>
+	<div class='itemContent'>
+		{{:data.work_status}}
+	</div>
+	{{if data.working}}{{:helper.link("Go Off Duty", 'close', {'disconnect' : 1})}}{{/if}}
+</div>
+<br>
+{{if data.working}}
+	<div class='itemLabel'>
+		Half Hourly Pay:
+	</div>
+	<div class='itemContent'>
+		${{:data.pay}}
+	</div>
+	<br>
+	<div class='itemLabel'>
+		Time to next pay:
+	</div>
+	<div class='itemContent'>
+		{{:data.time}} minutes
+	</div>
+	<br>
+	<div class='itemLabel'>
+		Account Balance:
+	</div>
+	<div class='itemContent'>
+		${{:data.balance}}
+	</div>
+	<br>
+{{/if}}

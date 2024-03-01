@@ -828,13 +828,13 @@ var/global/list/serialization_time_spent_type
 		cs_id = selectquery.item[1]
 		. = cs_id
 	var/DBQuery/cquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `status` = [status] WHERE `CharacterID` = [head.target.mind.unique_id];")
-	SQLS_EXECUTE_AND_REPORT_ERROR(cquery, "FinishCharacter loaded update Failed:")
+	SQLS_EXECUTE_AND_REPORT_ERROR(cquery, "SaveCharacter loaded update Failed:")
 
 /serializer/sql/UpdateCharacterOriginalSave(var/c_id, var/cs_id)
 	if(!establish_save_db_connection())
 		CRASH("Couldn't count saved datums, connection failed!")
 	var/DBQuery/iquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `OriginalSave` = [cs_id] WHERE `CharacterID` = [c_id];")
-	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "FinishCharacter loaded update Failed:")
+	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "UpdateCharacterOriginalSave Failed:")
 
 /serializer/sql/NewCharacter(var/realname, var/ckey, var/slot, var/mob/target)
 	if(!establish_save_db_connection())
@@ -853,7 +853,14 @@ var/global/list/serialization_time_spent_type
 	if(!establish_save_db_connection())
 		CRASH("Couldn't count saved datums, connection failed!")
 	var/DBQuery/iquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `RealName` = 'Mappy Boxo', `status` = [SQLS_CHAR_STATUS_DELETED] WHERE `RealName` = [realname];")
-	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "FinishCharacter loaded update Failed:")
+	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "Clear Name Failed:")
+	return 1
+
+/serializer/sql/proc/SetCharacterStatus(var/c_id, status)
+	if(!establish_save_db_connection())
+		CRASH("Couldn't count saved datums, connection failed!")
+	var/DBQuery/iquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `status` = [status] WHERE `CharacterID` = [c_id];")
+	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "SetCharacterStatus update Failed:")
 	return 1
 
 
@@ -861,7 +868,7 @@ var/global/list/serialization_time_spent_type
 	if(!establish_save_db_connection())
 		CRASH("Couldn't count saved datums, connection failed!")
 	var/DBQuery/iquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `status` = [SQLS_CHAR_STATUS_DELETED] WHERE `CharacterID` = [c_id];")
-	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "FinishCharacter loaded update Failed:")
+	SQLS_EXECUTE_AND_REPORT_ERROR(iquery, "ACcept Death update Failed:")
 	return 1
 
 /serializer/sql/VerifyCharacterOwner(var/c_id, var/ckey)

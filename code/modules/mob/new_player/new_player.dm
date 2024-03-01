@@ -25,6 +25,18 @@
 	. = ..()
 	verbs += /mob/proc/toggle_antag_pool
 
+/mob/new_player/proc/findandspawn(var/characterid)
+	for(var/datum/mind/target_mind in global.player_minds)   // A mob with a matching saved_ckey is already in the game, put the player back where they were.
+		if(text2num(target_mind.unique_id) == text2num(characterid))
+			if(!target_mind.current || istype(target_mind.current, /mob/new_player) || QDELETED(target_mind.current))
+				continue
+			close_spawn_windows()
+			to_chat(src, SPAN_NOTICE("A character is already in game."))
+			spawning = TRUE
+			target_mind.current.key = key
+			target_mind.current.on_persistent_join()
+			qdel(src)
+			return
 
 /mob/new_player/proc/new_player_panel(force)
 	if (!client)
@@ -72,21 +84,12 @@
 						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid]'>Select</a>"
 					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
 				if(SQLS_CHAR_STATUS_WORLD) // world
-					for(var/datum/mind/target_mind in global.player_minds)   // A mob with a matching saved_ckey is already in the game, put the player back where they were.
-						if(target_mind.unique_id == characterid)
-							if(!target_mind.current || istype(target_mind.current, /mob/new_player) || QDELETED(target_mind.current))
-								continue
-						//	transition_to_game()
-							to_chat(src, SPAN_NOTICE("A character is already in game."))
-							spawning = TRUE
-							target_mind.current.key = key
-							target_mind.current.on_persistent_join()
-							qdel(src)
-							return
-					ico =  "1"
 					if (GAME_STATE > RUNLEVEL_LOBBY)
-						sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
+						findandspawn(characterid)
+					ico =  "1"
+					if (GAME_STATE > RUNLEVEL_LOBBY)	sub_output += "<a href='byond://?src=\ref[src];joinGame=[characterid];status=[state]'>Select</a>"
 					sub_output += "<a href='byond://?src=\ref[src];deleteCharacter=[characterid];realname=[realname]'>Delete</a>"
+
 				if(SQLS_CHAR_STATUS_FIRST) // first
 					ico =  "1"
 					if (GAME_STATE > RUNLEVEL_LOBBY)
@@ -106,6 +109,8 @@
 	output += "</div><hr>"
 	output += "" // persistence explanation goes here
 	output += "</div><hr>"
+	if(check_rights(R_DEBUG, FALSE, client))
+		output += "<a href='byond://?src=\ref[src];observeGame=1'>Observe</a>"
 	panel = new (src, "Character Selection","Persistence SS13", 600, 400, src)
 	panel.set_window_options("can_close=0")
 	panel.set_content(output.Join())
@@ -176,8 +181,6 @@
 
 	if(href_list["joinGame"])
 		if(JoinPersistent(href_list["joinGame"], href_list["status"]))
-			panel.close()
-			new_player_panel()
 			qdel(src)
 		return 0
 
@@ -268,6 +271,13 @@
 	else if(!href_list["late_join"])
 		new_player_panel()
 
+/proc/get_spawn_turf()
+	var/spawn_turf
+	for(var/obj/machinery/cryopod/C in all_cryopods)
+		spawn_turf = locate(C.x, C.y, C.z)
+	if(!spawn_turf)
+		spawn_turf = locate(1,1,3)
+	return spawn_turf
 
 /mob/new_player/proc/JoinPersistent(var/c_id, var/status)
 
@@ -279,18 +289,22 @@
 	if(!config.enter_allowed)
 		to_chat(usr, SPAN_NOTICE("There is an administrative lock on entering the game!"))
 		return 0
-	var/mob/person = SSpersistence.LoadCharacter(c_id)
-	var/datum/job/job = SSjobs.get_by_path(DEFAULT_JOB_TYPE)
-	var/datum/spawnpoint/spawnpoint = job.get_spawnpoint(client)
-	var/turf/spawn_turf = pick(spawnpoint.turfs)
+	var/mob/living/carbon/human/person = SSpersistence.LoadCharacter(c_id)
+	var/turf/spawn_turf
+	if(person.home_spawn)
+		var/obj/machinery/cryopod/pod = FindCryopod(person.home_spawn)
+		if(pod && pod.loc)
+			spawn_turf = pod.loc
+		else
+			spawn_turf = get_spawn_turf()
+	else
+		spawn_turf = get_spawn_turf()
 	close_spawn_windows()
 	switch(text2num(status))
 		if(SQLS_CHAR_STATUS_CRYO)
 			person.loc = spawn_turf
 		if(SQLS_CHAR_STATUS_FIRST)
-			if(!spawn_turf && istype(person, /mob/living/carbon/human)) return
-			else
-				person.loc = spawn_turf
+			person.loc = spawn_turf
 		if(SQLS_CHAR_STATUS_WORLD)
 			person.loc = spawn_turf
 		else

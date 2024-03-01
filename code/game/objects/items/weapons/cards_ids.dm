@@ -354,7 +354,11 @@ var/global/const/NO_EMAG_ACT = -50
 	src.add_fingerprint(user)
 	return
 
-/obj/item/card/id/GetAccess()
+/obj/item/card/id/GetAccess(var/raf)
+	if(raf)
+		var/datum/WorldFaction/faction = GetWorldFactionGlobal(raf)
+		if(!faction) return list()
+		return faction.GetAccess(registered_name)
 	return access
 
 /obj/item/card/id/GetIdCard()

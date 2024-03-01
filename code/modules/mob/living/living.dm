@@ -4,7 +4,7 @@
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
-
+	new /obj/item/work_controller(src)
 	selected_image = image(icon('icons/misc/buildmode.dmi'), loc = src, icon_state = "ai_sel")
 
 /mob/living/examine(mob/user, distance, is_adjacent, infix, suffix)

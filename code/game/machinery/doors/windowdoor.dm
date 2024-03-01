@@ -30,6 +30,7 @@
 				autoset_access = TRUE // Being careful in case of subtypes or something.
 			else
 				req_access = assembly.electronics.conf_access
+				req_access_faction = assembly.electronics.req_access_faction
 				if(assembly.electronics.one_access)
 					req_access = list(req_access)
 				autoset_access = FALSE

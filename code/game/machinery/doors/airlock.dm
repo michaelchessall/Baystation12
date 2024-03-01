@@ -1273,6 +1273,7 @@ About the new airlock wires panel:
 			autoset_access = TRUE
 		else
 			req_access = electronics.conf_access
+			req_access_faction = electronics.req_access_faction
 			if(electronics.one_access)
 				req_access = list(req_access)
 			autoset_access = FALSE // We just set it, so don't try and do anything fancy later.

@@ -210,11 +210,7 @@
 								area.area_type = TA.type
 								seen_areas[TA] = area
 							var/datum/persistence/load_cache/area/area = seen_areas[TA]
-							var/datum/persistence/load_cache/turf/turf = new()
-							turf.x = T.x
-							turf.y = T.y
-							turf.z = T.z
-							area.turfs |= turf
+							area.turfs |= "[T.x],[T.y],[T.z]"
 
 						if(__SHOULD_SKIP_TURF(T)) // This turf should not be saved, regardless of its contents.
 							continue
@@ -317,7 +313,7 @@
 	sleep(5)
 	return area_chunks
 ///Saves extension wrapper stuff
-/datum/controller/subsystem/persistence/proc/_save_extensions(var/instanceid)
+/datum/controller/subsystem/persistence/proc/_save_extensions(instanceid)
 	var/datum/wrapper_holder/extension_wrapper_holder = new(saved_extensions)
 	var/time_start_extensions = REALTIMEOFDAY
 
@@ -334,25 +330,6 @@
 	report_progress_serializer("Saved extensions in [REALTIMEOFDAY2SEC(time_start_extensions)]s.")
 	sleep(5)
 
-///Save bank account stuff
-/datum/controller/subsystem/persistence/proc/_save_bank_accounts(var/instanceid)
-	if(!length(GLOB.known_overmap_sectors))
-		return
-	var/datum/wrapper_holder/escrow_holder/e_holder = new(GLOB.known_overmap_sectors.Copy())
-	var/time_start_escrow = REALTIMEOFDAY
-
-	try
-		serializer.Serialize(e_holder, instanceid)
-	catch(var/exception/e_serial)
-		_handle_recoverable_save_exception(e_serial, "bank account serialization")
-
-//	try
-//		serializer.Commit()
-//	catch(var/exception/e_commit)
-//		_handle_critical_save_exception(e_commit, "bank account  commit") //If commit fails, we corrupted our commit cache so not good
-
-	report_progress_serializer("Escrow accounts saved in [REALTIMEOFDAY2SEC(time_start_escrow)]s.")
-	sleep(5)
 
 /////////////////////////////////////////////////////////////////
 // Pre/Post Save
@@ -418,6 +395,19 @@
 		to_world_log(save_complete_text)
 		to_world_log("Time spent per type:\n[jointext(saved_types_stats, "\n")]")
 		to_world_log("Total time spent doing saved variables lookups: [global.get_saved_variables_lookup_time_total / (1 SECOND)] second(s).")
+
+		for(var/datum/mind/mind in seen_minds)
+			if(mind.current && mind.unique_id)
+				serializer.SetCharacterStatus(mind.unique_id, SQLS_CHAR_STATUS_WORLD)
+
+		saved_areas      = list()
+		saved_levels     = list()
+		saved_extensions = list()
+		late_wrappers = list()
+		seen_areas = list()
+		seen_zlevels = list()
+		seen_minds = list()
+
 		serializer.Clear()
 	catch(var/exception/e)
 		_handle_recoverable_save_exception(e, "_after_save()") //Anything post-save is recoverable

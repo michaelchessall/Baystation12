@@ -278,9 +278,12 @@
 			return "Unknown"
 	return real_name
 
+/mob/proc/get_id_name(if_no_id = "Unknown")
+	return
+
 //gets name from ID or PDA itself, ID inside PDA doesn't matter
 //Useful when player is being seen by other mobs
-/mob/living/carbon/human/proc/get_id_name(if_no_id = "Unknown")
+/mob/living/carbon/human/get_id_name(if_no_id = "Unknown")
 	. = if_no_id
 	var/obj/item/card/id/I = GetIdCard()
 	if(istype(I))

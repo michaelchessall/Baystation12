@@ -1,3 +1,6 @@
+SAVED_VAR(/obj/item/stock_parts/computer/network_card, faction_uid)
+SAVED_VAR(/obj/item/stock_parts/computer/network_card, password)
+
 /obj/item/stock_parts/computer/network_card
 	name = "basic NTNet network card"
 	desc = "A basic network card for usage with standard NTNet frequencies."
@@ -19,6 +22,15 @@
 	var/ethernet = 0
 	/// If set, uses the value to funnel connections through another network card.
 	var/proxy_id
+
+	var/faction_uid
+	var/password
+
+/obj/item/stock_parts/computer/network_card/proc/GetWorldFaction()
+	var/datum/WorldFaction/faction = GetWorldFactionGlobal(faction_uid)
+	if(faction && ((!faction.network_password) || faction.network_password == password))
+		return faction
+
 
 /obj/item/stock_parts/computer/network_card/advanced
 	name = "advanced NTNet network card"
@@ -51,7 +63,8 @@
 
 /obj/item/stock_parts/computer/network_card/Initialize()
 	. = ..()
-	identification_id = random_id("network_card_id", 1, 999)
+	if(!persistent_id)
+		identification_id = random_id("network_card_id", 1, 99999)
 
 /obj/item/stock_parts/computer/network_card/Destroy()
 	ntnet_global.unregister(identification_id)
@@ -98,18 +111,8 @@
 		return
 	if(!ntnet_global.check_function() && !ethernet)
 		return
-	var/strength = 1
-	if(ethernet)
-		strength = 3
-	else if(long_range)
-		strength = 2
-	var/turf/T = get_turf(src)
-	if(!istype(T)) //no reception in nullspace
-		return
-	if(T.z in GLOB.using_map.station_levels) // Computer is on station. Low/High signal depending on what type of network card you have
-		. = strength
-	else if(T.z in GLOB.using_map.contact_levels) // Not on station, but close enough for radio signal to travel, or long cables in case of ethernet
-		. = strength - 1
+	if(GetWorldFaction())
+		return 2
 
 /// Returns the resolved signal strength, accounting for proxies
 /obj/item/stock_parts/computer/network_card/proc/get_signal(specific_action = 0)

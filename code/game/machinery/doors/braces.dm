@@ -142,5 +142,6 @@
 	if (!electronics)
 		return
 	req_access = electronics.conf_access
+	req_access_faction = electronics.req_access_faction
 	if (electronics.one_access)
 		req_access = list(req_access)

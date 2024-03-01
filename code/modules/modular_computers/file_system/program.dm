@@ -117,8 +117,12 @@
 		if(loud)
 			to_chat(user, SPAN_NOTICE("\The [computer] flashes an \"RFID Error - Unable to scan ID\" warning."))
 		return FALSE
-
-	if(access_to_check in I.access)
+	if(!computer)
+		return FALSE
+	var/obj/item/stock_parts/computer/network_card/network_card = computer.get_component(PART_NETWORK)
+	var/uid
+	if(network_card) uid = network_card.faction_uid
+	if(access_to_check in I.GetAccess(uid))
 		return TRUE
 	else if(loud)
 		to_chat(user, SPAN_NOTICE("\The [computer] flashes an \"Access Denied\" warning."))

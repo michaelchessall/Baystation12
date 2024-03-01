@@ -80,6 +80,7 @@
 
 	var/list/seen_areas = list()
 	var/list/seen_zlevels = list()
+	var/list/seen_minds = list()
 
 /////////////////////////////////////////////////////////////////
 // Accessors
@@ -216,12 +217,11 @@
 		for(var/area in seen_areas)
 			var/datum/persistence/load_cache/A = seen_areas[area]
 			world_cache.areas |= A
+		world_cache.all_world_factions = all_world_factions
+		world_cache.all_money_accounts = all_money_accounts
 		// Now save all the extensions which have marked themselves to be saved.
 		// As with areas, we create a dummy wrapper holder to hold these during load etc.
 		_save_extensions(instanceid)
-
-		// Save escrow accounts which are normally held on the SSmoney_accounts subsystem
-		_save_bank_accounts(instanceid)
 
 	catch(var/exception/e)
 		throw e
@@ -237,6 +237,7 @@
 		save_complete_span_class = "serializer"
 		save_complete_text       = "Save complete! Took [REALTIMEOFDAY2SEC(start)]s to save world."
 		. = TRUE
+
 
 	_finish_save_world(instanceid, world_cache)
 	//Handle post-save cleanup and such
@@ -327,8 +328,7 @@
 		var/datum/persistence/load_cache/world/world_cache = serializer.GetHead(instanceid)
 		serializer.resolver.z_levels = world_cache.z_levels
 		serializer.resolver.area_chunks = world_cache.area_chunks
-		serializer.resolver.world_cache_s = world_cache
-
+		all_world_factions = world_cache.all_world_factions
 		SetupAreas(world_cache)
 
 		report_progress_serializer("Cached DB data in [REALTIMEOFDAY2SEC(time_total)]s.")
@@ -370,10 +370,11 @@
 	SSatoms.map_loader_stop()
 	SSatoms.InitializeAtoms()
 	SSmachines.makepowernets()
+	SSmachines.setup_atmos_machinery(SSmachines.machinery)
 	create_all_lighting_overlays()
 	//Be sure to set this to false even on exceptions
 	loading_world = FALSE
-	report_progress_serializer("Saved world load completed in [REALTIMEOFDAY2SEC(time_total)] seconds.[first_except? SPAN_RED("Some errors were encountered!!") : ""]")
+	report_progress_serializer("World Load completed in [REALTIMEOFDAY2SEC(time_total)] seconds.[first_except? SPAN_RED("Some errors were encountered!!") : ""]")
 
 	//Throw any exception that were allowed, so it's a bit more obvious to people looking at the runtime log that it actually runtimed and failed
 	if(first_except)

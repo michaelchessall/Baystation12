@@ -1,0 +1,33 @@
+<i>Welcome to network utility. Please consult your system administrator if you have any questions about your device.</i><hr>
+<h2>Network</h2>
+
+{{if data.card_exists}}
+	<div class="itemLabel">
+		Connected Network:
+	</div>
+	<div class="itemContent">
+		{{:data.faction_name}}
+	</div>
+	<div class="itemLabel">
+		Network Card Password:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.password, 'pencil', {'action' : 'password'})}}
+	</div>
+	<div class="itemContent">
+		{{:helper.link('Connect by UID', 'gear', {'action' : 'connect'})}}
+	</div>
+	<h3>Connect to a public network</h3>
+	<div class='block'>
+		{{for data.all_networks}}
+			{{:helper.link(value.name, '', {'action' : 'connect_ref', 'assign_target' : value.ref})}}<br><hr><br>
+		{{/for}}
+	</div>
+
+{{else}}
+	<div class="itemContent">
+		No Network Card Installed
+	</div>
+{{/if}}
+<hr><hr>
+<i>NTOS v2.0.4b Copyright NanoTrasen</i>

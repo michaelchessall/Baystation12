@@ -46,7 +46,10 @@
 
 /mob/Initialize()
 	. = ..()
-	// skillset = new skillset(src)
+	try
+		var/datum/skillset/skillset = new(src)
+	catch
+		to_world("skillset failed to init for [src]")
 	if(!move_intent)
 		move_intent = move_intents[1]
 	if(ispath(move_intent))

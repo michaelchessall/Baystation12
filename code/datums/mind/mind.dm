@@ -68,10 +68,14 @@ var/global/list/player_minds = list()
 
 	var/list/known_mobs = list()
 
+	var/working = 0
+	var/datum/WorldFaction/workingFaction
+	var/datum/FactionRecord/workingRecord
+
 /datum/mind/New(key)
 	src.key = key
 	unique_id = 0
-	global.player_minds += src
+	global.player_minds |= src
 	..()
 
 /datum/mind/Destroy()

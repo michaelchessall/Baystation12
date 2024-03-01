@@ -119,6 +119,9 @@
 					to_world("CRITICAL  FAIL! INVALID TURF [T.x] [T.y] [T.z] [T.p_id]")
 					return
 				continue // This isn't a turf or a wrapper holder. We can skip it.
+			if (ispath(T.thing_type, /turf/space))
+				var/turf/space/Tu = locate(T.x, T.y, T.z)
+				Tu.remove_starlight()
 			serializer.DeserializeDatum(T)
 			turfs_loaded["([T.x], [T.y], [T.z])"] = TRUE
 		catch(var/exception/E)
@@ -182,8 +185,9 @@
 		A.power_environ = 0
 		A.always_unpowered = 0
 		A.always_unpowered = 0
-		for(var/datum/persistence/load_cache/turf/T in Ar.turfs)
-			var/turf/turf = locate(T.x, T.y, T.z)
+		for(var/T in Ar.turfs)
+			var/list/ex = splittext(T, ",")
+			var/turf/turf = locate(text2num(ex[1]), text2num(ex[2]), text2num(ex[3]))
 			ChangeArea(turf, A)
 
 

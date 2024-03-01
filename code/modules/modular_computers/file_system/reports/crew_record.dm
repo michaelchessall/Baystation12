@@ -6,6 +6,7 @@ GLOBAL_LIST_INIT(security_statuses, list("None", "Released", "Parolled", "Incarc
 GLOBAL_VAR_INIT(default_security_status, "None")
 GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
+
 // Kept as a computer file for possible future expansion into servers.
 /datum/computer_file/report/crew_record
 	filetype = "CDB"
@@ -237,6 +238,7 @@ FIELD_LONG("Qualifications", skillset, access_bridge, access_bridge)
 // ANTAG RECORDS
 FIELD_SHORT("Faction", faction, access_syndicate, access_syndicate)
 FIELD_LONG("Exploitable Information", antagRecord, access_syndicate, access_syndicate)
+
 
 //Options builderes
 /datum/report_field/options/crew_record/rank/proc/record_ranks()
