@@ -81,6 +81,7 @@
 	var/list/seen_areas = list()
 	var/list/seen_zlevels = list()
 	var/list/seen_minds = list()
+	var/highest_z = 1
 
 /////////////////////////////////////////////////////////////////
 // Accessors
@@ -124,10 +125,10 @@
 
 //#TODO: Don't cache those on the persistence ss. It's an extra place to look for what levels have that flag.
 /datum/controller/subsystem/persistence/proc/AddSavedLevel(var/z)
-	saved_levels |= z
+	GLOB.using_map.player_levels |= z
 
 /datum/controller/subsystem/persistence/proc/RemoveSavedLevel(var/z)
-	saved_levels -= z
+	GLOB.using_map.player_levels -= z
 
 /datum/controller/subsystem/persistence/proc/AddSavedArea(var/area/A)
 	saved_areas |= A
@@ -201,19 +202,19 @@
 	try
 
 		instanceid = _save_instance()
+		for(var/obj/overmap/visitable/overmap_obj in saved_overmap)
+			overmap_obj.on_saving_start(instanceid)
 
 		//Prepare z levels structure for saving
 		var/list/z_transform = _prepare_zlevels_indexing()
 
 		//Save all individual turfs marked for saving
 		_save_turfs(z_transform, instanceid)
-
+		world_cache.highest_z = highest_z
 		//Save area related stuff
 		for(var/z in seen_zlevels)
 			var/datum/persistence/load_cache/z_level/z_level = seen_zlevels[z]
 			world_cache.z_levels |= z_level
-
-		world_cache.area_chunks = _save_areas(z_transform, instanceid)
 		for(var/area in seen_areas)
 			var/datum/persistence/load_cache/A = seen_areas[area]
 			world_cache.areas |= A
@@ -221,7 +222,7 @@
 		world_cache.all_money_accounts = all_money_accounts
 		// Now save all the extensions which have marked themselves to be saved.
 		// As with areas, we create a dummy wrapper holder to hold these during load etc.
-		_save_extensions(instanceid)
+//		_save_extensions(instanceid)
 
 	catch(var/exception/e)
 		throw e
@@ -245,7 +246,8 @@
 
 	// Launch event for anything that needs to do cleanup post save.
 	RAISE_EVENT_REPEAT(/singleton/observ/world_saving_finish_event, src)
-
+	for(var/obj/overmap/visitable/overmap_obj in saved_overmap)
+		overmap_obj.on_saving_end()
 	//Resume all subsystems
 	_resume_subsystems()
 	// Reallow people in
@@ -309,8 +311,8 @@
 	var/exception/first_except
 	loading_world  = TRUE
 	SSatoms.map_loader_begin()
-
-//	var/worldid
+	world.maxy = 200
+	world.maxx = 200
 	var/instanceid
 
 	try
@@ -328,6 +330,9 @@
 		var/datum/persistence/load_cache/world/world_cache = serializer.GetHead(instanceid)
 		serializer.resolver.z_levels = world_cache.z_levels
 		serializer.resolver.area_chunks = world_cache.area_chunks
+		if(world.maxz < world_cache.highest_z)
+			while(world.maxz < world_cache.highest_z)
+				INCREMENT_WORLD_Z_SIZE
 		all_world_factions = world_cache.all_world_factions
 		SetupAreas(world_cache)
 
@@ -344,7 +349,7 @@
 		_setup_default_turfs(turfs_loaded)
 
 		//Apply the right area to any unsaved and saved turfs within it's area.
-		_apply_area_chunks()
+	//	_apply_area_chunks()
 
 		//Try to run after_deserialize on the loaded atoms
 		_run_after_deserialize()
@@ -352,7 +357,7 @@
 
 	catch(var/exception/e_load)
 		//Don't return in here, we need to let the code try to run cleanup below!
-		to_world_log("Load failed: [EXCEPTION_TEXT(e_load)].")
+		to_world("Load failed: [EXCEPTION_TEXT(e_load)].")
 		first_except = e_load
 
 	//Now attempt cleanup. This should be attempted even after an exception!!

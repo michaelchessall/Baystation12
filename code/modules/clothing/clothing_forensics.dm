@@ -14,7 +14,7 @@
 		return
 	var/list/others = list()
 	for (var/obj/item/clothing/accessory/A as anything in accessories)
-		if ((A.clothing_flags & CLOTHING_HAS_FIBERS) && prob(50))
+		if (istype(A) && (A.clothing_flags & CLOTHING_HAS_FIBERS) && prob(50))
 			others += A.get_fibers()
 	return "material from \a [fiber_name || name][length(others) ? " and [english_list(others)]" : ""]"
 

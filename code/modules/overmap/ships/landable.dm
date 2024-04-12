@@ -34,6 +34,7 @@
 
 // We autobuild our z levels.
 /obj/overmap/visitable/ship/landable/find_z_levels()
+	if(persistent_id) return
 	for(var/i = 0 to multiz)
 		INCREMENT_WORLD_Z_SIZE
 		map_z += world.maxz
@@ -72,8 +73,9 @@
 	var/list/visitors // landmark -> visiting shuttle stationed there
 
 /obj/shuttle_landmark/ship/Initialize(mapload, shuttle_name)
-	landmark_tag += "_[shuttle_name]"
-	src.shuttle_name = shuttle_name
+	if(!persistent_id)
+		landmark_tag += "_[shuttle_name]"
+		src.shuttle_name = shuttle_name
 	. = ..()
 
 /obj/shuttle_landmark/ship/Destroy()
@@ -91,10 +93,11 @@
 	var/obj/shuttle_landmark/ship/core_landmark
 
 /obj/shuttle_landmark/visiting_shuttle/Initialize(mapload, obj/shuttle_landmark/ship/master, _name)
-	core_landmark = master
-	SetName(_name)
-	landmark_tag = master.shuttle_name + _name
-	GLOB.destroyed_event.register(master, src, /datum/proc/qdel_self)
+	if(!persistent_id)
+		core_landmark = master
+		SetName(_name)
+		landmark_tag = master.shuttle_name + _name
+		GLOB.destroyed_event.register(master, src, /datum/proc/qdel_self)
 	. = ..()
 
 /obj/shuttle_landmark/visiting_shuttle/Destroy()
@@ -104,14 +107,16 @@
 	. = ..()
 
 /obj/shuttle_landmark/visiting_shuttle/is_valid(datum/shuttle/shuttle)
+	var/datum/shuttle/boss_shuttle = SSshuttle.shuttles[core_landmark.shuttle_name]
+
+	if(shuttle == boss_shuttle) // Boss shuttle only lands on main landmark
+		return FALSE
 	. = ..()
 	if(!.)
 		return
-	var/datum/shuttle/boss_shuttle = SSshuttle.shuttles[core_landmark.shuttle_name]
 	if(boss_shuttle.current_location != core_landmark)
 		return FALSE // Only available when our governing shuttle is in space.
-	if(shuttle == boss_shuttle) // Boss shuttle only lands on main landmark
-		return FALSE
+
 
 /obj/shuttle_landmark/visiting_shuttle/shuttle_arrived(datum/shuttle/shuttle)
 	LAZYSET(core_landmark.visitors, src, shuttle)

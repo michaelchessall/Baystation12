@@ -7,6 +7,7 @@
 		return
 	. = ..()
 
+/datum/shuttle/var/display_name = ""
 /datum/shuttle/after_deserialize()
 	. = ..()
 	if(!display_name)

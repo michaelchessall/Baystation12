@@ -1,0 +1,108 @@
+<h3>Docking Beacon</h3>
+<div class="item">
+    <div class="itemLabel">
+        Network mode:
+    </div>
+    <div class="itemContent">
+        {{:helper.link('Faction', '', {'change_network' : 'faction'}, data.faction_beacon ? 'selected' : null)}}
+        {{:helper.link('Personal', '', {'change_network' : 'personal'}, data.faction_beacon ? null : 'selected')}}
+    </div>
+</div>
+{{if data.faction_beacon}}
+    <div class="item">
+        <div class="itemLabel">
+            Connected Faction:
+        </div>
+        {{if data.faction}}
+            <div class="itemContent">
+                {{:data.faction}}
+            </div>
+            {{:helper.link('Disconnect Faction', '', {'disconnect_faction' : 1}, null, null)}}
+        {{else}}
+            <div class="itemContent">
+                {{:helper.link('Connect Faction', '', {'connect_faction' : 1}, null, null)}}
+            </div>
+        {{/if}}
+    </div>
+{{else}}
+    <div class="item">
+        <div class="itemLabel">
+            Connected Individual:
+        </div>
+        {{if data.personal}}
+            <div class="itemContent">
+                {{:data.personal}}
+            </div>
+            {{:helper.link('Disconnect Individual', '', {'disconnect_personal' : 1}, null, null)}}
+        {{else}}
+            <div class="itemContent">
+                {{:helper.link('Connect Faction', '', {'connect_faction' : 1}, null, null)}}
+            </div>
+        {{/if}}
+    </div>
+{{/if}}
+
+{{if data.connected}}
+    <div class="itemLabel">
+        Docking Mode:
+    </div>
+    <div class="itemContent">
+        {{:helper.link('Unavailable', '', {'mode' : 1}, data.mode == 1 ? 'selected' : null)}}
+        {{:helper.link('Docking Mode', '', {'mode' : 2}, data.mode == 2 ? 'selected' : null)}}
+        {{:helper.link('Construction Mode', '', {'mode' : 3}, data.mode == 3 ? 'selected' : null)}}
+    </div>
+    {{if data.mode == 3}}
+        <div class="itemLabel">
+            Ship Name:
+        </div>
+        <div class="itemContent">
+            {{:helper.link(data.ship_name ? data.ship_name : 'No name!', 'pencil', {'change_ship_name' : '1'}, null , null)}}
+        </div>
+        <div class="itemLabel">
+            Ship Color:
+        </div>
+        <div class="itemContent">
+            {{:helper.link('Change color', 'pencil', {'change_color' : 1}, null, null)}}
+        </div>
+        <div class="itemLabel">
+            Errors:
+        </div>
+        <div class="itemContent" style="width: 100%;">
+            <div class="statusDisplay" style="min-height: 120px;">
+                {{for data.errors}}
+                    {{:value}}<br>
+                {{/for}}
+            </div>
+        </div>
+        <div class="itemContent">
+            {{:helper.link('Finalize Ship', 'arrowthickstop-1-e', {'finalize' : '1'}, null , null)}}
+        </div>
+        <div class="itemContent">
+            {{:helper.link('Check Construction Validity', 'gear', {'check_validity' : '1'}, null , null)}}
+        </div>
+
+    {{/else}}
+        <div class="itemLabel">
+            Dock Name:
+        </div>
+        <div class="itemContent">
+            {{:helper.link(data.display_name, '', {'edit_display_name' : 1})}}
+        </div>
+        <div class="itemLabel">
+            Max Docking Size:
+        </div>
+        <div class="itemContent">
+            {{:helper.link(data.size, '', {'edit_size' : 1})}}
+        </div>
+        <div class="itemLabel">
+            Required Access:
+        </div>
+        <div class="itemContent">
+            {{:helper.link(data.locked ? 'Locked' : 'Unlocked', '', {'toggle_lock' : 1})}}
+        </div>
+
+    {{/if}}
+{{else}}
+
+{{/if}}
+{{:helper.link(data.construction_mode ? 'Project Construction Zone' : 'Project Docking Zone', '', {'project' : 1})}}

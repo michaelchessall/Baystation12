@@ -169,11 +169,9 @@
 	//!! - HOT CODE BELOW - !!
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	for(var/z in saved_levels)
-
-
+		if(z > highest_z)
+			highest_z = z
 		var/default_turf    = get_base_turf(z)
-
-
 		if(!("[z]" in seen_zlevels))
 			var/datum/persistence/load_cache/z_level/z_level = new()
 			seen_zlevels["[z]"] = z_level
@@ -194,20 +192,12 @@
 						// Get the thing to serialize and serialize it.
 						var/turf/T  = locate(x,y,z)
 						var/area/TA = T.loc
-
-						// if(last_area_type != TA.type || last_area_name != TA.name)
-						// 	if(area_turf_count > 0)
-						// 		z_level.areas += list(list("[last_area_type]", sanitize_sql(last_area_name), area_turf_count))
-						// 	last_area_type = TA.type
-						// 	last_area_name = TA.name
-						// 	area_turf_count = 1
-						// else
-						// 	area_turf_count++
 						if(is_not_space_area(TA))
 							if(!(TA in seen_areas))
 								var/datum/persistence/load_cache/area/area = new()
 								area.name = TA.name
 								area.area_type = TA.type
+								area.a_id = "\ref[TA]|[instanceid]"
 								seen_areas[TA] = area
 							var/datum/persistence/load_cache/area/area = seen_areas[TA]
 							area.turfs |= "[T.x],[T.y],[T.z]"
@@ -407,7 +397,7 @@
 		seen_areas = list()
 		seen_zlevels = list()
 		seen_minds = list()
-
+		highest_z = 1
 		serializer.Clear()
 	catch(var/exception/e)
 		_handle_recoverable_save_exception(e, "_after_save()") //Anything post-save is recoverable

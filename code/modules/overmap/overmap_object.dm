@@ -61,7 +61,8 @@
 			SSskybox.rebuild_skyboxes(O.map_z)
 
 /obj/overmap/on_update_icon()
-	filters = filter(type="drop_shadow", color = color + "F0", size = 2, offset = 1,x = 0, y = 0)
+	if(!color) color = COLOR_WHITE
+	filters = filter(type="drop_shadow", color = "[color]" + "F0", size = 2, offset = 1,x = 0, y = 0)
 
 
 /**

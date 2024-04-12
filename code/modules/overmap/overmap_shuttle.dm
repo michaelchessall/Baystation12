@@ -56,17 +56,41 @@
 		set_destination(places[place])
 	..()
 
+/obj/shuttle_landmark/proc/landmark_deselected(datum/shuttle/shuttle)
+
+
+/obj/shuttle_landmark/temporary/landmark_deselected(datum/shuttle/shuttle)
+	if(shuttle.moving_status != SHUTTLE_INTRANSIT && shuttle.current_location != src)
+		qdel(src)
+
 /datum/shuttle/autodock/overmap/proc/set_destination(obj/shuttle_landmark/A)
+	if(istype(A, /obj/machinery/docking_beacon))
+		var/obj/machinery/docking_beacon/beacon = A
+		A = beacon.get_docking_turf()
 	if(A != current_location)
+		if(next_location)
+			next_location.landmark_deselected(src)
 		next_location = A
 
 /datum/shuttle/autodock/overmap/proc/get_possible_destinations()
 	var/list/res = list()
+	var/obj/overmap/visitable/ship/landable/boss_shuttle = SSshuttle.ship_by_name(name)
+	if(current_location != boss_shuttle.landmark)
+		res |= boss_shuttle.landmark
+		return res
 	for (var/obj/overmap/visitable/S in range(get_turf(waypoint_sector(current_location)), range))
 		var/list/waypoints = S.get_waypoints(name)
 		for(var/obj/shuttle_landmark/LZ in waypoints)
 			if(LZ.is_valid(src))
 				res["[waypoints[LZ]] - [LZ.name]"] = LZ
+			else
+		if(istype(S, /obj/overmap/visitable/ship)) continue
+		for(var/obj/machinery/docking_beacon/beacon in SSshuttle.docking_beacons)
+			if(beacon.z in S.map_z)
+				var/obj/shuttle_landmark/LZ = beacon.get_docking_turf()
+				if(LZ.is_valid(src))
+					res["[S.name] Docking Beacon - [beacon.name]"] = beacon
+				qdel(LZ)
 	return res
 
 /datum/shuttle/autodock/overmap/get_location_name()

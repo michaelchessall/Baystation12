@@ -157,8 +157,9 @@
 
 		if(target)
 			if(base_area)
+				var/area/A = locate(base_area)
 				ChangeArea(target, get_area(source))
-				ChangeArea(source, base_area)
+				ChangeArea(source, A)
 			transport_turf_contents(source, target)
 
 	//change the old turfs

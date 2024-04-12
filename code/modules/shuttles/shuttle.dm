@@ -38,6 +38,10 @@
 	if(!islist(shuttle_area))
 		shuttle_area = list(shuttle_area)
 	for(var/T in shuttle_area)
+		if(istype(T, /area)) // If the shuttle area is already an instance, it does not need to be located.
+			areas += T
+			GLOB.destroyed_event.register(T, src, .proc/remove_shuttle_area)
+			continue
 		var/area/A = locate(T)
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
@@ -49,11 +53,9 @@
 	else
 		current_location = SSshuttle.get_landmark(current_location)
 	if(!istype(current_location))
-		return
 		CRASH("Shuttle \"[name]\" could not find its starting location.")
 
 	if(src.name in SSshuttle.shuttles)
-		return
 		CRASH("A shuttle with the name '[name]' is already defined.")
 	SSshuttle.shuttles[src.name] = src
 	if(logging_home_tag)
@@ -64,6 +66,14 @@
 		if(SSsupply.shuttle)
 			CRASH("A supply shuttle is already defined.")
 		SSsupply.shuttle = src
+
+/datum/shuttle/proc/remove_shuttle_area(area/area_to_remove)
+	GLOB.destroyed_event.unregister(area_to_remove, src, .proc/remove_shuttle_area)
+	SSshuttle.shuttle_areas -= area_to_remove
+	shuttle_area -= area_to_remove
+	if(!length(shuttle_area))
+		qdel(src)
+
 
 /datum/shuttle/Destroy()
 	current_location = null

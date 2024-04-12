@@ -70,6 +70,14 @@
 		</div>
 	</div>
 {{/if}}
+<div class="item">
+	<div class="itemLabel">
+		Docking Codes:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.docking_codes ? data.docking_codes : 'Not set', null, {'set_codes' : '1'}, null , null)}}
+	</div>
+</div>
 <div class="item" style="padding-top: 10px">
 	<div class="itemLabel">
 		Current Destination:
@@ -77,6 +85,9 @@
 	<span class="average">{{:data.destination_name}}</span>
 	<div class="item">
 		{{:helper.link('Choose Destination', 'arrowreturn-1-s', {'pick' : '1'}, data.can_pick ? null : 'disabled' , null)}}
+	</div>
+	<div class="item">
+		{{:helper.link('Manual Landing', 'arrowthickstop-1-s', {'manual_landing' : '1'})}}
 	</div>
 </div>
 {{if data.fuel_usage}}

@@ -1,0 +1,53 @@
+"a" = (/obj/effect/quadrant_border/wildspace,/turf/unsimulated/map/edge,/area/overmap)
+"b" = (/obj/effect/quadrant_border/borderterritory,/turf/unsimulated/map/edge,/area/overmap)
+"d" = (/obj/effect/quadrant_border/wildspace,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"e" = (/obj/effect/quadrant_border/wildspace,/turf/unsimulated/map,/area/overmap)
+"f" = (/obj/effect/quadrant_border/borderterritory,/turf/unsimulated/map,/area/overmap)
+"g" = (/obj/effect/quadrant_border/borderterritory,/obj/overmap/event/dust,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"h" = (/obj/effect/quadrant_border/borderterritory,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"i" = (/obj/effect/quadrant_border/borderterritory,/obj/overmap/event/gravity,/turf/unsimulated/map,/area/overmap)
+"j" = (/obj/effect/quadrant_border/borderterritory,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
+"k" = (/obj/effect/quadrant_border/wildspace,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
+"l" = (/obj/effect/quadrant_border/wildspace,/obj/overmap/event/gravity,/turf/unsimulated/map,/area/overmap)
+"m" = (/obj/effect/quadrant_border/borderterritory,/obj/overmap/event/ion,/turf/unsimulated/map,/area/overmap)
+"n" = (/obj/effect/quadrant_border/bufferzone,/turf/unsimulated/map/edge,/area/overmap)
+"o" = (/obj/effect/quadrant_border/neutralzone,/turf/unsimulated/map/edge,/area/overmap)
+"q" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/gravity,/turf/unsimulated/map,/area/overmap)
+"r" = (/obj/effect/quadrant_border/neutralzone,/turf/unsimulated/map,/area/overmap)
+"s" = (/obj/effect/quadrant_border/bufferzone,/turf/unsimulated/map,/area/overmap)
+"t" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/dust,/turf/unsimulated/map/edge,/area/overmap)
+"u" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/electric,/turf/unsimulated/map,/area/overmap)
+"v" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"w" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"x" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/dust,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
+"y" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
+"z" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
+"A" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/meteor,/turf/unsimulated/map/edge,/area/overmap)
+
+(1,1,1) = {"
+aaaaaaaaabbbbbbbbbbbbbbbb
+adeeeedeeffffmfffgghffffb
+aeeeeeeeeeiffffffjhfffjhb
+aeekddeeeelliiffhfffffffb
+aeeddkeeeeeeleffffffffffb
+aeddeeeedeeekdefffffffffb
+aeeeeeeeeeeeeeefffmfffffb
+aeeeeeeeeeeelefffffffffjb
+aeeeeeeeeeeeiifffhhffffhb
+nlleeeeeeeelifhffjhfffffo
+nqeedeeekeeefffffffffffro
+nsseeeeedeeeffmfhfffffrro
+nssseeleeelfffhfffffffrro
+nsuvsqqselllrfffhfffffrro
+nsssssssssssrrfwxwrrrrrro
+nssssyuvysvsrrrrwwrrrrrwo
+nssssssussssrrrrzwwrrrrzo
+nsssusssssssrrrrrrrrrrrro
+nsssssssssvsrrrrrrrrrrrro
+nsyvsssssuvsrrrrwrrrrrrro
+nvvvssssssssrrrrrrrrrrrro
+nvusssAttsssrrzrrrrrrrrro
+nssssssssssrrrrrrrrrrrrro
+nssssssuvssrrrwrrzrrrrrro
+nnnnnnnnnoooooooooooooooo
+"}

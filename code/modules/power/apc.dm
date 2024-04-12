@@ -929,12 +929,13 @@
 	if(autoflag)
 		return lastused_total // If not, we need to do something more sophisticated: compute how much power we would need in order to come back online.
 	. = 0
-	if(autoset(lighting, 2) >= POWERCHAN_ON)
-		. += area.usage(LIGHT)
-	if(autoset(equipment, 2) >= POWERCHAN_ON)
-		. += area.usage(EQUIP)
-	if(autoset(environ, 1) >= POWERCHAN_ON)
-		. += area.usage(EQUIP)
+	if(area)
+		if(autoset(lighting, 2) >= POWERCHAN_ON)
+			. += area.usage(LIGHT)
+		if(autoset(equipment, 2) >= POWERCHAN_ON)
+			. += area.usage(EQUIP)
+		if(autoset(environ, 1) >= POWERCHAN_ON)
+			. += area.usage(EQUIP)
 
 /obj/machinery/power/apc/Process()
 	if(!area.requires_power)

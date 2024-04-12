@@ -119,9 +119,6 @@
 					to_world("CRITICAL  FAIL! INVALID TURF [T.x] [T.y] [T.z] [T.p_id]")
 					return
 				continue // This isn't a turf or a wrapper holder. We can skip it.
-			if (ispath(T.thing_type, /turf/space))
-				var/turf/space/Tu = locate(T.x, T.y, T.z)
-				Tu.remove_starlight()
 			serializer.DeserializeDatum(T)
 			turfs_loaded["([T.x], [T.y], [T.z])"] = TRUE
 		catch(var/exception/E)
@@ -132,6 +129,15 @@
 	. = turfs_loaded
 	report_progress_serializer("Deserialized [LAZYLEN(turfs_loaded)] turfs and their contents in [REALTIMEOFDAY2SEC(time_start)]s.")
 	sleep(5)
+/**
+if(ambient_bitflag) //Should remove everything about current bitflag, let it be recalculated by SS later
+    SSambient_lighting.clean_turf(src)
+
+if (!mapload ||  is_outside()))
+    SSambient_lighting.queued += src
+
+**/
+
 
 /// TODO
 /datum/controller/subsystem/persistence/proc/_setup_default_turfs(var/list/turfs_loaded)
@@ -175,11 +181,14 @@
 	report_progress_serializer("Applied area chunks completed! Took [REALTIMEOFDAY2SEC(time_start)]s.")
 	sleep(5)
 
+/area/var/a_id = ""
+
 /datum/controller/subsystem/persistence/proc/SetupAreas(var/datum/persistence/load_cache/world/head)
 	for(var/datum/persistence/load_cache/area/Ar in head.areas)
 		var/area/A
 		A = new Ar.area_type()
 		A.SetName(Ar.name)
+		A.a_id = Ar.a_id
 		A.power_equip = 0
 		A.power_light = 0
 		A.power_environ = 0

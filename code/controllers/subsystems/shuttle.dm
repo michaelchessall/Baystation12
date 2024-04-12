@@ -14,6 +14,7 @@ SUBSYSTEM_DEF(shuttle)
 	var/list/shuttle_logs = list()               //Keeps records of shuttle movement, format is list(datum/shuttle = datum/shuttle_log)
 	var/list/shuttle_areas = list()              //All the areas of all shuttles.
 	var/list/docking_registry = list()           //Docking controller tag -> docking controller program, mostly for init purposes.
+	var/list/docking_beacons = list()			 //Magnetic docking beacons, used for free-form landing in secure areas.
 
 	var/list/landmarks_awaiting_sector = list()  //Stores automatic landmarks that are waiting for a sector to finish loading.
 	var/list/landmarks_still_needed = list()     //Stores landmark_tags that need to be assigned to the sector (landmark_tag = sector) when registered.
@@ -81,6 +82,10 @@ SUBSYSTEM_DEF(shuttle)
 			O = map_sectors["[shuttle_landmark.z]"]
 			O ? O.add_landmark(shuttle_landmark, shuttle_landmark.shuttle_restricted) : (landmarks_awaiting_sector += shuttle_landmark)
 
+/datum/controller/subsystem/shuttle/proc/unregister_landmark(shuttle_landmark_tag)
+	LAZYREMOVE(registered_shuttle_landmarks, shuttle_landmark_tag)
+
+
 /datum/controller/subsystem/shuttle/proc/get_landmark(shuttle_landmark_tag)
 	return registered_shuttle_landmarks[shuttle_landmark_tag]
 
@@ -118,10 +123,13 @@ SUBSYSTEM_DEF(shuttle)
 			given_sector.add_landmark(landmark, shuttle_name)
 			. = 1
 
-/datum/controller/subsystem/shuttle/proc/initialize_shuttle(shuttle_type)
+/datum/controller/subsystem/shuttle/proc/initialize_shuttle(var/shuttle_type, var/map_hash, var/list/add_args)
 	var/datum/shuttle/shuttle = shuttle_type
 	if(initial(shuttle.category) != shuttle_type)
-		shuttle = new shuttle()
+		var/list/shuttle_args = list(map_hash)
+		if(length(add_args))
+			shuttle_args += add_args
+		shuttle = new shuttle(arglist(shuttle_args))
 		shuttle_areas |= shuttle.shuttle_area
 		return shuttle
 
@@ -154,6 +162,14 @@ SUBSYSTEM_DEF(shuttle)
 		if (ship.type == type)
 			return ship
 	return null
+
+/datum/controller/subsystem/shuttle/proc/docking_beacons_by_z(z_levels)
+	. = list()
+	if(!islist(z_levels))
+		z_levels = list(z_levels)
+	for(var/obj/machinery/docking_beacon/beacon in docking_beacons)
+		if(beacon.z in z_levels)
+			. |= beacon
 
 /datum/controller/subsystem/shuttle/UpdateStat(time)
 	if (PreventUpdateStat(time))

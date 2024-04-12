@@ -26,17 +26,31 @@
 
 /obj/shuttle_landmark/Initialize()
 	. = ..()
-	if(docking_controller)
-		. = INITIALIZE_HINT_LATELOAD
-	if(flags & SLANDMARK_FLAG_AUTOSET)
-		base_area = get_area(src)
-		var/turf/T = get_turf(src)
-		if(T)
-			base_turf = T.type
-	else
-		base_area = locate(base_area || world.area)
-	SetName(name + " ([x],[y])")
-	SSshuttle.register_landmark(landmark_tag, src)
+	if(!persistent_id)
+		if(docking_controller)
+			. = INITIALIZE_HINT_LATELOAD
+		if(flags & SLANDMARK_FLAG_AUTOSET)
+			var/area/A = get_area(src)
+			base_area = A.type
+			var/turf/T = get_turf(src)
+			if(T)
+				base_turf = T.type
+		else
+			var/area/A = locate(base_area || world.area)
+			if(A)
+				base_area = A.type
+
+		SetName(name + " ([x],[y])")
+		SSshuttle.register_landmark(landmark_tag, src)
+
+/obj/shuttle_landmark/after_deserialize()
+	. = ..()
+	try
+		SSshuttle.register_landmark(landmark_tag, src)
+	catch
+		return
+
+
 
 
 /obj/shuttle_landmark/LateInitialize(mapload)
@@ -71,9 +85,13 @@
 /obj/shuttle_landmark/proc/is_valid(datum/shuttle/shuttle)
 	if(shuttle.current_location == src)
 		return FALSE
+
 	for(var/area/A in shuttle.shuttle_area)
 		var/list/translation = get_turf_translation(get_turf(shuttle.current_location), get_turf(src), A.contents)
-		if(check_collision(base_area, list_values(translation)))
+		var/area/base_ar = locate(base_area)
+		if(!base_ar)
+			return FALSE
+		if(check_collision(base_ar, list_values(translation), base_turf))
 			return FALSE
 	var/conn = GetConnectedZlevels(z)
 	for(var/w in (z - shuttle.multiz) to z)
@@ -90,14 +108,14 @@
 	return
 
 
-/proc/check_collision(area/target_area, list/target_turfs)
+/proc/check_collision(area/target_area, list/target_turfs, base_turf)
 	for(var/target_turf in target_turfs)
 		var/turf/target = target_turf
 		if(!target)
 			return TRUE //collides with edge of map
 		if(target.loc != target_area)
 			return TRUE //collides with another area
-		if(target.density)
+		if(target.density || base_turf && target.type != base_turf)
 			return TRUE //dense turf
 	return FALSE
 
@@ -304,3 +322,31 @@
 		return INITIALIZE_HINT_QDEL
 	landmark = new (turf, src)
 	update_icon()
+
+
+//Used for custom landing locations. Self deletes after a shuttle leaves.
+/obj/shuttle_landmark/temporary
+	name = "Landing Point"
+	landmark_tag = "landing"
+	flags = SLANDMARK_FLAG_AUTOSET
+
+/obj/shuttle_landmark/temporary/Initialize(var/mapload, var/secure = TRUE)
+	landmark_tag += "-[random_id("landmarks",1,9999)]"
+	. = ..()
+
+/obj/shuttle_landmark/temporary/Destroy()
+	SSshuttle.unregister_landmark(landmark_tag)
+	return ..()
+
+/obj/shuttle_landmark/temporary/landmark_deselected(datum/shuttle/shuttle)
+	if(shuttle.moving_status != SHUTTLE_INTRANSIT && shuttle.current_location != src)
+		qdel(src)
+
+
+/obj/shuttle_landmark/temporary/shuttle_arrived(datum/shuttle/shuttle)
+	GLOB.shuttle_moved_event.register(shuttle, src, .proc/shuttle_left)
+
+
+/obj/shuttle_landmark/temporary/proc/shuttle_left(datum/shuttle/shuttle)
+	qdel(src)
+	..()

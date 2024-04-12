@@ -29,35 +29,56 @@ GLOBAL_LIST_EMPTY(known_overmap_sectors)
 
 	var/blob_count = 0
 
+	var/base_area = /area/space
+	var/base_turf = /turf/space
+
 /obj/overmap/visitable/Initialize()
 	. = ..()
 	if(. == INITIALIZE_HINT_QDEL)
 		return
+	if(!persistent_id)
+		find_z_levels()     // This populates map_z and assigns z levels to the ship.
+		register_z_levels() // This makes external calls to update global z level information.
 
-	find_z_levels()     // This populates map_z and assigns z levels to the ship.
+		if(!GLOB.using_map.overmap_z)
+			build_overmap()
+
+		if (randomize_location)
+			var/map_low = OVERMAP_EDGE
+			var/map_high = GLOB.using_map.overmap_size - OVERMAP_EDGE
+			var/turf/home
+			if (place_near_main)
+				var/obj/overmap/visitable/main = map_sectors["1"]
+				if (islist(place_near_main))
+					place_near_main = Roundm(Frand(place_near_main[1], place_near_main[2]), 0.1)
+				home = CircularRandomTurfAround(main, abs(place_near_main), map_low, map_low, map_high, map_high)
+				log_debug("place_near_main moving [src] near [main] ([main.x],[main.y]) with radius [place_near_main], got ([home.x],[home.y])")
+			else
+				start_x = start_x || rand(map_low, map_high)
+				start_y = start_y || rand(map_low, map_high)
+				home = locate(start_x, start_y, GLOB.using_map.overmap_z)
+			forceMove(home)
+
+			for(var/obj/overmap/event/E in loc)
+				qdel(E)
+
+		if(HAS_FLAGS(sector_flags, OVERMAP_SECTOR_KNOWN))
+			LAZYADD(GLOB.known_overmap_sectors, src)
+			layer = ABOVE_LIGHTING_LAYER
+			plane = EFFECTS_ABOVE_LIGHTING_PLANE
+			for(var/obj/machinery/computer/ship/helm/H as anything in GLOB.overmap_helm_computers)
+				H.add_known_sector(src)
+
+		docking_codes = "[ascii2text(rand(65,90))][ascii2text(rand(65,90))][ascii2text(rand(65,90))][ascii2text(rand(65,90))]"
+
+		testing("Located sector \"[name]\" at [start_x],[start_y], containing Z [english_list(map_z)]")
+
+		LAZYADD(SSshuttle.sectors_to_initialize, src) //Queued for further init. Will populate the waypoint lists; waypoints not spawned yet will be added in as they spawn.
+		SSshuttle.clear_init_queue()
+
+/obj/overmap/visitable/after_deserialize()
+	. = ..()
 	register_z_levels() // This makes external calls to update global z level information.
-
-	if(!GLOB.using_map.overmap_z)
-		build_overmap()
-
-	if (randomize_location)
-		var/map_low = OVERMAP_EDGE
-		var/map_high = GLOB.using_map.overmap_size - OVERMAP_EDGE
-		var/turf/home
-		if (place_near_main)
-			var/obj/overmap/visitable/main = map_sectors["1"]
-			if (islist(place_near_main))
-				place_near_main = Roundm(Frand(place_near_main[1], place_near_main[2]), 0.1)
-			home = CircularRandomTurfAround(main, abs(place_near_main), map_low, map_low, map_high, map_high)
-			log_debug("place_near_main moving [src] near [main] ([main.x],[main.y]) with radius [place_near_main], got ([home.x],[home.y])")
-		else
-			start_x = start_x || rand(map_low, map_high)
-			start_y = start_y || rand(map_low, map_high)
-			home = locate(start_x, start_y, GLOB.using_map.overmap_z)
-		forceMove(home)
-
-		for(var/obj/overmap/event/E in loc)
-			qdel(E)
 
 	if(HAS_FLAGS(sector_flags, OVERMAP_SECTOR_KNOWN))
 		LAZYADD(GLOB.known_overmap_sectors, src)
@@ -65,13 +86,13 @@ GLOBAL_LIST_EMPTY(known_overmap_sectors)
 		plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		for(var/obj/machinery/computer/ship/helm/H as anything in GLOB.overmap_helm_computers)
 			H.add_known_sector(src)
-
-	docking_codes = "[ascii2text(rand(65,90))][ascii2text(rand(65,90))][ascii2text(rand(65,90))][ascii2text(rand(65,90))]"
-
-	testing("Located sector \"[name]\" at [start_x],[start_y], containing Z [english_list(map_z)]")
-
-	LAZYADD(SSshuttle.sectors_to_initialize, src) //Queued for further init. Will populate the waypoint lists; waypoints not spawned yet will be added in as they spawn.
-	SSshuttle.clear_init_queue()
+	if(old_loc)
+		if(isobj(old_loc))
+			forceMove(old_loc)
+		else
+			var/list/ex = splittext(old_loc, ",")
+			var/turf/turf = locate(text2num(ex[1]), text2num(ex[2]), GLOB.using_map.overmap_z)
+			forceMove(turf)
 
 
 /obj/overmap/visitable/Destroy()
@@ -172,12 +193,12 @@ GLOBAL_LIST_EMPTY(known_overmap_sectors)
 
 /proc/build_overmap()
 	if(!GLOB.using_map.use_overmap)
-		return 1
 
+		return
 	testing("Building overmap...")
+
 	INCREMENT_WORLD_Z_SIZE
 	GLOB.using_map.overmap_z = world.maxz
-
 	testing("Putting overmap on [GLOB.using_map.overmap_z]")
 	var/area/overmap/A = new
 	for (var/square in block(locate(1,1,GLOB.using_map.overmap_z), locate(GLOB.using_map.overmap_size,GLOB.using_map.overmap_size,GLOB.using_map.overmap_z)))

@@ -3,6 +3,7 @@ SAVED_VAR(/datum/persistence/load_cache/world, area_chunks)
 SAVED_VAR(/datum/persistence/load_cache/world, areas)
 SAVED_VAR(/datum/persistence/load_cache/world, all_world_factions)
 SAVED_VAR(/datum/persistence/load_cache/world, all_money_accounts)
+SAVED_VAR(/datum/persistence/load_cache/world, highest_z)
 
 
 SAVED_VAR(/datum/persistence/load_cache/z_level, index)
@@ -17,6 +18,7 @@ SAVED_VAR(/datum/persistence/load_cache/area_chunk, name)
 SAVED_VAR(/datum/persistence/load_cache/area_chunk, area_type)
 SAVED_VAR(/datum/persistence/load_cache/area_chunk, turfs)
 
+
 SAVED_VAR(/datum/persistence/load_cache/character, target)
 
 SAVED_VAR(/datum/persistence/load_cache/turf, x)
@@ -26,7 +28,7 @@ SAVED_VAR(/datum/persistence/load_cache/turf, z)
 SAVED_VAR(/datum/persistence/load_cache/area, turfs)
 SAVED_VAR(/datum/persistence/load_cache/area, area_type)
 SAVED_VAR(/datum/persistence/load_cache/area, name)
-
+SAVED_VAR(/datum/persistence/load_cache/area, a_id)
 
 
 
@@ -80,7 +82,7 @@ SAVED_VAR(/datum/persistence/load_cache/area, name)
 	var/list/areas = list()
 	var/list/all_world_factions = list()
 	var/list/all_money_accounts = list()
-
+	var/highest_z = 0
 /datum/persistence/load_cache/character
 	var/mob/target
 
@@ -112,7 +114,7 @@ SAVED_VAR(/datum/persistence/load_cache/area, name)
 	var/name
 	var/area_type
 	var/list/turfs = list() // xyz pairings
-
+	var/a_id // persistenid|instanceid used when loading to hook areas back up.
 
 
 
