@@ -29,3 +29,5 @@
 #define duration2stationtime(time) time2text(station_time_in_ticks + time, "hh:mm")
 
 #define round_duration_in_ticks (GLOB.round_start_time ? uptime() - GLOB.round_start_time : 0)
+
+#define REALTIMEOFDAY world.timeofday

@@ -12,7 +12,7 @@
 
 
 /obj/item/clothing/suit/armor/bulletproof/armsman
-	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S)
+	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	accessories = list(
 		/obj/item/clothing/accessory/arm_guards/riot,
 		/obj/item/clothing/accessory/leg_guards/riot,

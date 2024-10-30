@@ -30,7 +30,6 @@
 #include "code\__defines\antagonists.dm"
 #include "code\__defines\ao.dm"
 #include "code\__defines\ao_misc.dm"
-#include "code\__defines\appearance.dm"
 #include "code\__defines\area_saving.dm"
 #include "code\__defines\armor.dm"
 #include "code\__defines\atmos.dm"
@@ -3409,5 +3408,4 @@
 #include "maps\_maps.dm"
 #include "maps\using.dm"
 #include "packs\legion\_pack.dm"
-#include "~code\global_init."
 // END_INCLUDE
