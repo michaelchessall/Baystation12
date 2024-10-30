@@ -166,7 +166,7 @@ SAVED_VAR(/datum/assignment_category, assignments)
 	var/list/assignments = list()
 
 /obj/faction_spawner
-	name = "Name to start faction with"
+	name = "Faction Spawner"
 
 /obj/faction_spawner/New()
 	var/datum/WorldFaction/faction = new()

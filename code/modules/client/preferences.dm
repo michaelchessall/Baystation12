@@ -213,7 +213,9 @@
 			to_chat(usr, "You already have a character in slot [creation_slot].")
 			return
 
-		if(isnewplayer(client.mob))
+		if(!client || isnewplayer(client.mob))
+			var/datum/money_account/Mo = create_account(real_name, real_name, 500)
+
 			var/mob/living/carbon/human/hu
 			var/mob/new_player/M = client.mob
 			var/datum/species/chosen_species
@@ -243,6 +245,9 @@
 			hu.mind_initialize()
 			if(client.prefs.memory)
 				hu.StoreMemory(client.prefs.memory)
+			hu.StoreMemory("Bank Account #:[Mo.account_number]")
+			hu.StoreMemory("Bank Account PinL[Mo.remote_access_pin]")
+
 			copy_to(hu)
 			hu.mind.transfer_to(hu)
 
@@ -255,6 +260,7 @@
 				hu.disabilities |= NEARSIGHTED
 
 			SSpersistence.NewCharacter(sanitize_sql(real_name), sanitize_sql(client_ckey), creation_slot, hu)
+
 			popup.close()
 
 			M.new_player_panel()

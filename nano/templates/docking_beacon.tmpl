@@ -36,7 +36,7 @@
             {{:helper.link('Disconnect Individual', '', {'disconnect_personal' : 1}, null, null)}}
         {{else}}
             <div class="itemContent">
-                {{:helper.link('Connect Faction', '', {'connect_faction' : 1}, null, null)}}
+                {{:helper.link('Connect Individual', '', {'connect_faction' : 1}, null, null)}}
             </div>
         {{/if}}
     </div>
@@ -81,7 +81,7 @@
             {{:helper.link('Check Construction Validity', 'gear', {'check_validity' : '1'}, null , null)}}
         </div>
 
-    {{/else}}
+    {{else}}
         <div class="itemLabel">
             Dock Name:
         </div>
@@ -89,17 +89,22 @@
             {{:helper.link(data.display_name, '', {'edit_display_name' : 1})}}
         </div>
         <div class="itemLabel">
-            Max Docking Size:
+            Max Ship Size:
         </div>
         <div class="itemContent">
             {{:helper.link(data.size, '', {'edit_size' : 1})}}
         </div>
-        <div class="itemLabel">
-            Required Access:
-        </div>
-        <div class="itemContent">
-            {{:helper.link(data.locked ? 'Locked' : 'Unlocked', '', {'toggle_lock' : 1})}}
-        </div>
+        {{if data.faction_beacon}}
+            <div class="itemLabel">
+                Required Access:
+            </div>
+            <div class="itemContent">
+
+            </div>
+
+        {{else}}
+
+        {{/if}}
 
     {{/if}}
 {{else}}

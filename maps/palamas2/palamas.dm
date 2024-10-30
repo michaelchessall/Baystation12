@@ -48,7 +48,9 @@
 
 
 	#include "overmap.dmm"
-
+	#include "esboco.dmm"
+	#include "vendado.dmm"
+	#include "barbas.dmm"
 
 	#define using_map_DATUM /datum/map/palamas
 

@@ -15,14 +15,12 @@
 "q" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/gravity,/turf/unsimulated/map,/area/overmap)
 "r" = (/obj/effect/quadrant_border/neutralzone,/turf/unsimulated/map,/area/overmap)
 "s" = (/obj/effect/quadrant_border/bufferzone,/turf/unsimulated/map,/area/overmap)
-"t" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/dust,/turf/unsimulated/map/edge,/area/overmap)
 "u" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/electric,/turf/unsimulated/map,/area/overmap)
 "v" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
 "w" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
 "x" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/dust,/obj/overmap/event/dust,/turf/unsimulated/map,/area/overmap)
 "y" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
 "z" = (/obj/effect/quadrant_border/neutralzone,/obj/overmap/event/meteor,/turf/unsimulated/map,/area/overmap)
-"A" = (/obj/effect/quadrant_border/bufferzone,/obj/overmap/event/meteor,/turf/unsimulated/map/edge,/area/overmap)
 
 (1,1,1) = {"
 aaaaaaaaabbbbbbbbbbbbbbbb
@@ -46,7 +44,7 @@ nsssusssssssrrrrrrrrrrrro
 nsssssssssvsrrrrrrrrrrrro
 nsyvsssssuvsrrrrwrrrrrrro
 nvvvssssssssrrrrrrrrrrrro
-nvusssAttsssrrzrrrrrrrrro
+nvusssyvvsssrrzrrrrrrrrro
 nssssssssssrrrrrrrrrrrrro
 nssssssuvssrrrwrrzrrrrrro
 nnnnnnnnnoooooooooooooooo

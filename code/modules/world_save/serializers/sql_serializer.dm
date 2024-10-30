@@ -728,18 +728,18 @@ var/global/list/serialization_time_spent_type
 //	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO WIPE PREVIOUS SAVE:")
 
 	//Logs the world save into the table
-	var/DBQuery/query = dbcon_save.NewQuery("SELECT `[SQLS_FUNC_LOG_SAVE_WORLD_START]`('[sanitize_sql(sanitize(save_initiator, MAX_LNAME_LEN))]');")
-	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO LOG WORLD SAVE START:")
-	if(query.NextRow())
-		. = query.item[1]
+//	var/DBQuery/query = dbcon_save.NewQuery("SELECT `[SQLS_FUNC_LOG_SAVE_WORLD_START]`('[sanitize_sql(sanitize(save_initiator, MAX_LNAME_LEN))]');")
+//	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO LOG WORLD SAVE START:")
+//	if(query.NextRow())
+//		. = query.item[1]
 	Clear()
 
 /serializer/sql/proc/PostWorldSave(var/save_entry_id, var/nb_saved_lvl, var/nb_saved_atoms, var/result_text)
-	var/actual_query = "SELECT `[SQLS_FUNC_LOG_SAVE_END]`('[save_entry_id]','[nb_saved_lvl]','[nb_saved_atoms]','[sanitize_sql(sanitize(result_text, MAX_MEDIUM_TEXT_LEN))]');"
-	var/DBQuery/query = dbcon_save.NewQuery(actual_query)
-	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO LOG WORLD SAVE END ('[actual_query]'):")
-	if(query.NextRow())
-		. = query.item[1]
+//	var/actual_query = "SELECT `[SQLS_FUNC_LOG_SAVE_END]`('[save_entry_id]','[nb_saved_lvl]','[nb_saved_atoms]','[sanitize_sql(sanitize(result_text, MAX_MEDIUM_TEXT_LEN))]');"
+//	var/DBQuery/query = dbcon_save.NewQuery(actual_query)
+//	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO LOG WORLD SAVE END ('[actual_query]'):")
+//	if(query.NextRow())
+//		. = query.item[1]
 	_after_serialize()
 	Clear()
 
@@ -748,11 +748,14 @@ var/global/list/serialization_time_spent_type
 
 ///Returns the timestamp of when the currently loaded save was completed.
 /serializer/sql/last_loaded_save_time()
+	return ":)"
+
+
 	if(!establish_save_db_connection())
 		CRASH("Couldn't get last world save timestamp, connection failed!")
 	//Get the last logged world save from the db
 	var/DBQuery/query = dbcon_save.NewQuery("SELECT `[SQLS_FUNC_GET_LAST_SAVE_TIME]`();")
-	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO GET THE TIMESTAMP FOR THE LAST WORLD SAVE:")
+//	SQLS_EXECUTE_AND_REPORT_ERROR(query, "UNABLE TO GET THE TIMESTAMP FOR THE LAST WORLD SAVE:")
 	if(query.NextRow())
 		return query.item[1]
 
@@ -829,6 +832,8 @@ var/global/list/serialization_time_spent_type
 		. = cs_id
 	var/DBQuery/cquery = dbcon_save.NewQuery("UPDATE `[SQLS_TABLE_CHARACTERS]` SET `status` = [status] WHERE `CharacterID` = [head.target.mind.unique_id];")
 	SQLS_EXECUTE_AND_REPORT_ERROR(cquery, "SaveCharacter loaded update Failed:")
+	Clear()
+
 
 /serializer/sql/UpdateCharacterOriginalSave(var/c_id, var/cs_id)
 	if(!establish_save_db_connection())

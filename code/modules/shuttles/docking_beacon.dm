@@ -42,6 +42,12 @@
 	var/ship_color = COLOR_WHITE
 	var/list/errors
 
+	var/connected_to = ""
+	var/connection_type = 1
+
+	var/max_ship_size = SHIP_CLASS_CORVETTE
+
+
 /obj/machinery/docking_beacon/Initialize()
 	. = ..()
 	SSshuttle.docking_beacons += src
@@ -51,17 +57,7 @@
 	SSshuttle.docking_beacons -= src
 	permitted_shuttles.Cut()
 
-/obj/machinery/docking_beacon/attackby(obj/item/I, mob/user)
-	if(isWrench(I))
-		if(!allowed(user))
-			to_chat(user, SPAN_WARNING("The bolts on \the [src] are locked!"))
-			return
-		playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
-		to_chat(user, SPAN_NOTICE("You [anchored ? "unanchor" : "anchor"] \the [src]."))
-		anchored = !anchored
-		return
 
-	. = ..()
 
 /obj/machinery/docking_beacon/interface_interact(mob/user)
 	ui_interact(user)
@@ -69,6 +65,8 @@
 
 /obj/machinery/docking_beacon/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()
+	data["faction_beacon"] = !!connection_type
+
 	data["size"] = "[docking_width] x [docking_height]"
 	data["locked"] = locked
 	data["display_name"] = display_name

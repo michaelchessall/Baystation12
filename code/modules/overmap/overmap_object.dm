@@ -38,8 +38,8 @@
 	. = ..()
 	add_scan_data("base_scan", desc)
 
-	if(!GLOB.using_map.use_overmap)
-		return INITIALIZE_HINT_QDEL
+//	if(!GLOB.using_map.use_overmap)
+//		return INITIALIZE_HINT_QDEL
 
 	if(scannable)
 		unknown_id = "[pick(GLOB.phonetic_alphabet)]-[random_id(/obj/overmap, 100, 999)]"

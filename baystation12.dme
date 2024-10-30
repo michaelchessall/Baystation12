@@ -2669,6 +2669,7 @@
 #include "code\modules\organs\internal\species\unathi.dm"
 #include "code\modules\organs\internal\species\vox.dm"
 #include "code\modules\outreach\clothing\suits\storage.dm"
+#include "code\modules\outreach\economy\account.dm"
 #include "code\modules\outreach\game\machinery\machinery.dm"
 #include "code\modules\outreach\game\machinery\doors\_door.dm"
 #include "code\modules\outreach\game\machinery\doors\double.dm"

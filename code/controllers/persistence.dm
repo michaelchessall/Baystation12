@@ -334,6 +334,7 @@
 			while(world.maxz < world_cache.highest_z)
 				INCREMENT_WORLD_Z_SIZE
 		all_world_factions = world_cache.all_world_factions
+		all_money_accounts = world_cache.all_money_accounts
 		SetupAreas(world_cache)
 
 		report_progress_serializer("Cached DB data in [REALTIMEOFDAY2SEC(time_total)]s.")
