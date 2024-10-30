@@ -281,7 +281,7 @@ var/global/list/all_cryopods = list()
 
 	// Don't send messages unless we *need* the computer, and less than five minutes have passed since last time we messaged
 	if(!control_computer && urgent && last_no_computer_message + 5*60*10 < world.time)
-		log_and_message_admins("Cryopod in [src.loc.loc] could not find control computer!")
+		log_and_message_admins("Cryopod in [src.loc.loc] could not find control computer!", null, src)
 		last_no_computer_message = world.time
 
 	return control_computer != null
@@ -385,7 +385,7 @@ var/global/list/all_cryopods = list()
 	SHOULD_NOT_SLEEP(TRUE) // Sleeping causes the double-despawn bug
 
 	if (QDELETED(occupant))
-		log_and_message_admins("A mob was deleted while in a cryopod, or the cryopod double-processed. This may cause errors!")
+		log_and_message_admins("A mob was deleted while in a cryopod, or the cryopod double-processed. This may cause errors!", null)
 		return
 
 	if (istype(occupant, /mob/living/carbon/human))
@@ -470,7 +470,7 @@ var/global/list/all_cryopods = list()
 	if(control_computer)
 		control_computer.frozen_crew += "[occupant.real_name], [role_alt_title] - [stationtime2text()]"
 		control_computer._admin_logs += "[key_name(occupant)] ([role_alt_title]) at [stationtime2text()]"
-	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
+	log_and_message_admins("([role_alt_title]) entered cryostorage.", occupant)
 
 	if(announce_despawn)
 		invoke_async(announce, /obj/item/device/radio/proc/autosay, "[occupant.real_name], [role_alt_title], [on_store_message]", "[on_store_name]")
@@ -517,7 +517,7 @@ var/global/list/all_cryopods = list()
 	set_occupant(target)
 	if (user != target)
 		add_fingerprint(target) //Add fingerprints of the person stuffed in.
-	log_and_message_admins("placed [target == user ? "themself" : key_name_admin(target)] into \a [src]")
+	log_and_message_admins("placed [target == user ? "themself" : key_name_admin(target)] into \a [src]", user)
 	target.remove_grabs_and_pulls()
 
 /obj/machinery/cryopod/user_can_move_target_inside(mob/target, mob/user)

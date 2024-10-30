@@ -72,6 +72,7 @@
 	/// Sound this gun makes when firing. Overridden by projectiles with their own sounds.
 	var/fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
 	var/fire_sound_text = "gunshot"
+	var/fire_sound_vary = TRUE
 	var/fire_anim = null
 	/// The amount your screen shakes when firing. Shouldn't be greater than 2 unless zoomed.
 	var/screen_shake = 0
@@ -138,11 +139,6 @@
 	if(scope_zoom)
 		verbs += /obj/item/gun/proc/scope
 
-/obj/item/gun/update_twohanding()
-	if(one_hand_penalty)
-		update_icon() // In case item_state is set somewhere else.
-	..()
-
 /obj/item/gun/on_update_icon()
 	var/mob/living/M = loc
 	ClearOverlays()
@@ -208,34 +204,37 @@
 	Fire(A,user,params) //Otherwise, fire normally.
 
 
-/obj/item/gun/resolve_attackby(atom/atom, mob/living/user, click_params)
+/obj/item/gun/use_before(atom/target, mob/living/user, click_parameters)
+	// Suicide check
 	var/suicide = FALSE
-	if (user == atom)
+	if (user == target)
 		suicide = TRUE
 		if (user.zone_sel.selecting == BP_MOUTH && (!user.aiming?.active))
 			user.toggle_gun_mode()
-	if (user.aiming?.active) //if aim mode, don't pistol whip - even on harm intent
-		if (user.aiming.aiming_at != atom)
+
+	// Aim mode override
+	if (user.aiming?.active)
+		if (user.aiming.aiming_at != target)
 			var/checkperm
 			if (suicide)
 				if (!GET_FLAGS(user.aiming.target_permissions, TARGET_CAN_CLICK))
 					user.aiming.toggle_permission(TARGET_CAN_CLICK, TRUE)
 					checkperm = TRUE
-			PreFire(atom, user)
+			PreFire(target, user)
 			if (checkperm)
 				addtimer(new Callback(user.aiming, /obj/aiming_overlay/proc/toggle_permission, TARGET_CAN_CLICK, TRUE), 1)
 		else
 			if (suicide && user.zone_sel.selecting == BP_MOUTH && istype(user, /mob/living/carbon/human))
 				handle_suicide(user)
 			else
-				Fire(atom, user, pointblank = TRUE)
+				Fire(target, user, pointblank = TRUE)
 		return TRUE
-	if (user.a_intent == I_HURT && !user.isEquipped(atom)) //point blank shooting
-		if (safety())
-			return ..()
-		else
-			Fire(atom, user, pointblank = TRUE)
-			return TRUE
+
+	// Point blank shooting
+	if (user.a_intent == I_HURT && !user.isEquipped(target))
+		Fire(target, user, pointblank = TRUE)
+		return TRUE
+
 	return ..()
 
 
@@ -332,7 +331,7 @@
 		flick(fire_anim, src)
 
 	if (user)
-		var/user_message = SPAN_WARNING("You fire \the [src][pointblank ? " point blank":""] at \the [target][reflex ? " by reflex" : ""]!")
+		var/user_message = SPAN_DANGER("You fire \the [src][pointblank ? " point blank":""] at \the [target][reflex ? " by reflex" : ""]!")
 		if (silenced)
 			to_chat(user, user_message)
 		else
@@ -484,12 +483,18 @@
 
 	return launched
 
-/obj/item/gun/proc/play_fire_sound(mob/user, obj/item/projectile/P)
-	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
-	if(silenced)
-		playsound(user, shot_sound, 10, 1)
-	else
-		playsound(user, shot_sound, 50, 1)
+
+/obj/item/gun/proc/play_fire_sound(mob/user, obj/item/projectile/projectile)
+	var/sound = fire_sound
+	if (istype(projectile) && projectile.fire_sound)
+		sound = projectile.fire_sound
+	if (islist(sound))
+		sound = pick(sound)
+	var/volume = 50
+	if (silenced)
+		volume = 10
+	playsound(src, sound, volume, fire_sound_vary)
+
 
 //Suicide handling.
 /obj/item/gun/proc/handle_suicide(mob/living/user)
@@ -628,6 +633,7 @@
 
 /obj/item/gun/proc/toggle_safety(mob/user)
 	if (user?.is_physically_disabled())
+		to_chat(user, SPAN_WARNING("You can't do this right now!"))
 		return
 
 	safety_state = !safety_state
@@ -637,12 +643,22 @@
 		last_safety_check = world.time
 		playsound(src, 'sound/weapons/flipblade.ogg', 15, 1)
 
+
 /obj/item/gun/verb/toggle_safety_verb()
-	set src in usr
-	set category = "Object"
 	set name = "Toggle Gun Safety"
-	if(usr == loc)
-		toggle_safety(usr)
+	set category = "Object"
+	set src in usr
+	if (usr.incapacitated())
+		to_chat(usr, SPAN_WARNING("You're in no condition to do that."))
+		return
+	var/obj/item/gun/gun = usr.get_active_hand()
+	if (!istype(gun))
+		gun = usr.get_inactive_hand()
+		if (!istype(gun))
+			to_chat(usr, SPAN_WARNING("You need a gun in your hands to do that."))
+			return
+	gun.toggle_safety(usr)
+
 
 /obj/item/gun/CtrlClick(mob/user)
 	if(loc == user)

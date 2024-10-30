@@ -55,6 +55,9 @@
 	/// log world.log to game log
 	var/static/log_world_output = FALSE
 
+	/// log computer commands
+	var/static/log_computer_commands = FALSE
+
 	/// Allows admins with relevant permissions to have their own ooc colour
 	var/static/allow_admin_ooccolor = FALSE
 
@@ -81,8 +84,8 @@
 	/// length of voting period (deciseconds, default 1 minute)
 	var/static/vote_period = 600
 
-	/// Time in minutes between checks for ending empty rounds
-	var/static/empty_round_check_interval = 0
+	/// Time in minutes after which a round with no living players ends
+	var/static/empty_round_timeout = 0
 
 	/// Time in minutes before the first autotransfer vote
 	var/static/vote_autotransfer_initial = 120
@@ -530,6 +533,8 @@
 				log_hrefs = TRUE
 			if ("log_runtime")
 				log_runtime = TRUE
+			if ("log_computer_commands")
+				log_computer_commands = TRUE
 			if ("generate_asteroid")
 				generate_map = TRUE
 			if ("no_click_cooldown")
@@ -587,11 +592,11 @@
 				if (isnull(transfer_vote_block_antag_time) || transfer_vote_block_antag_time < 0)
 					log_misc("Invalid transfer_vote_block_antag_time: [value]")
 					transfer_vote_block_antag_time = 0
-			if ("empty_round_check_interval")
-				empty_round_check_interval = text2num_or_default(value)
-				if (isnull(empty_round_check_interval) || empty_round_check_interval < 0)
-					log_misc("Invalid empty_round_check_interval: [value]")
-					empty_round_check_interval = 0
+			if ("empty_round_timeout")
+				empty_round_timeout = text2num_or_default(value)
+				if (isnull(empty_round_timeout) || empty_round_timeout < 0)
+					log_misc("Invalid empty_round_timeout: [value]")
+					empty_round_timeout = 0
 			if ("vote_autogamemode_timeleft")
 				vote_autogamemode_timeleft = text2num(value)
 			if ("pre_game_time")

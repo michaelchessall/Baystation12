@@ -76,6 +76,9 @@ LOG_ATTACK
 ## log admin warning messages
 ##LOG_ADMINWARN  ## Also duplicates a bunch of other messages.
 
+## log computer commands
+# LOG_COMPUTER_COMMANDS
+
 ## Log all timers on timer auto reset
 # LOG_TIMERS_ON_BUCKET_RESET
 
@@ -139,8 +142,8 @@ VOTE_PERIOD 600
 # will autotransfer without a vote at the next continue vote. Leave disabled for no limit.
 #MAXIMUM_ROUND_LENGTH 120
 
-## If set, the time in minutes between checks for ending empty rounds. Default off.
-#EMPTY_ROUND_CHECK_INTERVAL 15
+## The time in minutes after no living players remain at which the round will end. Defaults off.
+#EMPTY_ROUND_TIMEOUT 5
 
 ## autovote initial delay in minutes before first automatic transfer vote call (default 120)
 # using seven semicolon (;) separated values allows for different weekday-based values

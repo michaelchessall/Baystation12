@@ -10,6 +10,10 @@
 	. = ..()
 	set_extension(src, /datum/extension/eye/landing)
 
+/obj/machinery/computer/shuttle_control/explore/is_valid_shuttle(datum/shuttle/shuttle)
+	return istype(shuttle, /datum/shuttle/autodock/overmap)
+
+
 /obj/machinery/computer/shuttle_control/explore/get_ui_data(datum/shuttle/autodock/overmap/shuttle)
 	. = ..()
 	if(istype(shuttle))
