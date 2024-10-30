@@ -17,23 +17,30 @@
 /mob/living/carbon/human/Initialize(mapload, new_species = null)
 	grasp_limbs = list()
 	stance_limbs = list()
+	if(!persistent_id)
+		if(!dna)
+			dna = new /datum/dna(null)
+			// Species name is handled by set_species()
 
-	if(!dna)
-		dna = new /datum/dna(null)
-		// Species name is handled by set_species()
+		if(!species)
+			if(new_species)
+				set_species(new_species, TRUE)
+			else
+				set_species()
 
-	if(!species)
-		if(new_species)
-			set_species(new_species, TRUE)
-		else
-			set_species()
+		var/singleton/cultural_info/culture = SSculture.get_culture(cultural_info[TAG_CULTURE])
+		if(culture)
+			real_name = culture.get_random_name(gender, species.name)
+			name = real_name
+			if(mind)
+				mind.name = real_name
 
-	var/singleton/cultural_info/culture = SSculture.get_culture(cultural_info[TAG_CULTURE])
-	if(culture)
-		real_name = culture.get_random_name(gender, species.name)
-		name = real_name
-		if(mind)
-			mind.name = real_name
+		if(dna)
+			dna.ready_dna(src)
+			dna.real_name = real_name
+			dna.base_skin = base_skin
+			sync_organ_dna()
+		make_blood()
 
 	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud_med.dmi', src, "100")
 	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
@@ -48,13 +55,6 @@
 
 	GLOB.human_mobs |= src
 	. = ..()
-
-	if(dna)
-		dna.ready_dna(src)
-		dna.real_name = real_name
-		dna.base_skin = base_skin
-		sync_organ_dna()
-	make_blood()
 
 
 /mob/living/carbon/human/Destroy()
@@ -1186,7 +1186,8 @@
 	else
 		if(!new_species)
 			new_species = dna.species
-
+	if(!new_species)
+		return
 	// No more invisible screaming wheelchairs because of set_species() typos.
 	if(!all_species[new_species])
 		new_species = SPECIES_HUMAN
@@ -1204,6 +1205,8 @@
 		holder_type = null
 
 	species = all_species[new_species]
+	if(!species)
+		return
 	species.handle_pre_spawn(src)
 
 	if(species.grab_type)

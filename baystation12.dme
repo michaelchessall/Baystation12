@@ -3408,4 +3408,5 @@
 #include "maps\_maps.dm"
 #include "maps\using.dm"
 #include "packs\legion\_pack.dm"
+#include "~code\global_init.dm"
 // END_INCLUDE

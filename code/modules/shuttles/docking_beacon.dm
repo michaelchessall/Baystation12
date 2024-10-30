@@ -24,7 +24,7 @@
 	anchored = FALSE
 	construct_state = /singleton/machine_construction/default/panel_closed
 	uncreated_component_parts = null
-	stat_immune = MACHINE_STAT_NOPOWER
+	stat_immune = MACHINE_STAT_NOINPUT | MACHINE_STAT_NOSCREEN | MACHINE_STAT_NOPOWER
 	base_type = /obj/machinery/docking_beacon
 	obj_flags = OBJ_FLAG_ROTATABLE
 	var/display_name					 // Display name of the docking beacon, editable on the docking control program.
@@ -77,7 +77,12 @@
 	else
 		data["permitted"] = list("ACCESS DENIED")
 		data["codes"] = "*******"
-
+	var/datum/WorldFaction/faction
+	if(connected_to && connected_to != "")
+		faction = GetWorldFactionGlobal(connected_to)
+	if(faction)
+		data["connected"] = TRUE
+		data["faction"] = faction.display_name
 	data["construction_mode"] = construction_mode
 	data["errors"] = errors
 	data["ship_name"] = ship_name
