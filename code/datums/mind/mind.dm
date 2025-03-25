@@ -91,7 +91,7 @@ var/global/list/player_minds = list()
 	if(current)					//remove ourself from our old body's mind variable
 		if(changeling)
 			current.remove_changeling_powers()
-			current.verbs -= /datum/changeling/proc/EvolutionMenu
+			current.verbs -= /datum/changeling/proc/EvolutionTree
 		current.mind = null
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
@@ -105,9 +105,6 @@ var/global/list/player_minds = list()
 
 	if(learned_spells && length(learned_spells))
 		restore_spells(new_character)
-
-	if(changeling)
-		new_character.make_changeling()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body

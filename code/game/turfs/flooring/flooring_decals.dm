@@ -822,6 +822,9 @@ SAVED_VAR(/turf, decals_obj)
 /obj/floor_decal/industrial/warning/corner
 	icon_state = "stripecorner"
 
+/obj/floor_decal/industrial/warning/inner
+	icon_state = "stripeinner"
+
 /obj/floor_decal/industrial/warning/full
 	icon_state = "stripefull"
 
